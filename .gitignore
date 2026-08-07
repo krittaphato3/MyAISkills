@@ -1,0 +1,9 @@
+# Runtime state — never commit
+v2/
+tmp/
+workspace/
+cli/
+docs/skills/.sdd/
+lint_out.json
+__pycache__/
+*.pyc

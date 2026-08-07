@@ -1,0 +1,292 @@
+{
+  "generated": "2026-08-06",
+  "canonical": "C:/Users/Oz/.zcode/skills/",
+  "zcode_skill_dirs": 41,
+  "agents_skill_dirs": 44,
+  "empty_dirs": [
+    {"name": "banner-design", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "brand", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "design", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "design-system", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "slides", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "ui-styling", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "ui-ux-pro-max", "kind": "broken_symlink", "location": "zcode"},
+    {"name": "java-jvm-expert", "kind": "empty_dir", "location": "agents"},
+    {"name": "ml-python-scientist", "kind": "empty_dir", "location": "agents"},
+    {"name": "readme-architect", "kind": "empty_dir", "location": "agents"},
+    {"name": "systems-core-architect", "kind": "empty_dir", "location": "agents"}
+  ],
+  "unique_to_agents": [
+    "find-skills",
+    "mcp-builder",
+    "skill-creator"
+  ],
+  "duplicated_pairs": 41,
+  "drifted_pairs": {},
+  "skills": [
+    {
+      "name": "animation-web-builder",
+      "path": "C:/Users/Oz/.zcode/skills/animation-web-builder/SKILL.md",
+      "bytes": 5260,
+      "source": "zcode"
+    },
+    {
+      "name": "api-design-architect",
+      "path": "C:/Users/Oz/.zcode/skills/api-design-architect/SKILL.md",
+      "bytes": 1470,
+      "source": "zcode"
+    },
+    {
+      "name": "container-optimizer",
+      "path": "C:/Users/Oz/.zcode/skills/container-optimizer/SKILL.md",
+      "bytes": 2710,
+      "source": "zcode"
+    },
+    {
+      "name": "cybersecurity-specialist",
+      "path": "C:/Users/Oz/.zcode/skills/cybersecurity-specialist/SKILL.md",
+      "bytes": 3014,
+      "source": "zcode"
+    },
+    {
+      "name": "dependency-supply-chain-guardian",
+      "path": "C:/Users/Oz/.zcode/skills/dependency-supply-chain-guardian/SKILL.md",
+      "bytes": 4292,
+      "source": "zcode"
+    },
+    {
+      "name": "devops-pipeline-engineer",
+      "path": "C:/Users/Oz/.zcode/skills/devops-pipeline-engineer/SKILL.md",
+      "bytes": 3448,
+      "source": "zcode"
+    },
+    {
+      "name": "game-developer",
+      "path": "C:/Users/Oz/.zcode/skills/game-developer/SKILL.md",
+      "bytes": 5027,
+      "source": "zcode"
+    },
+    {
+      "name": "github-flow-master",
+      "path": "C:/Users/Oz/.zcode/skills/github-flow-master/SKILL.md",
+      "bytes": 6519,
+      "source": "zcode"
+    },
+    {
+      "name": "java-jvm-expert",
+      "path": "C:/Users/Oz/.zcode/skills/java-jvm-expert/SKILL.md",
+      "bytes": 514,
+      "source": "zcode"
+    },
+    {
+      "name": "ml-python-scientist",
+      "path": "C:/Users/Oz/.zcode/skills/ml-python-scientist/SKILL.md",
+      "bytes": 500,
+      "source": "zcode"
+    },
+    {
+      "name": "mobile-developer",
+      "path": "C:/Users/Oz/.zcode/skills/mobile-developer/SKILL.md",
+      "bytes": 5414,
+      "source": "zcode"
+    },
+    {
+      "name": "monorepo-workspace-architect",
+      "path": "C:/Users/Oz/.zcode/skills/monorepo-workspace-architect/SKILL.md",
+      "bytes": 4706,
+      "source": "zcode"
+    },
+    {
+      "name": "performance-profiler",
+      "path": "C:/Users/Oz/.zcode/skills/performance-profiler/SKILL.md",
+      "bytes": 2011,
+      "source": "zcode"
+    },
+    {
+      "name": "query-performance-engineer",
+      "path": "C:/Users/Oz/.zcode/skills/query-performance-engineer/SKILL.md",
+      "bytes": 2651,
+      "source": "zcode"
+    },
+    {
+      "name": "readme-architect",
+      "path": "C:/Users/Oz/.zcode/skills/readme-architect/SKILL.md",
+      "bytes": 5097,
+      "source": "zcode"
+    },
+    {
+      "name": "refactoring-intelligence",
+      "path": "C:/Users/Oz/.zcode/skills/refactoring-intelligence/SKILL.md",
+      "bytes": 1924,
+      "source": "zcode"
+    },
+    {
+      "name": "resilience-pattern-engineer",
+      "path": "C:/Users/Oz/.zcode/skills/resilience-pattern-engineer/SKILL.md",
+      "bytes": 3339,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-3d-assets",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-3d-assets/SKILL.md",
+      "bytes": 3450,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-animation",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-animation/SKILL.md",
+      "bytes": 3966,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-architecture",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-architecture/SKILL.md",
+      "bytes": 4499,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-asset-import",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-asset-import/SKILL.md",
+      "bytes": 3921,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-audio",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-audio/SKILL.md",
+      "bytes": 4010,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-avatar",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-avatar/SKILL.md",
+      "bytes": 4177,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-cinematics",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-cinematics/SKILL.md",
+      "bytes": 5129,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-coding",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-coding/SKILL.md",
+      "bytes": 4828,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-data-persistence",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-data-persistence/SKILL.md",
+      "bytes": 5484,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-economy",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-economy/SKILL.md",
+      "bytes": 4274,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-game-dev",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-game-dev/SKILL.md",
+      "bytes": 2951,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-networking",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-networking/SKILL.md",
+      "bytes": 5067,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-orchestrator",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-orchestrator/SKILL.md",
+      "bytes": 4179,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-performance",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-performance/SKILL.md",
+      "bytes": 3977,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-plugins",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-plugins/SKILL.md",
+      "bytes": 3162,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-security",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-security/SKILL.md",
+      "bytes": 4814,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-terrain",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-terrain/SKILL.md",
+      "bytes": 3606,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-testing",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-testing/SKILL.md",
+      "bytes": 3884,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-tools-workflow",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-tools-workflow/SKILL.md",
+      "bytes": 3266,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-ui-ux",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-ui-ux/SKILL.md",
+      "bytes": 5671,
+      "source": "zcode"
+    },
+    {
+      "name": "roblox-vfx",
+      "path": "C:/Users/Oz/.zcode/skills/roblox-vfx/SKILL.md",
+      "bytes": 5684,
+      "source": "zcode"
+    },
+    {
+      "name": "security-hardening-specialist",
+      "path": "C:/Users/Oz/.zcode/skills/security-hardening-specialist/SKILL.md",
+      "bytes": 2152,
+      "source": "zcode"
+    },
+    {
+      "name": "system-instructions",
+      "path": "C:/Users/Oz/.zcode/skills/system-instructions/SKILL.md",
+      "bytes": 3845,
+      "source": "zcode"
+    },
+    {
+      "name": "systems-core-architect",
+      "path": "C:/Users/Oz/.zcode/skills/systems-core-architect/SKILL.md",
+      "bytes": 505,
+      "source": "zcode"
+    },
+    {
+      "name": "find-skills",
+      "path": "C:/Users/Oz/.agents/skills/find-skills/SKILL.md",
+      "bytes": 5472,
+      "source": "agents"
+    },
+    {
+      "name": "mcp-builder",
+      "path": "C:/Users/Oz/.agents/skills/mcp-builder/SKILL.md",
+      "bytes": 9092,
+      "source": "agents"
+    },
+    {
+      "name": "skill-creator",
+      "path": "C:/Users/Oz/.agents/skills/skill-creator/SKILL.md",
+      "bytes": 33168,
+      "source": "agents"
+    }
+  ]
+}

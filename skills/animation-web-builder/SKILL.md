@@ -1,0 +1,246 @@
+---
+name: animation-web-builder
+description: Build animated, scroll-driven web experiences — image-sequence canvas animation, GSAP ScrollTrigger, parallax, and motion design. Use when a landing page demands immersive scroll-triggered frame animation or performance-budgeted motion.
+version: 0.2.0
+grade: G2
+domain: delivery
+status: active
+last-reviewed: 2026-08-07
+owned-by-agent: ui-ux-architect
+---
+
+# Animation Web Builder
+
+Build Awwwards-level animated websites with scroll-driven frame animations and immersive motion design.
+
+## Core Technique: Apple-Style Image Sequence Animation
+
+The gold standard for scroll-driven animation (used by Apple, Stripe, Linear):
+
+1. **Convert video to frame sequence** using FFmpeg
+2. **Preload all frames** into memory as Image objects
+3. **Draw frames to canvas** based on scroll position
+4. **Use GSAP ScrollTrigger** for orchestration
+
+### FFmpeg Video → Frames
+
+```bash
+# Extract 30fps frames as JPG (quality 2-5 for web)
+ffmpeg -i input.mp4 -vf fps=30 -q:v 3 frames/frame_%04d.jpg
+
+# Extract at lower fps for fewer frames (e.g., 15fps)
+ffmpeg -i input.mp4 -vf fps=15 -q:v 3 frames/frame_%04d.jpg
+
+# Create sprite sheet grid (10 columns)
+ffmpeg -i input.mp4 -vf "fps=15,tile=10x10:padding=0" sprite_sheet.png
+```
+
+### Canvas Frame Animation Component (React)
+
+```jsx
+import { useRef, useEffect, useState } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+export default function CanvasFrameAnimation({
+  frameCount,
+  framePath, // e.g., '/frames/hero/frame_%04d.jpg'
+  width = 1920,
+  height = 1080,
+  scrollTriggerRef, // ref to the scroll container
+}) {
+  const canvasRef = useRef(null)
+  const imagesRef = useRef([])
+  const [loaded, setLoaded] = useState(0)
+
+  // Preload all frames
+  useEffect(() => {
+    const images = []
+    let loadedCount = 0
+
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image()
+      const src = framePath.replace('%04d', String(i).padStart(4, '0'))
+      img.src = src
+      img.onload = () => {
+        loadedCount++
+        setLoaded(loadedCount)
+      }
+      images.push(img)
+    }
+    imagesRef.current = images
+  }, [frameCount, framePath])
+
+  // Draw frames on scroll
+  useGSAP(() => {
+    if (!canvasRef.current || loaded < frameCount) return
+    const ctx = canvasRef.current.getContext('2d')
+    const canvas = canvasRef.current
+
+    ScrollTrigger.create({
+      trigger: scrollTriggerRef?.current || canvas,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.5,
+      onUpdate: (self) => {
+        const frameIndex = Math.min(
+          frameCount - 1,
+          Math.floor(self.progress * frameCount)
+        )
+        const img = imagesRef.current[frameIndex]
+        if (img && img.complete) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        }
+      },
+    })
+  }, { scope: scrollTriggerRef })
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      style={{
+        position: 'sticky',
+        top: 0,
+        width: '100%',
+        height: '100vh',
+        objectFit: 'cover',
+      }}
+    />
+  )
+}
+```
+
+## Performance Budget
+
+- **Target**: 60fps scroll animation
+- **Frame count**: 100-200 frames per section (5-7 seconds at 30fps)
+- **Image size**: 800-1200px wide, JPG quality 60-80%
+- **Preloading**: ALL frames must be loaded before animation starts
+- **Canvas size**: Match display size, not source size
+- **Memory**: ~50MB for 150 frames at 1200px wide JPG
+
+## GSAP ScrollTrigger Integration
+
+```javascript
+// Link canvas frame playback to scroll
+ScrollTrigger.create({
+  trigger: sectionElement,
+  start: 'top top',
+  end: '+=2000', // 2000px of scroll distance
+  scrub: 0.5, // smooth lag
+  pin: true, // pin the section
+  onUpdate: (self) => {
+    const frame = Math.floor(self.progress * totalFrames)
+    drawFrame(frame)
+  },
+})
+```
+
+## Section Transition Patterns
+
+### Cross-fade between sections
+```javascript
+// Fade out section A, fade in section B
+gsap.to(sectionA, {
+  opacity: 0,
+  scrollTrigger: {
+    trigger: sectionB,
+    start: 'top bottom',
+    end: 'top center',
+    scrub: true,
+  },
+})
+```
+
+### Parallax layers
+```javascript
+gsap.to(foregroundLayer, {
+  y: -100,
+  scrollTrigger: {
+    trigger: section,
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: true,
+  },
+})
+```
+
+## Asset Pipeline
+
+1. Source video (mp4, 1080p, 30fps)
+2. FFmpeg → frame sequence (JPG, quality 3)
+3. Organize in `/public/frames/<section>/` directories
+4. Component loads frames, canvas renders on scroll
+5. Fallback: static image for slow connections
+
+## Key Principles (from Awwwards winners)
+
+- **Pre-render beats real-time**: Bake expensive visuals into frames
+- **Separate concerns**: Lenis (scroll) + GSAP (choreography) + Canvas (rendering)
+- **Narrative-driven**: Every animation serves the story
+- **Performance-first**: Lazy load, device-adaptive quality, RAF budgeting
+
+## WHEN TO USE
+- A landing/hero page needs scroll-driven, immersive motion (image-sequence canvas, parallax, pinned sections) at a known performance budget.
+- You must orchestrate sections with GSAP ScrollTrigger (pin, scrub, cross-fades) for an Awwwards-level feel.
+- You're implementing a video→frame-sequence canvas animation (Apple/Stripe/Linear-style) with scroll scrubbing.
+- The asset pipeline (FFmpeg frames → preload → canvas draw) must be set up with caching and a static fallback.
+
+## WHEN NOT TO USE
+- **A simple static page** — basic interaction or a single fade does not need scroll-driven frame animation; use the platform defaults or a minimal library.
+- **A functional dashboard / app UI** — heavy scroll-cinematography on a dense utilitarian UI harms usability; keep it to marketing/story surfaces.
+- **Accessibility-sensitive content-oriented pages where motion is a UX risk** — users with vestibular disorders need the prefers-reduced-motion media query respected; if the page is non-entertainment, preserve a static fallback.
+- **One-off DOM animation** (a hover pop) — a lightweight lib or CSS transition suffices; this skill is for the scroll-frameworks.
+
+## DECISION TREE
+```text
+1. MOTION GOAL → scroll-scrubbed video/image-sequence? → canvas technique. Product story + transitions? →
+   GSAP ScrollTrigger orchestration. Simple parallax/layers? → GSAP + y/motion, skip frames.
+2. ASSET → heavy video? convert to frames/sprite sheet (FFmpeg). Verify frame budget (100-200/section).
+3. PRELOAD → all frames loaded before animation starts; handle slow networks with the static fallback image.
+4. ORCHESTRATE → GSAP + ScrollTrigger with scrub; bind canvas draw to scroll progress; pin the section.
+5. PERFORMANCE → measure 60fps; lazy-load, device-adaptive quality, RAF budgeting; drop frames if needed.
+6. REDUCED-MOTION → provide a static fallback honoring the prefers-reduced-motion media query; never force motion.
+```
+Never start with a heavy canvas until you've confirmed the asset and performance budget allow an animated experience at all.
+
+## FAILURE MODES & MITIGATIONS
+- **Frames not fully preloaded → blank/stutter on scroll.**
+  DETECT: canvas is empty or flashes until enough frames load; scroll jumps gaps.
+  FIX: preload ALL frames into Image objects before first draw, show a static poster, and only start ScrollTrigger once `loaded == frameCount` (see the React component).
+- **Oversized assets / memory blowup.**
+  DETECT: frame JPGs too large or too many (hundreds of full-res), memory spikes (~50MB+ per section), slow LCP.
+  FIX: cap frame size (1200px-ish), use JPG q3, lower fps/frame count (15fps), sprite-sheet to amortize requests, and lazy-load non-hero sections.
+- **Frame skipping / wrong frame for scroll position.**
+  DETECT: the displayed frame lags or jumps — `Math.floor(progress*frameCount)` misbounds or the sequence index is off-by-one.
+  FIX: clamp index to `[0, frameCount-1]`, use `frameCount-1` as the max, and scrub with `scrub: 0.5` to smooth.
+- **Scroll stutter from main-thread work.**
+  DETECT: scrubbing causes jank because heavy drawing runs on scroll on the UI thread or `requestAnimationFrame` fires for off-screen canvas.
+  FIX: keep frame drawing in `rAF` budget, pause when off-screen, and consider `ImageDecoder`/Web Worker for decode if supported.
+- **prefers-reduced-motion media query ignored.**
+  DETECT: motion-critical users or reviewers fail WCAG because the animation does not provide a reduced-motion fallback.
+  FIX: feature-detect the prefers-reduced-motion media query (reduce) and show the static post-frame image; document the fallback in the component.
+- **Unmeasured "performance".**
+  DETECT: the page claims 60fps but there is no measurement; heap/frame time or LCP is not recorded.
+  FIX: record a before/after (frame-rate, LCP, total bytes) and capture a profile as evidence when any optimization is claimed.
+
+## VERIFICATION GATE
+- **60fps budget honest**: measure and record the frame rate under target scroll speed and device; no >frame budget dips without a documented tradeoff.
+- **No blank first paint**: static fallback shows and the animated canvas becomes visible only once preloaded.
+- **Preload complete before animation**: the ScrollTrigger fires only after `loaded == frameCount`; no jank gap.
+- **Reduced-motion fallback honors the prefers-reduced-motion media query**: the static image is shown without JS-driven motion.
+- **Bytes + LCP within budget**: recorded frames/bytes/decode time match the planned budget; heap spikes bounded.
+- **red-team-qa review**: check for memory blowup, skipped frames, and missing reduced-motion support.
+
+## REFERENCES
+- GSAP documentation — ScrollTrigger, scrub, pinning.
+- MDN — Canvas API, `requestAnimationFrame`, and performance patterns.
+- web.dev page lifecycle / animation performance guidance.
+- Prefers reduced-motion — MDN accessibility for motion.
+- GSAP community scroll-triggered frame/sequence examples.

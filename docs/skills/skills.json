@@ -1,0 +1,376 @@
+{
+  "generated": "2026-08-08",
+  "count": 37,
+  "skills": [
+    {
+      "name": "adr-engineering",
+      "path": "skills\\adr-engineering\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "solution-architect"
+    },
+    {
+      "name": "animation-web-builder",
+      "path": "skills\\animation-web-builder\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "ui-ux-architect"
+    },
+    {
+      "name": "api-design-architect",
+      "path": "skills\\api-design-architect\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "api-architect"
+    },
+    {
+      "name": "concurrency-engineer",
+      "path": "skills\\concurrency-engineer\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "code-implementer"
+    },
+    {
+      "name": "container-optimizer",
+      "path": "skills\\container-optimizer\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "devops-engineer"
+    },
+    {
+      "name": "cybersecurity-specialist",
+      "path": "skills\\cybersecurity-specialist\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "security",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "cybersecurity-specialist"
+    },
+    {
+      "name": "database-at-scale",
+      "path": "skills\\database-at-scale\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "db-architect"
+    },
+    {
+      "name": "deep-planner",
+      "path": "skills\\deep-planner\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "doctrine",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "planner"
+    },
+    {
+      "name": "dependency-supply-chain-guardian",
+      "path": "skills\\dependency-supply-chain-guardian\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "dependency-guardian"
+    },
+    {
+      "name": "devops-pipeline-engineer",
+      "path": "skills\\devops-pipeline-engineer\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "devops-engineer"
+    },
+    {
+      "name": "distributed-systems-engineer",
+      "path": "skills\\distributed-systems-engineer\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "solution-architect"
+    },
+    {
+      "name": "doubt-driven-development",
+      "path": "skills\\doubt-driven-development\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "red-team-qa"
+    },
+    {
+      "name": "find-skills",
+      "path": "skills\\find-skills\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "meta",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "system"
+    },
+    {
+      "name": "game-developer",
+      "path": "skills\\game-developer\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "game-developer"
+    },
+    {
+      "name": "general-orchestrator",
+      "path": "skills\\general-orchestrator\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "code-implementer"
+    },
+    {
+      "name": "github-flow-master",
+      "path": "skills\\github-flow-master\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "code-implementer"
+    },
+    {
+      "name": "incident-response-engineer",
+      "path": "skills\\incident-response-engineer\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "devops-engineer"
+    },
+    {
+      "name": "java-jvm-expert",
+      "path": "skills\\java-jvm-expert\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "languages",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "code-implementer"
+    },
+    {
+      "name": "mcp-builder",
+      "path": "skills\\mcp-builder\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "meta",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "mcp-agent"
+    },
+    {
+      "name": "ml-python-scientist",
+      "path": "skills\\ml-python-scientist\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "languages",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "ml-engineer"
+    },
+    {
+      "name": "mobile-developer",
+      "path": "skills\\mobile-developer\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "mobile-developer"
+    },
+    {
+      "name": "monorepo-workspace-architect",
+      "path": "skills\\monorepo-workspace-architect\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "devops-engineer"
+    },
+    {
+      "name": "observability-sre",
+      "path": "skills\\observability-sre\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "devops-engineer"
+    },
+    {
+      "name": "performance-profiler",
+      "path": "skills\\performance-profiler\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "performance-engineer"
+    },
+    {
+      "name": "query-performance-engineer",
+      "path": "skills\\query-performance-engineer\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "production",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "db-architect"
+    },
+    {
+      "name": "readme-architect",
+      "path": "skills\\readme-architect\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "documentation-engineer"
+    },
+    {
+      "name": "refactoring-intelligence",
+      "path": "skills\\refactoring-intelligence\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "refactoring-specialist"
+    },
+    {
+      "name": "requirements-elicitation",
+      "path": "skills\\requirements-elicitation\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "doctrine",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "planner"
+    },
+    {
+      "name": "resilience-pattern-engineer",
+      "path": "skills\\resilience-pattern-engineer\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "code-implementer"
+    },
+    {
+      "name": "roblox-lua-developer",
+      "path": "skills\\roblox-lua-developer\\SKILL.md",
+      "version": "2.0.0",
+      "grade": "G2",
+      "domain": "roblox",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "game-developer"
+    },
+    {
+      "name": "security-hardening-specialist",
+      "path": "skills\\security-hardening-specialist\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "security",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "security-auditor"
+    },
+    {
+      "name": "skill-creator",
+      "path": "skills\\skill-creator\\SKILL.md",
+      "version": "0.2.0",
+      "grade": "G2",
+      "domain": "meta",
+      "status": "active",
+      "last-reviewed": "2026-08-07",
+      "owned-by-agent": "system"
+    },
+    {
+      "name": "source-driven-development",
+      "path": "skills\\source-driven-development\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "code-implementer"
+    },
+    {
+      "name": "spec-driven-development",
+      "path": "skills\\spec-driven-development\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "doctrine",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "planner"
+    },
+    {
+      "name": "system-design-architect",
+      "path": "skills\\system-design-architect\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "solution-architect"
+    },
+    {
+      "name": "system-instructions",
+      "path": "skills\\system-instructions\\SKILL.md",
+      "version": "2.0.0",
+      "grade": "G2",
+      "domain": "doctrine",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "system"
+    },
+    {
+      "name": "systems-core-architect",
+      "path": "skills\\systems-core-architect\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G3",
+      "domain": "languages",
+      "status": "active",
+      "last-reviewed": "2026-08-06",
+      "owned-by-agent": "code-implementer"
+    }
+  ]
+}
