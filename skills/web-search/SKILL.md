@@ -1,122 +1,124 @@
 ---
 name: web-search
 description: >-
-  Searches the web and reads pages with zero native dependencies: the local CLIs
-  `tools/web_search.mjs` (Web, GitHub, npm, StackOverflow) and `tools/webfetch.mjs`
-  (redirects, compression, readable extraction, focus filter). Use whenever a task needs
-  external knowledge, library documentation, repository links, or bug troubleshooting,
-  including on models and harnesses that have no built-in web search or WebFetch.
-  Multi-source synthesis with citations routes to deep-researcher; Google-default browser
-  searching to browser-automation.
+  Searches the web and reads external documentation with dual-track architecture: prioritizes
+  the native ZCode harness WebFetch tool for token-efficient information gathering and summarization,
+  paired with local CLI tools/web_search.mjs for multi-engine querying (Web, GitHub, npm, StackOverflow, Wikipedia),
+  and tools/webfetch.mjs as a zero-dependency fallback for other harnesses. Use whenever a task requires
+  gathering external information, reading library documentation, verifying repository links, or troubleshooting errors.
+  Multi-source research synthesis routes to deep-researcher; Google-default browser operations route to browser-automation.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: meta
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-10-28'
   owned-by-agent: browser-automation
 ---
 
-# Web Search & Fetch (no native tools required)
+# Web Search & Fetch (ZCode Native WebFetch Basis)
 
-Both tools run on Node 18+ (this machine: v24) with zero dependencies. They exist so that a
-model with only `bash` — no native web search, no WebFetch, no browser — can still search and
-read the web. Run paths relative to this config root (`~/.zcode`), or use the absolute path
-when the working directory is elsewhere.
+This skill governs web search and online documentation retrieval across environments. When operating
+inside the **ZCode** desktop or CLI harness, the primary basis for reading and gathering information from
+the web is the harness's **native `WebFetch` tool**. For external harnesses, headless environments without native
+capabilities, or specialized CLI workflows, the zero-dependency local scripts (`tools/web_search.mjs` and
+`tools/webfetch.mjs`) serve as the reliable fallback.
 
 ## WHEN TO USE
 
-- External knowledge, library docs, changelogs, repository links, or troubleshooting that the
-  repo cannot answer.
-- The harness/model has no native web search or fetch tool and the task needs one.
-- A specific URL needs reading, quoting, or verifying before it is cited.
+- Use when gathering external technical knowledge, reading library API docs, inspecting changelogs, or troubleshooting errors that the local repository cannot answer.
+- Use native `WebFetch` on ZCode as the primary default for reading URLs, gathering information, and synthesizing answers without bloating the context window.
+- Use `tools/web_search.mjs` to discover URLs across Web, GitHub, NPM, StackOverflow, and Wikipedia.
+- Use `tools/webfetch.mjs` only when on a non-ZCode harness, or when on ZCode it is specifically wiser to do so (e.g. piping into local shell scripts, inspecting raw HTML tags/HTTP headers, or querying raw JSON endpoints with `--json`).
 
 ## WHEN NOT TO USE
 
-- The repo already answers it — grep first.
-- Multi-source synthesis with citations — `deep-researcher` (agent), which uses these tools too.
-- Google-default browser searching, interactive pages, logged-in flows — `browser-automation`.
+- The local codebase already answers the question — grep first.
+- Multi-source synthesis with structured citations — `deep-researcher` (agent), which coordinates these tools.
+- Google-default browser searching, interactive SPA navigation, authenticated flows, or visual regression — `browser-automation`.
+
+## EXECUTION HIERARCHY
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 1. SEARCH: Discover URLs & Candidates                                       │
+│    node tools/web_search.mjs "<query>" [--type=web|github|npm|so] [--json]  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ 2. READ & GATHER INFORMATION:                                               │
+│    • ON ZCODE (Primary Basis): Use native WebFetch tool                     │
+│      WebFetch(url="<url>", prompt="<what specific info to extract>")        │
+│      -> Keeps full HTML out of context window; utilizes 15-min cache.       │
+│                                                                             │
+│    • OTHER HARNESSES OR SPECIALIZED CLI WORKFLOWS: Use webfetch.mjs         │
+│      node tools/webfetch.mjs <url> [--max-chars=8000] [--focus=<term>]      │
+│      -> Zero-dependency Node fallback for raw text, CLI pipelines, or JSON. │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ 3. INTERACTIVE / JS-HEAVY / GOOGLE-SPECIFIC:                                │
+│    • Use browser-automation via Playwright MCP in background headless mode. │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
 ## HOW TO EXECUTE
 
-### 1. Search
+### 1. Search with `tools/web_search.mjs`
 
 ```bash
-node tools/web_search.mjs "<query>"              # deduped results with snippets
+node tools/web_search.mjs "<query>"              # deduped results with snippets across all sources
 node tools/web_search.mjs "<query>" --type=npm   # web | github | npm | so | auto (default)
-node tools/web_search.mjs "<query>" --json       # structured array
+node tools/web_search.mjs "<query>" --json       # structured JSON output
 ```
 
-Auto-routing adds GitHub/npm/StackOverflow results when the query looks code-, package-, or
-error-related. Output is compact: title, URL, snippet — safe to paste into context.
+Auto-routing inspects the query to include GitHub, NPM, or StackOverflow when technical keywords appear.
 
-### 2. Read the page before trusting it
+### 2. Read and Extract Content
 
+#### A. ZCode Native `WebFetch` (Primary Basis)
+On ZCode, invoke the `WebFetch` tool directly:
+```json
+{
+  "url": "https://example.com/docs/api",
+  "prompt": "Extract the authentication requirements and curl examples."
+}
+```
+**Why this is the primary basis on ZCode:**
+- **Context Protection**: Converted to markdown and processed by a dedicated fast model; only the focused answer is returned to the context window rather than raw page dumps.
+- **15-Minute Cache**: Re-fetches within 15 minutes are instant and consume zero network overhead.
+- **Natural Extraction**: Handles questions, summaries, and targeted extraction in natural language.
+
+#### B. Local CLI `tools/webfetch.mjs` (Portable Fallback)
+Kept for other harnesses without native tools, or on ZCode only when wiser:
 ```bash
 node tools/webfetch.mjs <url>                    # readable text, 8000 chars default
 node tools/webfetch.mjs <url> --max-chars=3000   # token budget
 node tools/webfetch.mjs <url> --focus=install    # only matching lines, with context
-node tools/webfetch.mjs <url> --json             # {url,status,title,content,truncated} — good for APIs
-node tools/webfetch.mjs <url> --raw              # no HTML extraction
+node tools/webfetch.mjs <url> --json             # {url,status,title,content,truncated} — for raw JSON APIs
+node tools/webfetch.mjs <url> --raw              # no HTML extraction / raw markup inspection
 ```
 
-The fetcher follows redirects, decodes gzip/brotli and non-UTF8 charsets, strips
-script/style/nav/footer, and renders headings, lists, code, and links as compact text.
+## PATTERNS & BEST PRACTICES
 
-### 3. Path ladder (cheapest that works)
-
-```text
-1. Native web search / WebFetch tools, if the harness actually provides them.
-2. Local CLIs above — the guaranteed path on any model with bash.
-3. Playwright MCP / browser tools — interactive pages, Google-default searching, auth flows.
-```
-
-Note on engines: the CLI searches DuckDuckGo's HTML endpoint because it needs no browser.
-The config's Google default applies to browser search (`browser-automation`); when a Playwright
-MCP is configured, use Google there.
-
-## PATTERNS
-
-- **Verify before citing.** A snippet is a lead, not evidence: fetch the URL and quote the
-  fetched text. Never cite a URL that was not fetched successfully.
-- **Budget the read.** `--max-chars` for orientation, `--focus` for one answer, `--json` for
-  API payloads; paste extracted lines, not whole pages, into the main thread.
-- **Version checks.** Fetch the package page or changelog before relying on an API remembered
-  from training (`source-driven-development`).
-- **Error messages.** Search the exact error string with `--type=so`, then fetch the accepted
-  answer to confirm it matches the installed version.
+- **Verify before citing.** A search snippet is only a lead: always fetch the URL via `WebFetch` (or `webfetch.mjs` when wiser) to verify content before citing.
+- **Targeted prompts for WebFetch.** Make prompts specific (e.g. "What parameters does method X accept?") to get concise, high-signal results.
+- **API and Version checks.** Always verify library syntax against current live docs rather than relying on training memories (`source-driven-development`).
+- **Error diagnostics.** Search the exact error message with `--type=so`, then fetch the accepted answer.
 
 ## FAILURE MODES & MITIGATIONS
 
-1. **Hallucinated URL.** *DETECT:* citing a link never fetched. *FIX:* fetch first; the gate
-   below requires status + content.
-2. **Empty body / non-2xx.** *DETECT:* HTTP 403/404, consent walls, empty content. *FIX:* report
-   it as a limitation; try the browser path or the site's API instead of inventing content.
-3. **JS-only pages.** *DETECT:* extraction returns almost nothing though the page "exists".
-   *FIX:* use the Playwright path (`browser-automation`); static fetch cannot run scripts.
-4. **Stale snippet.** *DETECT:* the snippet contradicts the fetched page. *FIX:* the fetch wins;
-   note the discrepancy if it matters.
-5. **Rate limits (GitHub API, search).** *DETECT:* 403 with rate-limit text. *FIX:* back off,
-   retry once, or narrow the query; do not hammer.
+1. **Hallucinated URL.** *DETECT:* citing a link never fetched. *FIX:* fetch first; verify HTTP 200 before quoting.
+2. **Empty body / non-2xx.** *DETECT:* HTTP 403/404, bot walls, empty responses. *FIX:* report as a limitation; switch to Playwright MCP (`browser-automation`) if the content is vital.
+3. **JS-only SPA pages.** *DETECT:* `WebFetch` or static fetch returns an empty container. *FIX:* route to `browser-automation` subagent to execute client-side JavaScript headlessly.
+4. **Stale snippet.** *DETECT:* search snippet contradicts fetched documentation. *FIX:* the fetched document wins.
 
 ## QUANTITATIVE RULES
 
-- Search first, fetch at most the top 3 results per question; more reading is usually a worse
-  question, not a need for more pages.
-- Default read budget ≤8k chars; `--focus` for single-fact reads.
-- Every cited URL was fetched this session; quote at most a few lines per source.
-- If two sources conflict, fetch the primary one (vendor docs, changelog, RFC) to adjudicate.
+- Search first, fetch at most the top 3 relevant results per query.
+- Make `WebFetch` prompts specific to extract only what is needed for the task.
+- When using `webfetch.mjs`, default read budget is ≤8k characters.
+- Every cited URL must have been fetched during the active session.
 
 ## VERIFICATION GATE
 
-- [ ] Results were fetched, not recalled; each cited URL returned HTTP 2xx this session.
-- [ ] Quotes trace to fetched text; no invented links or snippets.
-- [ ] Failures (403/404/empty/JS-only) are reported as limitations, with the path that was tried.
-
-## REFERENCES
-
-- `tools/web_search.mjs` — multi-engine search (Web/GitHub/npm/StackOverflow), zero dependencies
-- `tools/webfetch.mjs` — redirect-following readable fetcher with `--focus`/`--json`
-- `deep-researcher` (agent) — multi-source synthesis on top of these tools
-- `browser-automation` — Playwright MCP path for interactive or Google-default searching
-- `source-driven-development` — verify APIs against current docs before using them
+- [ ] Results were fetched during this session (not hallucinated or recalled from memory).
+- [ ] On ZCode, native `WebFetch` was used as the primary basis for information gathering unless `webfetch.mjs` was explicitly wiser (CLI piping, raw JSON, or non-native harness).
+- [ ] Quotes trace directly to fetched content with valid URLs.
+- [ ] Failures (403, 404, JS-only) are reported as limitations with the path attempted.

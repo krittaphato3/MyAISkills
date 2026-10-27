@@ -410,7 +410,7 @@ Interactive slash commands (stored in `commands/`) provide rapid shortcuts for c
 | `/algorithms` | `<module or path>` | Performs computational complexity and data structure analysis for hot paths. | `algorithm-specialist` / `algorithms-and-data-structures` |
 | `/ux-review` | `[screen or flow]` | Audits interface usability, states, keyboard navigation, and spatial rhythm. | `design-critic` / `ux-review` |
 | `/search` | `<query>` | Executes a headless, multi-engine web search without consuming model context. | `browser-automation` / `tools/web_search.mjs` |
-| `/fetch` | `<url>` | Scrapes a webpage and extracts clean markdown for offline documentation reading. | `browser-automation` / `tools/webfetch.mjs` |
+| `/fetch` | `<url>` | Fetches a webpage and extracts clean information (prioritizes ZCode native WebFetch; falls back to CLI). | Native `WebFetch` / `webfetch.mjs` |
 | `/handoff` | `[output path]` | Generates a structured handoff artifact to resume work in a new session. | `meta-architect` / `session-continuity` |
 
 ---
@@ -449,9 +449,9 @@ The `tools/` directory provides zero-token utilities that run locally to inspect
      node tools/web_search.mjs "Roblox Luau parallel actor memory limits"
      ```
 
-4. **`tools/webfetch.mjs`**:
-   - Headless content extraction tool using Readability-like heuristic algorithms.
-   - Strips advertisements, navigation bars, and scripts, outputting clean Markdown.
+4. **`tools/webfetch.mjs` (Portable Fallback Fetcher)**:
+   - Zero-dependency headless content extraction script using Readability-style heuristics.
+   - On ZCode, native harness `WebFetch` is the primary basis for information gathering and question answering; `webfetch.mjs` serves as the portable fallback for non-ZCode harnesses or when local CLI piping / raw JSON inspection is wiser.
    - Usage:
      ```bash
      node tools/webfetch.mjs "https://create.roblox.com/docs/reference/engine/classes/Actor"
