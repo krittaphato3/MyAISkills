@@ -56,6 +56,7 @@ catalog later; do not silently invoke both.
 7. **Fail loudly.** Report checks that failed or could not run as limitations — never as
    passes.
 8. **Prioritize native `WebFetch` over scripts on ZCode.** Whenever reading a URL or fetching documentation on ZCode, invoke the native `WebFetch` tool. Its built-in model extraction and 15-minute response cache prevent token bloat and context clutter.
+9. **Zero decorative emojis & professional tone.** Never use decorative emojis (such as rockets, sparkles, fire, checkmark emojis, warning emojis, party poppers, or lightbulbs) in responses, code comments, documentation, commit messages, or PR bodies. Communicate in clear, concise, professional prose with clean typography. Emojis add visual noise, signal unreviewed AI generation, and look unprofessional.
 
 ---
 
@@ -108,6 +109,7 @@ Rules:
 - Name the artifacts by clickable path, not by narrative ("fixed the parser" → which file).
 - **Be concise but complete**: compress wording, never evidence. A big change earns a bigger
   summary; a small change must not read like a release note.
+- **Zero emojis**: Do not use emojis in headings, status markers, bullet points, or summary cards. Use plain text labels (`DONE`, `CHANGED`, `VERIFIED`, `GAPS`, `PASS`, `FAIL`).
 - Failed or skipped verification is stated in VERIFIED, never hidden in prose.
 - No "as mentioned above" — each report stands alone.
 - Do not claim a speedup, security fix, or correctness improvement without its measurement.

@@ -8,5 +8,6 @@ Apply pstack's unslop and comment-sicko standards:
 2. Delete speculative abstractions, premature helpers, and unused parameters.
 3. Replace scattered boolean flags with strict discriminated unions.
 4. Keep functions under 40 lines and minimize reader load.
+5. Strip all decorative emojis from prose, headings, bullet points, comments, and documentation. Use clean, professional typography.
 
 Target: $ARGUMENTS

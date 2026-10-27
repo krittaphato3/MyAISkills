@@ -62,7 +62,7 @@ Removing patterns is half the job. Sterile, voiceless writing is just as obvious
 15. **Boldface overuse.** Don't bold every proper noun or acronym.
 16. **Inline-header lists.** The tell is a bold label and colon that restates the line: "**Performance:** Performance improved...". Convert those to prose. A bold lead-in that ends in a period, names the item, and is followed by genuinely new detail ("**Schema in TypeScript.** Tables live in one file.") is fine, not a tell.
 17. **Title case headings.** Use sentence case.
-18. **Decorative emojis.** Remove from headings and bullets.
+18. **Decorative emojis.** Zero tolerance. Remove all emojis from headings, bullets, summaries, code, and documentation. They look amateurish, add visual clutter, and immediately signal unreviewed AI generation. Use clean, plain-text typography and plain status labels.
 19. **Curly quotes.** Replace with straight quotes.
 
 ### Communication artifacts

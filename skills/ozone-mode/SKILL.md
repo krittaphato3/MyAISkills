@@ -34,8 +34,10 @@ Ozone Mode is an elite, token-optimized engineering architecture, tailored speci
    Never ask an AI model to detect syntax errors, typos, or lint failures. The local environment (`tsc --noEmit`, linters, test runners) runs at **0 token cost**.
 3. **Domain-First Modeling (`principle-model-the-domain`)**:
    Model state using strict Discriminated Unions and Finite State Machines. Make invalid states mathematically unrepresentable before writing any business logic.
-4. **Anti-Slop (`/unslop`)**:
-   Aggressively reject AI fluff: delete speculative abstractions, delete obvious comments, avoid unnecessary wrappers, keep functions tight (<40 lines).
+4. **Anti-Slop & Professional Tone (`/unslop`, `/no-comments`)**:
+   Aggressively reject AI fluff:
+   - **Zero Decorative Emojis**: Never use decorative emojis in assistant output, code, comments, documentation, or commit messages. Use clean, professional typography and plain-text status indicators.
+   - **No Speculative Bloat**: Delete premature abstractions, wrappers, and obvious comments explaining self-evident code. Keep functions tight (<40 lines).
 5. **Guard the Context Window (`principle-guard-the-context-window`)**:
    Context is non-renewable. Deep file dumps and large outputs stay isolated inside subagents; the main thread receives only concise, actionable summaries.
 6. **No Claim Without Artifact (`principle-prove-it-works`)**:
