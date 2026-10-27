@@ -451,7 +451,7 @@ The `tools/` directory provides zero-token utilities that run locally to inspect
 
 4. **`tools/webfetch.mjs` (Portable Fallback Fetcher)**:
    - Zero-dependency headless content extraction script using Readability-style heuristics.
-   - On ZCode, native harness `WebFetch` is the primary basis for information gathering and question answering; `webfetch.mjs` serves as the portable fallback for non-ZCode harnesses or when local CLI piping / raw JSON inspection is wiser.
+   - Whenever the host harness provides a native `WebFetch` tool, it must be used instead due to superior token efficiency and caching; `webfetch.mjs` serves as the portable fallback for non-native environments or specialized CLI piping.
    - Usage:
      ```bash
      node tools/webfetch.mjs "https://create.roblox.com/docs/reference/engine/classes/Actor"

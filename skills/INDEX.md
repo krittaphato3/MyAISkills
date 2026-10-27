@@ -173,7 +173,7 @@ Routing rules live in [AGENTS.md](../AGENTS.md) §7.
 | `mcp-builder` | G2 | `mcp-agent` | Use when exposing an external service or dataset to agents as tools. Consuming existing MCP tools routes to mcp-agent; general API design to… |
 | `setup-pstack` | G2 | `meta-architect` | Use for "configure pstack models", /skill:setup-pstack, or changing pstack's model choices. |
 | `skill-creator` | G2 | `meta-architect` | Use when authoring a new skill or fixing one that misfires, undertriggers, or underperforms. Maintaining the roster and routing table routes to… |
-| `web-search` | G2 | `browser-automation` | Searches the web and reads external documentation with dual-track architecture: prioritizes the native ZCode harness WebFetch tool for… |
+| `web-search` | G2 | `browser-automation` | Searches the web and reads external documentation with dual-track architecture: strictly prioritizes the native harness WebFetch tool whenever… |
 
 ## fundamentals
 

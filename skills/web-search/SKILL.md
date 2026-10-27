@@ -1,14 +1,14 @@
 ---
 name: web-search
 description: >-
-  Searches the web and reads external documentation with dual-track architecture: prioritizes
-  the native ZCode harness WebFetch tool for token-efficient information gathering and summarization,
+  Searches the web and reads external documentation with dual-track architecture: strictly prioritizes
+  the native harness WebFetch tool whenever available for maximum token efficiency and built-in caching,
   paired with local CLI tools/web_search.mjs for multi-engine querying (Web, GitHub, npm, StackOverflow, Wikipedia),
-  and tools/webfetch.mjs as a zero-dependency fallback for other harnesses. Use whenever a task requires
+  and tools/webfetch.mjs as a zero-dependency fallback only when no native tool exists. Use whenever a task requires
   gathering external information, reading library documentation, verifying repository links, or troubleshooting errors.
   Multi-source research synthesis routes to deep-researcher; Google-default browser operations route to browser-automation.
 metadata:
-  version: 3.1.0
+  version: 3.2.0
   domain: meta
   grade: G2
   status: active
@@ -16,20 +16,22 @@ metadata:
   owned-by-agent: browser-automation
 ---
 
-# Web Search & Fetch (ZCode Native WebFetch Basis)
+# Web Search & Fetch (Native Harness WebFetch Priority)
 
-This skill governs web search and online documentation retrieval across environments. When operating
-inside the **ZCode** desktop or CLI harness, the primary basis for reading and gathering information from
-the web is the harness's **native `WebFetch` tool**. For external harnesses, headless environments without native
-capabilities, or specialized CLI workflows, the zero-dependency local scripts (`tools/web_search.mjs` and
-`tools/webfetch.mjs`) serve as the reliable fallback.
+This skill governs web search and online documentation retrieval across environments. **Whenever the host
+harness provides a native `WebFetch` tool (as ZCode does), it MUST be used instead of CLI scripts.** In most cases,
+native `WebFetch` is vastly more efficient: it keeps raw HTML dumps out of the conversation context window,
+uses a fast internal model to synthesize targeted answers, and automatically leverages a 15-minute response cache.
+
+The local CLI `tools/webfetch.mjs` is strictly a portable fallback for non-ZCode harnesses lacking native web
+capabilities, or for rare edge cases where local shell piping / raw byte inspection is required.
 
 ## WHEN TO USE
 
 - Use when gathering external technical knowledge, reading library API docs, inspecting changelogs, or troubleshooting errors that the local repository cannot answer.
-- Use native `WebFetch` on ZCode as the primary default for reading URLs, gathering information, and synthesizing answers without bloating the context window.
-- Use `tools/web_search.mjs` to discover URLs across Web, GitHub, NPM, StackOverflow, and Wikipedia.
-- Use `tools/webfetch.mjs` only when on a non-ZCode harness, or when on ZCode it is specifically wiser to do so (e.g. piping into local shell scripts, inspecting raw HTML tags/HTTP headers, or querying raw JSON endpoints with `--json`).
+- **Always use the native `WebFetch` tool whenever available in the current harness.** It is the primary, default, and most efficient method to read web pages and extract facts.
+- Use `tools/web_search.mjs` to discover candidate URLs across Web, GitHub, NPM, StackOverflow, and Wikipedia.
+- Use `tools/webfetch.mjs` ONLY when the harness lacks a native fetch tool, or in rare edge cases where piping raw stdout to a local script is necessary.
 
 ## WHEN NOT TO USE
 
@@ -44,14 +46,14 @@ capabilities, or specialized CLI workflows, the zero-dependency local scripts (`
 │ 1. SEARCH: Discover URLs & Candidates                                       │
 │    node tools/web_search.mjs "<query>" [--type=web|github|npm|so] [--json]  │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ 2. READ & GATHER INFORMATION:                                               │
-│    • ON ZCODE (Primary Basis): Use native WebFetch tool                     │
+│ 2. READ & GATHER INFORMATION (Strict Efficiency Rule):                      │
+│    • NATIVE WEBFETCH AVAILABLE (ZCode / Native Harness) -> MANDATORY DEFAULT│
 │      WebFetch(url="<url>", prompt="<what specific info to extract>")        │
 │      -> Keeps full HTML out of context window; utilizes 15-min cache.       │
 │                                                                             │
-│    • OTHER HARNESSES OR SPECIALIZED CLI WORKFLOWS: Use webfetch.mjs         │
+│    • NO NATIVE TOOL AVAILABLE (Portable Fallback) -> tools/webfetch.mjs     │
 │      node tools/webfetch.mjs <url> [--max-chars=8000] [--focus=<term>]      │
-│      -> Zero-dependency Node fallback for raw text, CLI pipelines, or JSON. │
+│      -> Zero-dependency Node fallback for headless/minimal environments.    │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ 3. INTERACTIVE / JS-HEAVY / GOOGLE-SPECIFIC:                                │
 │    • Use browser-automation via Playwright MCP in background headless mode. │
@@ -72,21 +74,21 @@ Auto-routing inspects the query to include GitHub, NPM, or StackOverflow when te
 
 ### 2. Read and Extract Content
 
-#### A. ZCode Native `WebFetch` (Primary Basis)
-On ZCode, invoke the `WebFetch` tool directly:
+#### A. Native Harness `WebFetch` (Mandatory First Choice)
+Whenever available, call `WebFetch` directly:
 ```json
 {
   "url": "https://example.com/docs/api",
   "prompt": "Extract the authentication requirements and curl examples."
 }
 ```
-**Why this is the primary basis on ZCode:**
-- **Context Protection**: Converted to markdown and processed by a dedicated fast model; only the focused answer is returned to the context window rather than raw page dumps.
-- **15-Minute Cache**: Re-fetches within 15 minutes are instant and consume zero network overhead.
-- **Natural Extraction**: Handles questions, summaries, and targeted extraction in natural language.
+**Why native `WebFetch` is prioritized:**
+- **Zero Token Bloat**: Raw HTML, stylesheets, and scripts are stripped and processed by a dedicated lightweight model; only the concise, relevant answer enters the conversation context.
+- **15-Minute Response Cache**: Repeated lookups within 15 minutes are instantaneous and zero-cost.
+- **Natural Language Extraction**: Directly extracts specific sections, function signatures, or parameters from the page.
 
-#### B. Local CLI `tools/webfetch.mjs` (Portable Fallback)
-Kept for other harnesses without native tools, or on ZCode only when wiser:
+#### B. Portable Fallback `tools/webfetch.mjs`
+Used only when no native tool is present, or when piping raw stream output to a shell command:
 ```bash
 node tools/webfetch.mjs <url>                    # readable text, 8000 chars default
 node tools/webfetch.mjs <url> --max-chars=3000   # token budget
@@ -97,8 +99,8 @@ node tools/webfetch.mjs <url> --raw              # no HTML extraction / raw mark
 
 ## PATTERNS & BEST PRACTICES
 
-- **Verify before citing.** A search snippet is only a lead: always fetch the URL via `WebFetch` (or `webfetch.mjs` when wiser) to verify content before citing.
-- **Targeted prompts for WebFetch.** Make prompts specific (e.g. "What parameters does method X accept?") to get concise, high-signal results.
+- **Verify before citing.** A search snippet is only a lead: always fetch the URL via `WebFetch` (or `webfetch.mjs` when on a headless environment without native tools) to verify content before citing.
+- **Targeted prompts for WebFetch.** Formulate specific prompts (e.g. "What parameters does method X accept?") to get concise, high-signal results.
 - **API and Version checks.** Always verify library syntax against current live docs rather than relying on training memories (`source-driven-development`).
 - **Error diagnostics.** Search the exact error message with `--type=so`, then fetch the accepted answer.
 
@@ -113,12 +115,12 @@ node tools/webfetch.mjs <url> --raw              # no HTML extraction / raw mark
 
 - Search first, fetch at most the top 3 relevant results per query.
 - Make `WebFetch` prompts specific to extract only what is needed for the task.
-- When using `webfetch.mjs`, default read budget is ≤8k characters.
+- If native `WebFetch` is available, never fall back to `webfetch.mjs` unless shell piping or raw JSON stream inspection is required.
 - Every cited URL must have been fetched during the active session.
 
 ## VERIFICATION GATE
 
 - [ ] Results were fetched during this session (not hallucinated or recalled from memory).
-- [ ] On ZCode, native `WebFetch` was used as the primary basis for information gathering unless `webfetch.mjs` was explicitly wiser (CLI piping, raw JSON, or non-native harness).
+- [ ] If native `WebFetch` was available in the harness, it was used instead of CLI fetchers.
 - [ ] Quotes trace directly to fetched content with valid URLs.
 - [ ] Failures (403, 404, JS-only) are reported as limitations with the path attempted.

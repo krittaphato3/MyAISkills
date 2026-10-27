@@ -1,5 +1,5 @@
 ---
-description: Multi-engine web search with ZCode native WebFetch basis and CLI fallbacks
+description: Multi-engine web search with native WebFetch priority and CLI fallbacks
 argument-hint: <query>
 ---
 
@@ -10,12 +10,12 @@ Run the zero-setup search ladder (`web-search` skill):
    StackOverflow, with snippets. Add `--type=npm|github|so|web` to target one source, `--json`
    for structured output.
 2. Read and gather information from top results:
-   • On ZCode (Primary Basis): Use native `WebFetch` tool:
+   • Native WebFetch Available -> MANDATORY FIRST CHOICE:
      `WebFetch(url="<url>", prompt="<what to extract>")`
      Keeps full HTML out of context window; leverages 15-minute response cache.
-   • Other harnesses or specialized CLI workflows:
+   • No Native WebFetch Available (Portable Fallback):
      `node tools/webfetch.mjs <url> --max-chars=4000` (add `--focus=<term>` to keep only
-     matching lines with context; use only when wiser on ZCode, such as CLI piping or raw JSON APIs).
+     matching lines with context; use only when native WebFetch is missing or for CLI piping).
 3. For interactive pages, JS-rendered DOMs, and Google-specific queries, route to `browser-automation`.
 4. Cite fetched URLs only; report fetch failures (403/404/empty/JS-only) as limitations instead
    of inventing content.
