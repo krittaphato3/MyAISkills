@@ -1,8 +1,18 @@
 ---
 name: principle-sequence-verifiable-units
-description: "Apply to multi-step work (sweeps, migrations, runs of similar edits) and to how you stack commits and PRs. Break work into small units that each end in a verifiable state, check each before the next, and order delivery so the sequence proves itself to a reviewer."
+description: Use for multi-step work (sweeps, migrations, runs of similar edits) and to how you stack
+  commits and PRs. Break work into small units that each end in a verifiable state, check each before
+  the next, and order delivery so the sequence proves itself to a reviewer.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Sequence work into verifiable units
 
@@ -20,3 +30,15 @@ Order work as a sequence of small units, each ending in a state you can check, a
 - Order the units so the sequence builds confidence on its own, for you while executing and for a reviewer reading the stack.
 
 The sequencing complement to the **prove-it-works** principle skill, which keeps each check real, and the **build-the-lever** principle skill, which makes the per-unit check cheap.
+
+## WHEN TO USE
+
+Multi-step work, sweeps, migrations, and stacked commits or PRs.
+
+## WHEN NOT TO USE
+
+A single atomic edit.
+
+## VERIFICATION GATE
+
+Each unit ends in a check, verified before the next; delivery order proves itself.

@@ -1,12 +1,23 @@
 ---
 name: ozone-mode
-description: "Ozone Mode: World-Class Staff Engineer Operating System. Enforces ruthless anti-slop code, dual-track parallel subagent test-and-develop, zero-token local defense, domain-first modeling, and verified work. Use for /ozone-mode or whenever peak engineering rigor is requested."
+description: 'Ozone Mode: World-Class Staff Engineer Operating System. Enforces ruthless anti-slop code,
+  dual-track parallel subagent test-and-develop, zero-token local defense, domain-first modeling, and
+  verified work. Use for /ozone-mode or whenever peak engineering rigor is requested.'
 disable-model-invocation: true
 mode: true
 icon: zap
 color: cyan
-reminder: "New task or engineering rigor needed? Activate /ozone-mode. Enforce parallel subagent dispatch (implementer + independent test-oracle), anti-slop, and zero-token local verification."
+reminder: New task or engineering rigor needed? Activate /ozone-mode. Enforce parallel subagent dispatch
+  (implementer + independent test-oracle), anti-slop, and zero-token local verification.
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: ozone-agent
 ---
+
 
 # Ozone Mode — World-Class Engineering Operating System
 
@@ -35,3 +46,15 @@ Ozone Mode is an elite, token-optimized engineering architecture, tailored speci
 - **T1 (Verified / 1 Subagent)**: Standard bugfix or small feature with existing tests. 1 implementer subagent + local test check.
 - **T2 (Adversarial / Dual Subagent)**: Multi-file features, refactors, logic-heavy modules. Parallel dispatch: `code-implementer` + `test-oracle` -> `comment-sicko` review.
 - **T3 (Debate / High Stakes)**: Auth, payments, data migrations, core architecture. 2 independent proposers (`code-implementer` + `independent-solver`) + `test-oracle` -> adversarial judge (`debate-chair`).
+
+## WHEN TO USE
+
+"/ozone-mode" or an explicit peak-rigor request; multi-step engineering with gates.
+
+## WHEN NOT TO USE
+
+Trivial typo or docs fixes; casual Q&A.
+
+## VERIFICATION GATE
+
+Dual-track evidence attached; zero-token local checks run; no claim without an artifact.

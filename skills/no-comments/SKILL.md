@@ -1,8 +1,18 @@
 ---
 name: no-comments
-description: "Spawn Comment Sicko, fix accepted findings, and offer encodings for claimed constraints."
+description: Removes narrating comments and encodes the constraints worth keeping as code or checks. Use
+  before review or merge when a diff gained explanatory comments, or when comments restate code. Non-obvious
+  why-comments forced by external systems stay.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: comment-sicko
 ---
+
 
 # No comments
 
@@ -22,3 +32,17 @@ Use the caller's files or diff. Otherwise use the current diff against the base 
 4. Implement the smallest root-cause fix in scope. Remove every named workaround. If the root cause is out of scope, land the smallest in-scope fix and report the rest open. The **principle-fix-root-causes** and **principle-redesign-from-first-principles** skills guide intent only: fix real causes, redesign as if requirements always existed, never bolt on symptom guards. Neither authorizes widening the fence nor fixing instances outside it.
 5. Constraint comments say `do not remove`, `do not change wording`, or `talk to X before changing`. Leave keeps about things we cannot change. Offer the cheapest in-scope type, runtime, test, or CI lint. Wait for interactive approval. Unattended and eval require caller pre-approval. If approved, encode then delete. Otherwise delete, report the constraint open, and sketch out-of-scope work.
 6. Report the deletion count, restored comments, reruns, architect sketch, fixes, encoding offers, encodings, unenforced constraints, and other open work.
+
+## WHEN TO USE
+
+Before review or merge, when a diff gained narrating comments.
+
+## WHEN NOT TO USE
+
+Comments documenting a non-obvious why forced by an external system — keep them.
+Generated files.
+
+## VERIFICATION GATE
+
+Accepted findings applied; rejected findings carry reasons.
+No behavior changed by comment removal.

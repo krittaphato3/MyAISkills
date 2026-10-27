@@ -1,8 +1,17 @@
 ---
 name: reflect
-description: Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.
+description: Spawn three parallel review subagents over the active transcript, surface learnings, and
+  route each to a concrete edit on an existing skill. Use when the user says reflect.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Reflect
 
@@ -75,3 +84,15 @@ Short list, no preamble:
 - New skills created: `<skill path>`. One line each (rare).
 - Backlog filed to the devex tracker: `<issue title>` (`<tags>`). One line each.
 - Dropped: one line per rejected finding + reason from the synthesizer.
+
+## WHEN TO USE
+
+After a notable task or session, to turn lessons into concrete skill or config edits.
+
+## WHEN NOT TO USE
+
+Nothing surprising happened — a routine task needs no reflection pass.
+
+## VERIFICATION GATE
+
+Every lesson routes to a named file and edit, applied or explicitly listed.

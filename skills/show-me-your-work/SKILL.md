@@ -1,8 +1,19 @@
 ---
 name: show-me-your-work
-description: "Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the trail to trust the result. Use for /show-me-your-work, autonomous or multi-phase runs, or work a human reviews after stepping away."
+description: 'Keep a reviewable decision trail for long-running or unattended work: a TSV log with one
+  row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the
+  trail to trust the result. Use for /show-me-your-work, autonomous or multi-phase runs, or work a human
+  reviews after stepping away.'
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: planner
 ---
+
 
 # Show me your work
 
@@ -80,3 +91,16 @@ Read top to bottom, follow the evidence pointers, spot-check. GitHub renders a c
 ## Composing this skill
 
 Other skills route their audit trail here instead of inventing one. Reference it by name and let it own the format; don't restate the columns.
+
+## WHEN TO USE
+
+Long, autonomous, or multi-phase work that needs a reviewable decision trail.
+
+## WHEN NOT TO USE
+
+Short interactive tasks.
+Anything whose log would contain secrets or personal data.
+
+## VERIFICATION GATE
+
+One row per decision with evidence; the log audits clean against the transcript.

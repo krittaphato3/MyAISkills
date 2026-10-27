@@ -1,16 +1,21 @@
 ---
 name: refactoring-ui
-description: 'Audit and fix visual hierarchy, spacing, color, and depth in web UIs. Use when the user mentions "my UI looks off" (or amateur/unprofessional), "fix the design", "Tailwind styling", "color palette", "visual hierarchy", "design system", "spacing scale", or "component styling". Also trigger when building consistent design tokens, creating dark mode themes, improving data-visualization clarity, or polishing UI details before launch. Covers grayscale-first workflow, constrained design scales, shadows, and component styling. For typeface selection, see web-typography. For usability audits, see ux-heuristics.'
+description: 'Audits and fixes visual hierarchy, spacing, color, and depth in web UIs: grayscale-first
+  workflow, constrained scales, shadows, component styling. Use when the user says "my UI looks off" (or
+  amateur), "fix the design", "Tailwind styling", "color palette", "visual hierarchy", "design system",
+  "spacing scale", or when building design tokens, dark mode themes, or polishing before launch. Usability
+  review routes to ux-review; spacing math to ui-layout-spacing; typeface selection is out of scope.'
 license: MIT
 metadata:
   author: wondelai
-  version: "1.5.1"
+  version: 1.5.1
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
   owned-by-agent: ui-ux-architect
 ---
+
 
 # Refactoring UI Design System
 

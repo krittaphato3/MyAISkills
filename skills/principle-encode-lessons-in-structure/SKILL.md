@@ -1,8 +1,17 @@
 ---
 name: principle-encode-lessons-in-structure
-description: "Apply when you catch yourself writing the same instruction a second time, or notice a recurring correction. Encode the rule as a lint, metadata flag, runtime check, or script instead of more text."
+description: Apply when you catch yourself writing the same instruction a second time, or notice a recurring
+  correction. Encode the rule as a lint, metadata flag, runtime check, or script instead of more text.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Encode Lessons in Structure
 
@@ -29,3 +38,15 @@ When you catch yourself writing the same instruction a second time:
 - Acknowledging without recording ("I'll keep that in mind" does not persist)
 - Recording without routing (a brain note about a lint rule that should exist is wasted unless the lint rule gets implemented)
 - Fixing without generalizing (fixing one instance while leaving the recurring pattern intact)
+
+## WHEN TO USE
+
+You catch yourself writing the same instruction twice, or a human correction recurs.
+
+## WHEN NOT TO USE
+
+Genuinely one-off guidance.
+
+## VERIFICATION GATE
+
+The rule moved into a lint, metadata flag, check, or script; the prose rule removed.

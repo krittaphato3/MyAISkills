@@ -1,7 +1,17 @@
 ---
 name: typescript-best-practices
-description: TypeScript best practices. Use when reading or editing any .ts or .tsx file.
+description: TypeScript-specific rules for types, unions, brands, and boundary parsing. Use when reading
+  or editing any .ts or .tsx file, or when designing types or signatures in TypeScript. Other languages
+  route to their own idiom skills; the general doctrine lives in principle-type-system-discipline.
+metadata:
+  version: 1.0.0
+  domain: languages
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: code-implementer
 ---
+
 
 # TypeScript best practices
 
@@ -26,3 +36,17 @@ Apply the **type-system-discipline** principle skill first; this skill grounds i
 | Structured telemetry | Prefer structured logger diagnostics with enough context to debug from an id. No `console.log` in shipped code. |
 
 Examples: `references/patterns.md`.
+
+## WHEN TO USE
+
+Reading or editing any .ts or .tsx file; designing types or signatures in TypeScript.
+
+## WHEN NOT TO USE
+
+Other languages have their own idiom skills.
+General type doctrine lives in `principle-type-system-discipline`.
+
+## VERIFICATION GATE
+
+Illegal states unrepresentable where practical; external data parsed at boundaries.
+No `any` leaking across a boundary; typecheck passes.

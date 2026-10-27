@@ -1,8 +1,18 @@
 ---
 name: principle-foundational-thinking
-description: "Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature work, asking what concurrent actors share. Get the data structures right so downstream code becomes obvious."
+description: 'Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature
+  work, asking what concurrent actors share. Get the data structures right so downstream code becomes
+  obvious.'
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Foundational Thinking
 
@@ -19,3 +29,15 @@ At code level, DRY the structure, not every line. Types and data models should c
 Each increment should land a coherent abstraction or deepen one that exists. Do not spread a new capability across callers as special-case coordination.
 
 Subtraction comes before scaffolding: remove dead weight first, then lay foundations.
+
+## WHEN TO USE
+
+Before writing logic: core types, data structures, sequencing, shared state.
+
+## WHEN NOT TO USE
+
+Core types are settled — other principles take over.
+
+## VERIFICATION GATE
+
+Core types and their invariants named before logic; scaffold-vs-feature order explicit.

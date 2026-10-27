@@ -1,8 +1,18 @@
 ---
 name: principle-build-the-lever
-description: "Apply to any non-trivial work, not just bulk work: edits, migrations, analyses, checks. Build the tool that does it or proves it (codemod, script, generator, or a skill your subagents follow) instead of working by hand. The tool is the artifact a reviewer can rerun."
+description: 'Use for any non-trivial work, not just bulk work: edits, migrations, analyses, checks.
+  Build the tool that does it or proves it (codemod, script, generator, or a skill your subagents follow)
+  instead of working by hand. The tool is the artifact a reviewer can rerun.'
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 # Build the Lever
 
 When the work isn't trivial, build the tool that does it instead of doing it by hand.
@@ -21,3 +31,15 @@ When the work isn't trivial, build the tool that does it instead of doing it by 
 **Balance:** The bar is triviality, not repetition. A one-off still earns a lever when the lever is what makes the work checkable. Per the [Laziness Protocol](../principle-laziness-protocol/SKILL.md), build the smallest script that does or proves the job, never a framework.
 
 Distinct from [Encode Lessons in Structure](../principle-encode-lessons-in-structure/SKILL.md), which makes a recurring instruction a durable guardrail. This is throughput and reviewability on the work in front of you. For scripting the verification itself, see [Prove It Works](../principle-prove-it-works/SKILL.md).
+
+## WHEN TO USE
+
+Non-trivial work that is repetitive or needs proof.
+
+## WHEN NOT TO USE
+
+A one-off edit cheaper than its tooling.
+
+## VERIFICATION GATE
+
+The tool or script exists, is rerunnable, and a reviewer can rerun it.

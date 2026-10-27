@@ -121,36 +121,20 @@ tailored to the task on hand whenever it is good or best to do so.
 
 ### 5.1 Subagent usage & delegation (mandatory when viable or beneficial)
 
-Subagents are the primary vehicle for high-quality, bug-free execution. If a task can use subagents,
-or if delegating to subagents is better or good for code quality, edge-case coverage, test rigor, or
-domain specialization, **calling the `Agent` tool to dispatch subagents is strictly mandatory**:
+Subagents are the primary vehicle for quality execution: whenever a task can be decomposed, or
+independent implementation, testing, review, or domain specialization would raise quality,
+dispatching them via the `Agent` tool is mandatory. The primary thread never writes production
+code; it plans, briefs, gates, integrates, and reports.
 
-- **Mandatory subagent dispatch via `Agent` tool**: Whenever a task can be decomposed or handled by specialized
-  agents—or where having an independent implementer, tester, reviewer, or domain specialist yields
-  better, cleaner, or more reliable results—the AI **must** dispatch subagents using the `Agent` tool.
-  Direct implementation by the primary thread using `Read`/`Edit` is strictly prohibited. Bypassing
-  subagents to do work directly in the primary thread is a severe protocol violation.
-- **Dispatching a set of subagents**: Rather than relying on a single agent or doing everything in the
-  primary thread, the primary thread orchestrates and deploys a coordinated **set of subagents** tailored
-  to the task on hand:
-  - *Implementation + Quality set*: `code-implementer` (writes logic) + `test-engineer` (writes/runs tests) + `red-team-qa` (adversarial critique & edge cases).
-  - *Investigation & Debug set*: `codebase-cartographer` / `deep-researcher` (investigates root cause) + `code-implementer` (patches) + `red-team-qa` (verifies fix).
-  - *Multi-discipline set*: `roblox-*` or domain specialists (`db-architect`, `api-architect`, `ui-ux-architect`) running in parallel waves coordinated by `general-orchestrator`.
-- **Parallel Execution Strategy (concurrent multi-subagent dispatch)**:
-  When independent subtasks or dual roles exist, the primary thread **MUST emit multiple `Agent` tool calls in a single turn/message** to execute subagents simultaneously in parallel rather than serializing them one by one:
-  - *Parallel Development + Testing*: Dispatch `code-implementer` (logic/architecture) and `test-engineer` (tests/specs/harnesses) concurrently in the same turn.
-  - *Parallel Modular Division*: For multi-file or multi-component features, split independent modules and dispatch multiple `code-implementer` or domain agents simultaneously.
-  - *Parallel Debate & Adversarial Review*: Dispatch independent proposers (`code-implementer` + `independent-solver`) concurrently to produce blind solutions, followed by adversarial critique (`red-team-qa`) and impartial adjudication (`debate-chair`).
-  - *Multi-discipline Parallel Waves*: For tasks crossing domains (e.g. Roblox building + scripting + UI, or full-stack frontend + API + DB), launch the domain agents concurrently in parallel waves.
-  - **Rule**: Never serialize independent subagents one by one when they can run in parallel in a single message.
-- **Primary thread is strictly an orchestrator**: The primary thread prepares briefs, launches subagents,
-  tracks the ledger, evaluates returned gate evidence, and coordinates integration. It does not write
-  production code or perform direct implementation fixes.
-- **When in-thread execution is permitted**: Only purely trivial, non-substantive tasks with zero logic risk
-  where subagents cannot add value (e.g., a simple direct answer to a question, reading a single fact,
-  or fixing a 1-word documentation typo) or when the user explicitly requests *"do this directly in-thread"*.
-- **Explicit user instruction**: An explicit user instruction (e.g. "no subagents" or "use subagent X")
-  always takes precedence.
+- **Dispatch sets, not singles:** *Implementation + Quality* (`code-implementer` + `test-engineer`
+  + `red-team-qa`) · *Investigation* (`codebase-cartographer`/`deep-researcher` → implementer →
+  critic) · *Reasoning* (`product-strategist`, `algorithm-specialist`, `design-critic` as the
+  decision needs) · *Multi-domain* (domain specialists in parallel waves under a coordinator).
+- **Parallel by default:** independent subtasks go out as multiple `Agent` calls in one message;
+  serializing independent subagents is a defect. Shared mutable state serializes instead.
+- **In-thread exceptions:** purely trivial work (a factual answer, a one-word doc fix) or an
+  explicit user request to work in-thread. An explicit user instruction always wins.
+- **Full protocol:** `system-instructions` (tiers, briefs, isolation, gates).
 
 ### 5.2 Tiers (how much review)
 
@@ -202,6 +186,9 @@ agents are read-only by design — their output is findings, not patches.
 | `data-engineer` | ETL/ELT, pipelines, warehouse loads, schema evolution | writes pipelines |
 | `performance-engineer` | Measured CPU/memory/IO/latency problem needing before/after proof | writes code |
 | `accessibility-specialist` | WCAG conformance, keyboard/screen-reader semantics | read-only |
+| `product-strategist` | Problem/evidence framing, PR/FAQ, scope hammering, metric with baseline, build-vs-buy | read-only |
+| `algorithm-specialist` | Complexity analysis, structure choice, invariants, and proof plan for hot paths | read-only |
+| `design-critic` | Usability review of the running interface: heuristics, states, keyboard, motion, microcopy | read-only |
 
 ### Implementation
 | Agent | Dispatch when | Mode |
@@ -277,14 +264,20 @@ agents are read-only by design — their output is findings, not patches.
 
 | Domain | Skills |
 |---|---|
-| **doctrine** | ozone-mode · system-instructions · debate-protocol · deep-planner · spec-driven-development · requirements-elicitation · general-orchestrator · verification-before-completion · test-driven-development · systematic-debugging · requesting-code-review · doubt-driven-development · session-continuity · context-engineering · web-search |
+| **doctrine** | ozone-mode · poteto-mode · system-instructions · debate-protocol · deep-planner · spec-driven-development · requirements-elicitation · general-orchestrator · verification-before-completion · test-driven-development · systematic-debugging · requesting-code-review · doubt-driven-development · session-continuity · context-engineering · token-economy · web-search |
 | **architecture** | system-design-architect · distributed-systems-engineer · database-at-scale · concurrency-engineer · api-design-architect · adr-engineering · refactoring-intelligence · resilience-pattern-engineer · legacy-modernization · monorepo-workspace-architect |
-| **delivery** | frontend-web-engineer · ui-layout-spacing · refactoring-ui · impeccable · mobile-developer · desktop-app-developer · game-developer · animation-web-builder · accessibility-audit · web-performance · readme-architect · llm-app-engineer · source-driven-development · codebase-navigation · browser-use plugin (browser-use:control-browser, browser-use:web-gui-tester) |
+| **delivery** | frontend-web-engineer · ui-layout-spacing · refactoring-ui · impeccable · mobile-developer · desktop-app-developer · game-developer · animation-web-builder · accessibility-audit · web-performance · readme-architect · llm-app-engineer · agent-harness-design · product-engineering · ux-review · testing-strategy · source-driven-development · codebase-navigation · browser-use plugin (browser-use:control-browser, browser-use:web-gui-tester) |
 | **production** | devops-pipeline-engineer · container-optimizer · observability-sre · incident-response-engineer · performance-profiler · query-performance-engineer · payments-billing · email-notifications · background-jobs-engineer · realtime-engineer · data-pipeline-engineer · third-party-integration · dependency-supply-chain-guardian · github-flow-master |
 | **security** | security-hardening-specialist · cybersecurity-specialist · privacy-compliance · threat-modeling |
 | **roblox** | roblox-game-production · roblox-studio-mcp · roblox-lua-developer · roblox-scripting · roblox-world-building · roblox-ui-ux · roblox-animation · roblox-vfx · roblox-assets · roblox-security · roblox-testing · roblox-toolchain · roblox-asset-security · roblox-project-indexer |
+| **fundamentals** | algorithms-and-data-structures |
 | **languages** | java-jvm-expert · ml-python-scientist · systems-core-architect |
-| **meta** | skill-creator · find-skills · mcp-builder · agent-browser · browser-automation (browserless/headless Google web search, docs search & UI automation via Playwright MCP) · agent-config-maintenance |
+| **meta** | skill-creator · find-skills · mcp-builder · agent-browser · browser-automation (browserless/headless Google web search, docs search & UI automation via Playwright MCP) · web-search (local CLIs: multi-engine search + readable webfetch for models without native web tools) · agent-config-maintenance |
+
+Imported pstack workflow family (full table in `skills/INDEX.md`): how · why · recall · reflect ·
+architect · arena · swarm · interrogate · figure-it-out · show-me-your-work · blast-radius ·
+tdd · unslop · no-comments · automate-me · setup-pstack · teach · bro · technical-writing ·
+typescript-best-practices · create-verification-skill · maintain-verification-skill · principle-*.
 
 Selection rule: match the **task's verb and artifact** (design a schema → db; tune one query →
 query-performance; harden an endpoint → security-hardening; UI / HUD / menu / 3D hero showcase styling → roblox-ui-ux (enforces AAA visual polish, 3D ViewportFrame hero icons, burst-out cards, sweeping sheen gloss, rayburst backdrops, vector icons, tactile micro-interactions, anti-cancellation contrast); whitespace / gap / padding / margin / concentric radius / spatial rhythm → ui-layout-spacing; web search / docs search → browser-automation via browserless Playwright MCP (Google default); Rojo / package sync → roblox-toolchain; audit inserted model → roblox-asset-security; offline project architecture map / index (scripts, remotes, GUIs, tags) → roblox-project-indexer). If two match, the one naming the
@@ -301,7 +294,10 @@ or performing operations before loading required skills is an explicit protocol 
 |---|---|---|
 | **Development** — feature, bugfix, behavior change, refactor | `test-driven-development` + `verification-before-completion` | Red→GREEN is the only proof the change works; "done" needs an artifact |
 | **Web / UI / UX** — live webapp, UI surfaces, frontend components, interaction flows | `frontend-web-engineer` (or `ui-ux-architect` agent); for spatial rhythm, padding, gaps, and concentric radii, load `ui-layout-spacing`; for live browser inspection and GUI testing, load `browser-use:control-browser` or `browser-use:web-gui-tester` (`browser-use@zcode-plugins-official`) | Live UI rendering, interactive clicks, forms, and layout cannot be verified by static code analysis alone |
-| **Web Search & Research** — online docs lookup, live search engine queries (Google default), external vendor investigation | `browser-automation` (browserless Playwright MCP) or `deep-researcher` | Live browserless web search defaulting to Google and structured extraction keep main thread tokens clean and citations accurate |
+| **Web Search & Research** — online docs lookup, live search engine queries (Google default), external vendor investigation | `browser-automation` (browserless Playwright MCP) or `deep-researcher`; on models/harnesses with no native web tools, `web-search` (local CLIs `tools/web_search.mjs` + `tools/webfetch.mjs`) is the guaranteed path | Live browserless web search defaulting to Google and structured extraction keep main thread tokens clean and citations accurate |
+| **Product / scope framing** — unclear value, competing options, refactor or infra case | `product-engineering` | The most expensive failure is building the wrong thing correctly |
+| **Interface quality review** — a shipped screen or flow needs a usability pass | `ux-review` | Missing states, dead ends, and unreachable controls do not show up in tests |
+| **Cost or context pressure** — tokens disproportionate to output, tiering decisions | `token-economy` | Savings need a measurement; quality is the constraint |
 | **Security** — audit, threat review, hardening, exploit report | a security skill: `threat-modeling` · `security-hardening-specialist` · `roblox-security` · `roblox-asset-security` | The domain's failure modes are not guessable |
 | **Roblox** — any Studio/place task | the matching `roblox-*` skill (UI/HUD/hero showcase tasks enforce `roblox-ui-ux` AAA visual polish, 3D ViewportFrame hero icons, burst-out cards, sweeping sheen gloss, rayburst backdrops, vector iconography, tactile micro-interactions, and anti-cancellation contrast) · executing in Studio → `roblox-studio-mcp` · verifying → `roblox-testing` · toolchain setup → `roblox-toolchain` · external assets → `roblox-asset-security` · offline project architecture index & navigation (scripts, remotes, GUIs, tags in local game workspace) → `roblox-project-indexer` | Platform budgets and the MCP loop live in the skill |
 | **Any claim of done** | `verification-before-completion` | No artifact, no done |
@@ -351,8 +347,13 @@ A task is done only when every applicable line is true **and evidenced**:
 - **No duplicate dispatch:** one subagent per subtask; re-dispatch only with new information.
 - **Stop rules:** 2 retries on a flaky gate, 2 debate rounds, one repair attempt per tier before
   escalating. When a round adds no new evidence, stop and report.
+- **Measured anchors:** cache reads ~0.1× input (writes 1.25×–2×); multi-agent fan-out has been
+  measured at ~15× a chat — spend it deliberately; one published tool-flow refactor cut
+  150k → 2k tokens by running tools outside model context. Savings claims need before/after
+  numbers; estimates are labeled (`token-economy`).
 - **Context is budget:** file work and long reads go to subagents; the main thread keeps the plan
-  and the ledger. See `context-engineering`.
+  and the ledger. Orient with `tools/repo_map.py` + ranged reads before whole-file sweeps.
+  See `context-engineering` and `token-economy`.
 
 ---
 
@@ -365,4 +366,4 @@ A task is done only when every applicable line is true **and evidenced**:
 - Changes to this file or the roster are `meta-architect` work and get a version bump.
 - A skill that has not been exercised in 6 months, or that overlaps a newer skill, is marked
   `status: deprecated` with a pointer — never silently deleted.
-- Version: 3.15.0 · last reviewed 2026-10-27
+- Version: 3.16.0 · last reviewed 2026-10-27

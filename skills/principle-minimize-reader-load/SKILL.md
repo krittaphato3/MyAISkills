@@ -1,8 +1,17 @@
 ---
 name: principle-minimize-reader-load
-description: "Apply when reviewing or shaping code that's hard to trace. Count layers between question and answer, and hidden state in the reader's head; collapse one-caller wrappers and shrink mutable scope."
+description: Apply when reviewing or shaping code that's hard to trace. Count layers between question
+  and answer, and hidden state in the reader's head; collapse one-caller wrappers and shrink mutable scope.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Minimize Reader Load
 
@@ -21,3 +30,15 @@ Maintainability is the work a reader must do to understand code. Track two axes:
 - Before adding a layer or a piece of state, ask: does this reduce reader load somewhere else by at least as much?
 
 **The test:** Can a new reader answer "where does X come from?" and "what can change X?" in under 30 seconds? If not, cut layers or cut state.
+
+## WHEN TO USE
+
+Reviewing or shaping code that is hard to trace.
+
+## WHEN NOT TO USE
+
+Generated code.
+
+## VERIFICATION GATE
+
+Layers counted and one-caller wrappers collapsed; mutable scope shrunk.

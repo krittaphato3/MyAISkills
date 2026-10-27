@@ -1,8 +1,19 @@
 ---
 name: figure-it-out
-description: "Design an auditable playbook when no narrower one fits: a large migration, an ambitious multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis loop, and logs decisions via show-me-your-work. Use for /figure-it-out, 'figure it out', a large migration, or when no narrower playbook applies."
+description: 'Design an auditable playbook when no narrower one fits: a large migration, an ambitious
+  multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis
+  loop, and logs decisions via show-me-your-work. Use for /figure-it-out, ''figure it out'', a large migration,
+  or when no narrower playbook applies.'
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: planner
 ---
+
 
 # Figure it out
 
@@ -53,3 +64,17 @@ Log the run via the **show-me-your-work** skill, one canonical TSV with a row pe
 Check the whole against the Phase A predicate on the real product, not just the harness. Encode any recurring correction as a gate, a lint rule, a check, or a script, so the win can't silently regress (the **encode-lessons-in-structure** principle skill).
 
 **Reply:** the playbook you designed, the rigor level and why, the decision-trail path, what's verified against the predicate, and what's still open.
+
+## WHEN TO USE
+
+A large or cross-cutting effort no bundled playbook fits; work a human reviews after stepping away.
+
+## WHEN NOT TO USE
+
+A narrower playbook fits — `poteto-mode` routes to it.
+One task driven to a predicate — the autonomous-run playbook.
+
+## VERIFICATION GATE
+
+The bespoke playbook exists with gates before work starts.
+The audit trail is kept and final verification matches the plan.

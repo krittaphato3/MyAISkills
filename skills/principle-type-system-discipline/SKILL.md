@@ -1,8 +1,18 @@
 ---
 name: principle-type-system-discipline
-description: "Apply when designing types, reviewing a function signature, or writing code in any statically-typed language. Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries, refuse to lie to the compiler, exhaust variants, derive from authoritative schemas."
+description: Apply when designing types, reviewing a function signature, or writing code in any statically-typed
+  language. Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries,
+  refuse to lie to the compiler, exhaust variants, derive from authoritative schemas.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Type System Discipline
 
@@ -29,3 +39,15 @@ Applies to any typed language. Skills like `typescript-best-practices` ground it
 - "If a new variant is added next month, will the compiler tell the next agent where to add a case?" If no, the match isn't exhaustive.
 - "Is this type duplicating a shape another file owns?" Derive instead.
 - "Am I strengthening this type to keep an operation total, or just to be more precise?" If nothing would otherwise panic, keep the plain type.
+
+## WHEN TO USE
+
+Designing types or a signature in any typed language.
+
+## WHEN NOT TO USE
+
+Untyped languages — encode invariants as runtime checks instead.
+
+## VERIFICATION GATE
+
+Illegal states unrepresentable; external data parsed at the boundary.

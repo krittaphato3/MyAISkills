@@ -1,8 +1,17 @@
 ---
 name: principle-outcome-oriented-execution
-description: "Apply during planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture; don't preserve smooth intermediate states with throwaway compatibility code."
+description: Use for planned rewrites and migrations with explicit phase boundaries. Converge on
+  the target architecture; don't preserve smooth intermediate states with throwaway compatibility code.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Outcome-Oriented Execution
 
@@ -20,3 +29,15 @@ Optimize for the intended, verifiable end state rather than preserving smooth in
 - Declare where temporary breakage is acceptable
 - Keep high-signal checks for actively touched areas while migrating
 - Require full static and runtime verification at plan completion
+
+## WHEN TO USE
+
+Planned rewrites and migrations with phase boundaries.
+
+## WHEN NOT TO USE
+
+Exploratory spikes whose output is discarded.
+
+## VERIFICATION GATE
+
+Converges on the target architecture; no throwaway compatibility states.

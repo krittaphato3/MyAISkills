@@ -1,8 +1,17 @@
 ---
 name: swarm
-description: "Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration."
+description: Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this',
+  or parallel coverage, races, gauntlets, and exploration.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: ozone-agent
 ---
+
 
 # Swarm
 
@@ -44,3 +53,17 @@ Keep a compact result table, one-line evidenced issues, and explicit gaps or dro
 ## Phase D: Report
 
 Return one consolidated in-chat report with the table, issue one-liners, gaps or dropouts, and the race rule when used.
+
+## WHEN TO USE
+
+Parallel coverage, races, gauntlets, or exploration partitions with one report.
+
+## WHEN NOT TO USE
+
+Units share mutable state — separate or serialize first.
+The work is one unit; parallelism adds cost without coverage.
+
+## VERIFICATION GATE
+
+Every worker maps to a ledger row; no unreported or lost units.
+One aggregated report with per-unit evidence.

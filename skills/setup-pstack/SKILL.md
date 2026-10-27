@@ -1,7 +1,17 @@
 ---
 name: setup-pstack
-description: Configure which models pstack uses per role. Detects your available models and writes the model override file the skills read. Use for "configure pstack models", /skill:setup-pstack, or changing pstack's model choices.
+description: Configure which models pstack uses per role. Detects your available models and writes the
+  model override file the skills read. Use for "configure pstack models", /skill:setup-pstack, or changing
+  pstack's model choices.
+metadata:
+  version: 1.0.0
+  domain: meta
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Setup pstack
 
@@ -63,3 +73,16 @@ Tell the user the config was written, that it lives at `~/.pi/agent/pstack-model
 ### 7. Offer a verification skill (optional)
 
 Check whether the project has a way to drive the real app for proof (a `verify-*` skill, or an existing harness). If not, offer once: "want a project-local verification skill, so agents can drive the app the way a user does and prove changes work? I can generate one with create-verification-skill." On yes, run the create-verification-skill workflow. On no, move on without pushing.
+
+## WHEN TO USE
+
+Configuring per-role models for the pstack workflow.
+
+## WHEN NOT TO USE
+
+Editing skill content; a one-off model choice for a single task.
+
+## VERIFICATION GATE
+
+The config lands where the skills read it; roles resolve to available models.
+Defaults documented so the file can be regenerated.

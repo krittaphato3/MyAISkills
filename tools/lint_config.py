@@ -25,7 +25,7 @@ AGENTS = ROOT / "agents"
 INDEX = SKILLS / "INDEX.md"
 
 DOMAINS = ["doctrine", "architecture", "delivery", "production", "security",
-           "languages", "roblox", "meta"]
+           "languages", "roblox", "meta", "fundamentals"]
 REQUIRED_META = ["version", "domain", "grade", "status", "last-reviewed", "owned-by-agent"]
 DESC_LIMIT = 1024
 DESC_MIN = 120
@@ -80,11 +80,18 @@ def frontmatter(path: Path) -> tuple[dict, str]:
     return meta, parts[2]
 
 
-TRIGGER_RE = re.compile(r"\bUse (?:whenever|when|for|as|on|before|after|at|in)\b")
+TRIGGER_RE = re.compile(
+    r"\b(?:Use|Apply)(?:\s+(?:only|strictly|primarily))?\s+(?:whenever|when|for|as|on|before|after|at|in)\b",
+    re.IGNORECASE,
+)
 
 
 def short_trigger(desc: str, limit: int = 150) -> str:
-    m = re.search(r"\bUse (?:when|for|as|on|before|after|it|the)\b", desc)
+    m = re.search(
+        r"\b(?:Use|Apply)(?:\s+(?:only|strictly|primarily))?\s+(?:when|for|as|on|before|after|it|the)\b",
+        desc,
+        re.IGNORECASE,
+    )
     if m:
         text = desc[m.start():]
     else:

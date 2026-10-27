@@ -1,8 +1,17 @@
 ---
 name: principle-make-operations-idempotent
-description: "Apply when designing commands, lifecycle steps, or processing loops that run amid crashes, restarts, and retries. Converge to the same end state regardless of partial prior runs."
+description: Apply when designing commands, lifecycle steps, or processing loops that run amid crashes,
+  restarts, and retries. Converge to the same end state regardless of partial prior runs.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Make Operations Idempotent
 
@@ -22,3 +31,15 @@ Design operations so they converge to the correct state regardless of how many t
 3. Does re-execution converge to the same end state?
 
 If any answer is "it depends on what state was left behind," the operation needs a reconciliation step.
+
+## WHEN TO USE
+
+Commands, lifecycle steps, or loops that run amid crashes and retries.
+
+## WHEN NOT TO USE
+
+Read-only operations.
+
+## VERIFICATION GATE
+
+A rerun converges to the same end state; the partial-failure path was exercised.

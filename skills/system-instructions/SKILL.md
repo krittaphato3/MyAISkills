@@ -168,7 +168,7 @@ a dispatch.
 BRIEF {subtask-id}
 Skill: {one}        Agent: {one}
 Mission: {single outcome}
-Context: {file paths + line ranges, not pasted bodies}
+Context: {file paths + line ranges (`tools/repo_map.py --focus` finds them), not pasted bodies}
 Out of scope: {explicit exclusions}
 Acceptance: {one measurable assertion}
 Evidence: {artifact path to produce}

@@ -1,8 +1,18 @@
 ---
 name: create-verification-skill
-description: "Generate a project-local verification skill that drives your app the way a user does — any language, framework, or platform. Use for /create-verification-skill, \"make a control skill for this repo\", or when a project has no scripted way to prove UI/CLI/service behavior."
+description: Generate a project-local verification skill that drives your app the way a user does — any
+  language, framework, or platform. Use for /create-verification-skill, "make a control skill for this
+  repo", or when a project has no scripted way to prove UI/CLI/service behavior.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: test-engineer
 ---
+
 
 # Create a verification skill
 
@@ -42,3 +52,17 @@ Run its own instructions end to end once: launch, doctor, drive ONE mapped featu
 ## 5. Offer the maintenance loop
 
 Point the user at `/maintain-verification-skill` for keeping the map honest as the app changes. Suggest a cadence only if they ask.
+
+## WHEN TO USE
+
+Authoring a project-local skill that drives the app the way a user does (web, CLI, API).
+
+## WHEN NOT TO USE
+
+A one-off manual check.
+Test scope and type selection — `testing-strategy`.
+
+## VERIFICATION GATE
+
+The generated skill runs green against the real surface.
+The feature map is seeded and the maintenance loop handed over.

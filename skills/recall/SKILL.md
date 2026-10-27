@@ -1,8 +1,19 @@
 ---
 name: recall
-description: "Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting or resuming work."
+description: Reconstruct your recent working context from your own chat history, live state, and the shared
+  record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall
+  my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting
+  or resuming work.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Recall
 
@@ -33,3 +44,17 @@ Lead with the capsule, then the thread status, then the problems, then the next 
 An adjacent feature or ticket stays out unless it blocks this one. When the capsule and thread lines outgrow a screen, cut detail before you cut threads. Write the brief through the **unslop** skill, cite chat findings by UUID and shared-record findings by their source (PR #, ticket ID, chat permalink, error-tracker issue), and sanitize private context before any public output.
 
 **Reply:** the brief, to the contract above.
+
+## WHEN TO USE
+
+Resuming after a break, compaction, or handoff; "where were we" requests.
+
+## WHEN NOT TO USE
+
+Durable project conventions are the question — `session-continuity`.
+Design history is the question — `why`.
+
+## VERIFICATION GATE
+
+Restated goal, decisions, current gate, and next action match the record.
+No history invented; unknowns marked as unknown.

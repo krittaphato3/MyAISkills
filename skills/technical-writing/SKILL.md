@@ -1,8 +1,18 @@
 ---
 name: technical-writing
-description: "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages."
+description: 'Layered technical-writing standard: Diátaxis structure, Google developer style sentences,
+  STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing
+  docs, RFCs, readmes, PR descriptions, or commit messages.'
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: documentation-engineer
 ---
+
 
 # Technical writing
 
@@ -128,3 +138,16 @@ Apply to any prose this skill covers. Item 1 applies only to document sets:
 6. Does each thing have exactly one name across the docs?
 7. Would a developer say these words out loud? Replace invented metaphors and fancy synonyms with the plain word or the real symbol name.
 8. Are all symbols, paths, and counts real at this commit, with the commands that regenerate the counts?
+
+## WHEN TO USE
+
+Docs, RFCs, READMEs, PR descriptions, or commit messages.
+
+## WHEN NOT TO USE
+
+Code comments and microcopy.
+API reference generated from code.
+
+## VERIFICATION GATE
+
+Structure matches the Diátaxis mode; sentences pass the checklist; no line reads two ways.

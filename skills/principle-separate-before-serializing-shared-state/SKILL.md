@@ -1,8 +1,17 @@
 ---
 name: principle-separate-before-serializing-shared-state
-description: "Apply when concurrent actors might write to the same file, branch, key, or state object. Eliminate the sharing first; serialize structurally only when one shared writer is a real invariant."
+description: Apply when concurrent actors might write to the same file, branch, key, or state object.
+  Eliminate the sharing first; serialize structurally only when one shared writer is a real invariant.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Separate Before Serializing Shared State
 
@@ -14,3 +23,15 @@ When concurrent actors might share mutable state, first ask whether they truly n
 1. **Identify shared mutable state** (files both read and write, branches both push to, APIs both define and consume).
 2. **Default: eliminate the shared write target.** Ask: do these actors need one canonical object, or are they publishing independent facts? Give each actor its own owned file, key, branch, or state directory, and merge only at the read/reporting boundary. Two workers writing their own `lastX` field into one `state.json` is still shared mutation; `indexer-state.json` + `metrics-state.json` is not.
 3. **Only when one shared write target is a real invariant, serialize access structurally** (lockfiles, sequential phases, single-writer actor, or atomic compare-and-swap). Treat "we need a lock" as a design smell to check, not as the default answer.
+
+## WHEN TO USE
+
+Concurrent actors might write the same file, branch, key, or object.
+
+## WHEN NOT TO USE
+
+A single actor owns the state.
+
+## VERIFICATION GATE
+
+The sharing was eliminated, or an explicit serialization point exists and is named.

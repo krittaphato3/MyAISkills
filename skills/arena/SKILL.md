@@ -1,8 +1,18 @@
 ---
 name: arena
-description: "Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial artifact would lock in the wrong shape."
+description: Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the
+  losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial
+  artifact would lock in the wrong shape.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: debate-chair
 ---
+
 
 # Arena
 
@@ -69,3 +79,17 @@ If verification surfaces a problem the arena did not catch, either Phase A was w
 ## Outputs
 
 One synthesized artifact. One short synthesis note alongside, naming the base, the grafts (with source candidate), the rejections, the dropouts if any, and the verification result.
+
+## WHEN TO USE
+
+Bakeoffs: competing implementations or designs where the best parts should be merged.
+
+## WHEN NOT TO USE
+
+Coverage fan-out with no competition — `swarm`.
+One approach is clearly correct — implement it.
+
+## VERIFICATION GATE
+
+One rubric applied to every candidate; the base was chosen by evidence.
+Grafted parts were verified in the merged result.

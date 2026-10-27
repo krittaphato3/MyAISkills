@@ -1,8 +1,18 @@
 ---
 name: architect
-description: "Sketch types, signatures, and module structure before code, then stay in the loop while implementation fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to code would lock in the wrong shape."
+description: Sketch types, signatures, and module structure before code, then stay in the loop while implementation
+  fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to
+  code would lock in the wrong shape.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: architecture
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: solution-architect
 ---
+
 
 # Architect
 
@@ -81,3 +91,18 @@ When you scrap:
 ## Outputs
 
 The caller's usage is written first and the type sketch derived from it. One file with new types and signatures for small changes; module map plus type definitions for larger work. The rationale ships alongside, shaped per `references/rationale-template.md`, including the usage sketch and the synthesis decision.
+
+## WHEN TO USE
+
+Sketching types, signatures, and module structure before implementation.
+Caller-first API or interface design.
+
+## WHEN NOT TO USE
+
+A one-file change with an obvious shape.
+Full system design routes to `system-design-architect`; the written rationale to `adr-engineering`.
+
+## VERIFICATION GATE
+
+The sketch is published before code and the implementation matches it.
+Workarounds appearing mid-build trigger a redesign, not a patch.

@@ -1,8 +1,18 @@
 ---
 name: teach
-description: "Explain a body of work plainly so a person actually understands it. Runs the `how` and `why` skills and weaves what they find into one clear explanation. Use for 'teach me this', 'help me really understand X', 'explain this change or subsystem to me'."
+description: Explain a body of work plainly so a person actually understands it. Runs the `how` and `why`
+  skills and weaves what they find into one clear explanation. Use for 'teach me this', 'help me really
+  understand X', 'explain this change or subsystem to me'.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: documentation-engineer
 ---
+
 
 # Teach
 
@@ -19,3 +29,16 @@ Teach sits on top of `how` and `why`. Get your bearings on what the work is and 
 Write every response through the **unslop** skill, in plain spoken English, the way you'd explain it to a colleague. Be tight, not terse: cut filler and hedging, keep the part that makes it click. Padding is the enemy, not ideas. Don't list functions and constants like a changelog. State the concrete mechanism, not a metaphor, a framing, or a preview of what is coming. This is the target density: "Virtualization runs in two parts, one for rendering and one for loading from disk. When an item scrolls out past the buffer, both its DOM node and its in-memory data are evicted." Normal sentence case, not all-lowercase. No em dashes. Prefer periods over commas. Keep each sentence to one or two commas. If clauses pile up, split them into separate sentences. Give each concept one name and keep it, since switching between synonyms for the same thing (bubble, message, row) makes the reader re-derive that they are the same. Avoid mirror sentences ("A without B, or B without A") and tidy closers ("the rest follows", "it all falls out"). The words in these steps are directions to you, not labels to print. Don't echo the scaffolding as headers or stock phrases.
 
 **Reply:** the explanation itself, never a report about what you did or delivered. Lead with the main point, then the plain account of what it is, how it works, and why, and the threads worth chasing with `how` or `why`.
+
+## WHEN TO USE
+
+"Teach me this", "help me understand X", or onboarding onto a subsystem or change.
+
+## WHEN NOT TO USE
+
+A quick factual answer.
+Changing code.
+
+## VERIFICATION GATE
+
+The explanation matches what `how` and `why` found; depth matches the person; no files changed.

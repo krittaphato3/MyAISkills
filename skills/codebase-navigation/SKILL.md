@@ -39,6 +39,8 @@ somewhere" into a located symbol, its callers, its tests, and its conventions �
 
 ```text
 1. ORIENT (≤5 minutes, no edits)
+   Cheapest opening move: `python tools/repo_map.py . --limit 40` — structure + symbols in
+   roughly 1-2k tokens, then `--focus <symbol>` to jump to file:line hits (PATTERNS §0).
    Read: README, package/build manifest, directory tree at depth 2, CI config, AGENTS.md/docs.
    Record: language(s), framework + version, package manager, test command, lint command,
    entry points, and where business logic lives vs where glue lives.
@@ -67,6 +69,21 @@ somewhere" into a located symbol, its callers, its tests, and its conventions �
 ```
 
 ## PATTERNS
+
+### 0. Map-first protocol (token-cheap orientation)
+```text
+1. MAP       python tools/repo_map.py . --limit 40        # files, symbols, line numbers
+2. FOCUS     python tools/repo_map.py . --focus <symbol>  # file:line hits for the symbol
+3. RANGE     read the 20-60 lines around each hit — never whole files for one symbol
+4. NOTES     write the 10-line navigation map before editing or dispatching
+```
+Why: whole-file reads are the dominant token cost of navigation, and half of them are for
+symbols the map already locates. The map costs ~1-2k tokens and replaces several 5k+ reads.
+Escalation for very large or frequently revisited repos (opt-in, vet before installing):
+Serena (LSP-based symbol retrieval over MCP), Graphify (local project knowledge graph),
+Aider's repo map, repomix/gitingest for one-off snapshots. Install one only when repeated
+navigation justifies it; measure the token spend before and after rather than trusting a
+vendor claim (`token-economy`).
 
 ### 1. Navigation map (the artifact)
 ```text
@@ -124,6 +141,7 @@ raise it once as a proposal — do not unilaterally refactor while implementing 
 ## QUANTITATIVE RULES
 
 - Orientation ≤5 minutes / ≤5 tool calls before the first hypothesis.
+- Orientation cost target: map + ranged reads; no whole-file read just to locate a symbol.
 - Stop reading when the next read cannot change the planned edit.
 - Blast radius: list every direct caller before touching a shared symbol; >10 callers means plan a
   migration, not an edit.
@@ -144,3 +162,5 @@ raise it once as a proposal — do not unilaterally refactor while implementing 
 - `systematic-debugging` — when the navigation question is really a failure question
 - `source-driven-development` — verifying framework behavior against current docs
 - `refactoring-intelligence` — structural changes once the map is known
+- `tools/repo_map.py` — the map generator this skill's protocol runs
+- `token-economy` — the cost model behind map-first reading

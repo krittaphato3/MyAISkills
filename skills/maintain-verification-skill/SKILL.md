@@ -1,8 +1,18 @@
 ---
 name: maintain-verification-skill
-description: "Periodic pass that keeps a project's verification skill and feature map honest: parallel source readers per feature, one live session driving every feature, at most one PR of proven corrections. Use for /maintain-verification-skill or \"audit the verify skill\"."
+description: 'Periodic pass that keeps a project''s verification skill and feature map honest: parallel
+  source readers per feature, one live session driving every feature, at most one PR of proven corrections.
+  Use for /maintain-verification-skill or "audit the verify skill".'
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: test-engineer
 ---
+
 
 # Maintain a verification skill
 
@@ -37,3 +47,15 @@ Only edit the verification skill's own directory (its SKILL.md, features/, and a
 6. **Ship or stop.** For changed: one PR of proven corrections, re-read every changed file first. For clean or blocked: no PR, report the outcome and the coverage honestly.
 
 Keep concise run notes (features covered, unreachable prerequisites, confirmed drift, outcome) in a scratch location; don't commit them.
+
+## WHEN TO USE
+
+A periodic pass to keep a project's verification skill and feature map honest.
+
+## WHEN NOT TO USE
+
+First-time creation — `create-verification-skill`.
+
+## VERIFICATION GATE
+
+Each feature re-verified against live behavior; drift fixed or listed.

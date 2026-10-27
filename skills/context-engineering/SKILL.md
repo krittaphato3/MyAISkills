@@ -147,6 +147,7 @@ Do not redo: {dead ends, rejected approaches + why}
 ## REFERENCES
 
 - `session-continuity` — handoff format for long/resumed sessions
+- `token-economy` — the cost model (caches, tiering, fan-out) behind these budgets
 - `debate-protocol` — who sees what during adversarial review
 - `AGENTS.md` §9 — cost and fan-out discipline
 - `system-instructions` — delegation and waiting protocol

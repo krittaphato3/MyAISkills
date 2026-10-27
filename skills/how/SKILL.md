@@ -1,7 +1,18 @@
 ---
 name: how
-description: "Use for \"how does X work\", code walkthroughs before changing something, and placement / ownership / layering questions (\"where should this live\", \"which package owns this\", \"is this the right layer\"). Explains subsystem architecture, runtime flow, onboarding mental models. Can critique architecture. Use why for motivation."
+description: Use for "how does X work", code walkthroughs before changing something, and placement / ownership
+  / layering questions ("where should this live", "which package owns this", "is this the right layer").
+  Explains subsystem architecture, runtime flow, onboarding mental models. Can critique architecture.
+  Use why for motivation.
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: codebase-cartographer
 ---
+
 
 # How
 
@@ -132,3 +143,20 @@ Categorize findings:
 - **Dismissed.** Wrong, missing context, or style preference
 
 Present the explanation first (from Step 1), then the critique verdict below it. The explanation should stand on its own; someone who just wants to understand the system shouldn't wade through critique.
+
+## WHEN TO USE
+
+Explaining how a subsystem works, or where code should live, before changing anything.
+Code walkthroughs and placement, ownership, or layering questions.
+
+## WHEN NOT TO USE
+
+The historical reason behind a design is the question — that is `why`.
+A failure needs reproducing — `systematic-debugging` comes first.
+A full written map for other agents is the deliverable — `codebase-cartographer`.
+
+## VERIFICATION GATE
+
+Every claim cites file:line from code actually read.
+The placement answer names the convention it follows.
+No files were edited.

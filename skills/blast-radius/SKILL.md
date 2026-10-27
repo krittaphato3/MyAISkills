@@ -1,8 +1,18 @@
 ---
 name: blast-radius
-description: "Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X', 'what could this break', or reviewing a small diff you don't trust."
+description: Find what a change could break somewhere else before it ships, beyond the diff, and prove
+  the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius
+  of X', 'what could this break', or reviewing a small diff you don't trust.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: architecture
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: refactoring-specialist
 ---
+
 
 # Blast radius
 
@@ -48,3 +58,17 @@ Any safety fact you can't get to step 4, say so out loud. Don't write it up as s
 Write it through `unslop`, cite real code, and strip anything private before it goes anywhere public.
 
 **Reply:** the writeup above, with the one safety fact either proven or marked unproven.
+
+## WHEN TO USE
+
+Before changing shared code or refactoring; "what could this break elsewhere".
+
+## WHEN NOT TO USE
+
+Local private code with no callers.
+A live incident — `incident-response-engineer` first.
+
+## VERIFICATION GATE
+
+Consumers enumerated by search, not memory.
+The safety fact is proven by running code, and the suites that must pass are listed.

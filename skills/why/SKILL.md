@@ -1,7 +1,19 @@
 ---
 name: why
-description: "Use for 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems, or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control, issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for runtime behavior."
+description: Use for 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems,
+  or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control,
+  issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product
+  analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for
+  runtime behavior.
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: codebase-cartographer
 ---
+
 
 # Why
 
@@ -227,3 +239,18 @@ After the Sources Consulted block, if the user's `why` question is a precursor t
 - `references/source-playbook.md`. Index pointing at the category playbooks below.
 - `references/sources/*.md`. One self-contained example playbook per category, plus cross-cutting `incident-postmortem.md`. Give an investigator the single file that matches its category and adapt it to the available MCP.
 - `references/synthesizer-prompt.md`. Prompt template for the synthesizer subagent, including the output format.
+
+## WHEN TO USE
+
+Design rationale, regressions, postmortems, or data-backed thresholds.
+
+## WHEN NOT TO USE
+
+"How does it work today" is the question — `how`.
+Forward design is the question — `architect` or `deep-planner`.
+
+## VERIFICATION GATE
+
+Each finding carries evidence, and confidence language is preserved.
+Skipped research categories are recorded, not silently dropped.
+Read-only: no files changed.

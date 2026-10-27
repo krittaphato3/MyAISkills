@@ -1,8 +1,18 @@
 ---
 name: tdd
-description: "Use only when the user explicitly asks for TDD, a failing test, or a regression test, OR when the bug has an obvious cheap local test target. Skip when the test path is unclear, expensive, integration-heavy, or not requested."
+description: Use only when the user explicitly asks for TDD, a failing test, or a regression test, OR
+  when the bug has an obvious cheap local test target. Skip when the test path is unclear, expensive,
+  integration-heavy, or not requested.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: test-engineer
 ---
+
 
 # TDD Bug Fix
 
@@ -42,3 +52,18 @@ Report the evidence, not just the outcome:
 - Name the failing-before test or executable check and the failure it produced.
 - Name the passing-after test run and any nearby validation performed.
 - If failing-before evidence could not be demonstrated, state why and describe the closest regression check used instead.
+
+## WHEN TO USE
+
+The user asks for TDD, a failing test, or a regression test.
+A bug with a cheap local test target.
+
+## WHEN NOT TO USE
+
+No test harness exists yet — build one first (`test-engineer`).
+Exploration spikes and doc-only changes.
+
+## VERIFICATION GATE
+
+The test failed first, for the expected reason.
+Green after the minimal change; the suite was rerun.

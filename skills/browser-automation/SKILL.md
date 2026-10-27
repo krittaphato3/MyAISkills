@@ -169,7 +169,9 @@ flow should be split or replaced by an API-level test.
    Yes → do that instead of driving a browser.
 2. Is a Playwright MCP configured?
    Yes → use it via the browser-automation subagent.
-   No  → use the harness preview/browser tools directly; state which path was used.
+   No  → fall back in this order: (a) the local CLIs, on any model with bash —
+         `node tools/web_search.mjs "<query>"` and `node tools/webfetch.mjs <url>`;
+         (b) the harness preview/browser tools. State which path was used.
 3. Is the flow multi-step (auth, pagination, checkout)?
    Yes → delegate; one brief, one outcome, concise return.
 4. Is the goal visual (layout, motion, regression)?
@@ -188,6 +190,7 @@ flow should be split or replaced by an API-level test.
 | Headed popup blocked by headless | Re-run with `--headless` removed in the MCP server args (per-run, not committed) |
 | Search engine defaulted to DuckDuckGo | Enforce Google Search URL `https://www.google.com/search?q=<query>` |
 | Unexpected desktop window opening | Enforce `--headless --isolated` in Playwright MCP to remain completely browserless |
+| No Playwright MCP configured | CLI fallback: `node tools/web_search.mjs` / `node tools/webfetch.mjs` (`web-search`) |
 | Secrets in URL | Pass via `{env:VAR}` not hardcoded |
 | Isolated context loses auth | Persist via `storage-state` or re-login per task |
 
@@ -207,3 +210,4 @@ flow should be split or replaced by an API-level test.
 - Playwright MCP: `npx -y @playwright/mcp@latest --help` (caps: vision, pdf, devtools)
 - `general-orchestrator` — multi-step flows that include browser steps
 - `test-engineer` — when the flow belongs in an automated E2E suite instead
+- `tools/web_search.mjs`, `tools/webfetch.mjs` — the no-native-tools CLI fallback (`web-search`)

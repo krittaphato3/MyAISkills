@@ -3,6 +3,9 @@ v2/
 tmp/
 workspace/
 cli/
+agent/
+plugin-workspace/
+skills-lock.json
 docs/skills/.sdd/
 lint_out.json
 __pycache__/
@@ -17,3 +20,11 @@ node_modules/
 .freebuff/
 .video_agent/
 backup*/
+
+# OS & Editor artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

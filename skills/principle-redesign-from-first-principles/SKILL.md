@@ -1,8 +1,17 @@
 ---
 name: principle-redesign-from-first-principles
-description: "Apply when integrating a new requirement into an existing design. Redesign as if the requirement had been a foundational assumption from day one, instead of bolting it on."
+description: Apply when integrating a new requirement into an existing design. Redesign as if the requirement
+  had been a foundational assumption from day one, instead of bolting it on.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Redesign From First Principles
 
@@ -14,3 +23,15 @@ When integrating a change, don't bolt it onto the existing design. Redesign as i
 - Think about the redesign holistically, then deliver it incrementally
 
 This is the method for preserving option value when integrating changes into an existing design.
+
+## WHEN TO USE
+
+Integrating a new requirement into an existing design.
+
+## WHEN NOT TO USE
+
+Greenfield work, or a pure bug fix.
+
+## VERIFICATION GATE
+
+The design reads as if the requirement were foundational; bolts and adapters removed or justified.

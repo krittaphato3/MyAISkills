@@ -1,8 +1,17 @@
 ---
 name: principle-never-block-on-the-human
-description: "Apply when tempted to ask 'should I do X?' on reversible work. Proceed, present the result, let the human course-correct after the fact; reserve confirmation for irreversible actions."
+description: Apply when tempted to ask 'should I do X?' on reversible work. Proceed, present the result,
+  let the human course-correct after the fact; reserve confirmation for irreversible actions.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Never Block on the Human
 
@@ -21,3 +30,16 @@ The human supervises asynchronously. Agents must stay unblocked: make reasonable
 - **Irreversible actions** (force-push, delete production data, send external messages) still require confirmation.
 - **Reversible actions** (write code, edit notes, split tasks) should proceed without blocking.
 - **Product direction** comes from the human; *execution* should not block.
+
+## WHEN TO USE
+
+Reversible work where asking "should I do X?" would stall progress.
+
+## WHEN NOT TO USE
+
+Irreversible or outward-facing actions — ask per AGENTS.md §3.
+Genuine product preference calls no experiment can settle.
+
+## VERIFICATION GATE
+
+Proceeded and presented a result; the question was replaced by an experiment where possible.

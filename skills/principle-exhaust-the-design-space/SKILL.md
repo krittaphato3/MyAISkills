@@ -1,8 +1,17 @@
 ---
 name: principle-exhaust-the-design-space
-description: "Apply when facing a novel UI interaction or architectural decision with no precedent in the codebase. Build 2-3 competing prototypes and compare side by side before committing."
+description: Apply when facing a novel UI interaction or architectural decision with no precedent in the
+  codebase. Build 2-3 competing prototypes and compare side by side before committing.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Exhaust the Design Space
 
@@ -19,3 +28,15 @@ When a novel interaction or architectural decision has no established precedent,
 - Mechanical implementation where the pattern is established
 - Bug fixes or refactors with a clear target state
 - Changes where constraints dictate a single viable approach
+
+## WHEN TO USE
+
+A novel interaction or architectural decision with no precedent.
+
+## WHEN NOT TO USE
+
+A well-trodden pattern exists — copy it.
+
+## VERIFICATION GATE
+
+Two or three structurally distinct options compared; the winner stated with reasons.

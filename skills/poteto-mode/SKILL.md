@@ -1,12 +1,22 @@
 ---
 name: poteto-mode
-description: poteto's agent style for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work. Use for poteto, /poteto-mode, or requests to work in this style.
+description: poteto's agent style for concise, detailed responses, deliberate subagents, unslopped prose,
+  simple code, and verified work. Use for poteto, /poteto-mode, or requests to work in this style.
 disable-model-invocation: true
 mode: true
 icon: crown
 color: yellow
-reminder: New task? Playbook match or rigor needed -> apply /poteto-mode. Casual turn or user opts out -> don't.
+reminder: New task? Playbook match or rigor needed -> apply /poteto-mode. Casual turn or user opts out
+  -> don't.
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: poteto-agent
 ---
+
 
 # Poteto mode
 
@@ -137,3 +147,16 @@ A large or cross-cutting effort (a migration across many call sites, an ambitiou
 - **Multi-phase or multi-PR plan.** Work that spans phases or stacked PRs. `playbooks/multi-phase-plan.md`.
 - **Worktree and simulator cleanup.** Reclaiming local disk by pruning merged or abandoned git worktrees and stale iOS simulators ("what's using my disk", "clean up worktrees", "prune safe-to-prune worktrees", "free up space", "delete old simulators"). `playbooks/worktree-cleanup.md`.
 - **Opening a PR.** Invoked at the end of every other playbook. `playbooks/opening-a-pr.md`.
+
+## WHEN TO USE
+
+"/poteto-mode", or a request to work in this style on nontrivial work.
+
+## WHEN NOT TO USE
+
+Casual turns, or when the user opts out.
+
+## VERIFICATION GATE
+
+Matched playbook steps copied into todos; principles cited trace to real decisions.
+Reply written per the style rules.

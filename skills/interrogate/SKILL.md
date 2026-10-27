@@ -1,8 +1,18 @@
 ---
 name: interrogate
-description: "Use for \"interrogate\", \"adversarial review\", \"multi-model review\", \"challenge this\", \"stress test this code\", \"find blind spots\", or \"tear this apart\". Multiple LLM reviewers challenge changes from independent angles."
+description: Use for "interrogate", "adversarial review", "multi-model review", "challenge this", "stress
+  test this code", "find blind spots", or "tear this apart". Multiple LLM reviewers challenge changes
+  from independent angles.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: debate-chair
 ---
+
 
 # Interrogate
 
@@ -111,3 +121,16 @@ Present the verdict in this structure:
 
 ### Agreement Map
 [Where did models agree, where did they diverge, and what does the pattern of agreement/disagreement tell us?]
+
+## WHEN TO USE
+
+Before shipping a design or change whose blind spots matter.
+
+## WHEN NOT TO USE
+
+Trivial diffs — review overhead exceeds risk.
+A verdict is needed between two decided candidates — `debate-protocol`.
+
+## VERIFICATION GATE
+
+Findings carry evidence; lead judgment is recorded; nothing auto-applied.

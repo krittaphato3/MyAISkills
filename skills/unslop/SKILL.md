@@ -1,7 +1,17 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Must always apply.
+description: 'Cuts AI tells from any writing surface: replies, docs, PR bodies, and commit messages. Use
+  whenever prose is produced or reviewed, especially when wording reads generic or over-explained. Code
+  comments route to no-comments; technical document structure routes to technical-writing.'
+metadata:
+  version: 1.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: comment-sicko
 ---
+
 
 # Unslop
 
@@ -78,3 +88,16 @@ Removing patterns is half the job. Sterile, voiceless writing is just as obvious
 29. **Active voice.** Prefer it. Catch "is/are/was/were + past participle" and name the actor: "queries are validated" becomes "the compiler validates queries", "the file is parsed by the loader" becomes "the loader parses the file". Passive is fine only when the actor is unknown or genuinely doesn't matter.
 30. **Cut adverbs, or use a stronger verb.** "runs quickly" becomes "is fast" or the number. "significantly improves" becomes the measured delta. An adverb propping up a weak verb means the verb is wrong.
 31. **Prefer the plain word.** "utilize" becomes "use", "leverage" becomes "use", "facilitate" becomes "help", "numerous" becomes "many", "in the event that" becomes "if". The fancier synonym is rarely clearer.
+
+## WHEN TO USE
+
+Any prose surface — replies, docs, PR bodies, commit messages — when wording reads generic or over-explained.
+
+## WHEN NOT TO USE
+
+Code internals — `no-comments`.
+Quoted specs and error strings, which must round-trip exactly.
+
+## VERIFICATION GATE
+
+Meaning preserved; detection-list patterns addressed; tone matches the source.

@@ -1,8 +1,17 @@
 ---
 name: principle-fix-root-causes
-description: "Apply when debugging. Trace each symptom to its root cause and fix it there; reproduce first, ask why until you reach it, resist nil-check guards that silence crashes."
+description: Apply when debugging. Trace each symptom to its root cause and fix it there; reproduce first,
+  ask why until you reach it, resist nil-check guards that silence crashes.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Fix Root Causes
 
@@ -21,3 +30,15 @@ When debugging, do not paper over symptoms. Trace every problem to its root caus
 **Restart bugs: suspect state before code**
 
 Code doesn't change between runs. State does. When something "fails after restart," suspect stale persistent state first: config files, caches, lock files, serialized state. If clearing a state file restores behavior, prioritize state validation as the fix.
+
+## WHEN TO USE
+
+Debugging, or when a symptom keeps returning.
+
+## WHEN NOT TO USE
+
+A live incident where mitigation first is correct — `incident-response-engineer`.
+
+## VERIFICATION GATE
+
+The first point of divergence was identified with a reproduction; no defensive band-aid added.

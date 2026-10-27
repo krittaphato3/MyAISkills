@@ -1,8 +1,17 @@
 ---
 name: principle-migrate-callers-then-delete-legacy-apis
-description: "Apply when introducing a new internal API while old callers still exist. Migrate callers and delete the old API in the same wave instead of preserving compatibility layers."
+description: Apply when introducing a new internal API while old callers still exist. Migrate callers
+  and delete the old API in the same wave instead of preserving compatibility layers.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Migrate Callers Then Delete Legacy APIs
 
@@ -20,3 +29,15 @@ When we decide a new API is the right design, migrate callers and remove the old
 - The new API is part of a simplification or refactor initiative
 
 Keeping both old and new APIs creates dual-path complexity, slows cleanup, and makes the codebase feel append-only.
+
+## WHEN TO USE
+
+Introducing a new internal API while old callers exist.
+
+## WHEN NOT TO USE
+
+Public API versioning, which needs a deprecation window instead.
+
+## VERIFICATION GATE
+
+All callers migrated and the legacy path deleted in one wave.

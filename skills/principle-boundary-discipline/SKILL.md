@@ -1,8 +1,18 @@
 ---
 name: principle-boundary-discipline
-description: "Apply when wiring validation, error handling, or framework adapters. Concentrate guards at system boundaries (CLI, config, network, external APIs); trust internal types and keep business logic in pure functions."
+description: Apply when wiring validation, error handling, or framework adapters. Concentrate guards at
+  system boundaries (CLI, config, network, external APIs); trust internal types and keep business logic
+  in pure functions.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Boundary Discipline
 
@@ -32,3 +42,15 @@ Code organization:
 **The tests:**
 - "Is this data crossing a system boundary right now?" If not, validation is redundant.
 - "Can this be a pure function that the shell just calls?" If yes, extract it.
+
+## WHEN TO USE
+
+Wiring validation, error handling, or framework adapters.
+
+## WHEN NOT TO USE
+
+Internal pure logic — trust internal types.
+
+## VERIFICATION GATE
+
+Guards at boundaries only; internal code parses once and trusts the type.

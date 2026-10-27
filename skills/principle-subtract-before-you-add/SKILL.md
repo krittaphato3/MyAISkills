@@ -1,8 +1,17 @@
 ---
 name: principle-subtract-before-you-add
-description: "Apply when sequencing an addition, refactor, or rewrite. Remove dead weight, redundant validators, and stub references first, then build on the simpler base."
+description: Apply when sequencing an addition, refactor, or rewrite. Remove dead weight, redundant validators,
+  and stub references first, then build on the simpler base.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Subtract Before You Add
 
@@ -20,3 +29,15 @@ Make simplification a continual investment. Leave the design slightly simpler an
 - Out-of-spec features drag validators behind them. Persistence, retry-on-startup, and schema migration each need guards to defend their inputs.
 - Simplify prompts (remove redundant instructions, excessive templates)
 - When a reference has no novel content, delete it rather than leaving a stub
+
+## WHEN TO USE
+
+Sequencing an addition, refactor, or rewrite.
+
+## WHEN NOT TO USE
+
+Adding an isolated new module with no dead weight to clear.
+
+## VERIFICATION GATE
+
+Dead weight removed before the addition; the final diff smaller or the growth justified.

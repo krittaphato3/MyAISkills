@@ -1,8 +1,17 @@
 ---
 name: principle-model-the-domain
-description: "Apply when writing stateful logic, or when code branches a lot or repeats a shape assumption across files. Encode the domain in a structure instead of scattered conditionals."
+description: Apply when writing stateful logic, or when code branches a lot or repeats a shape assumption
+  across files. Encode the domain in a structure instead of scattered conditionals.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Model the Domain
 
@@ -24,3 +33,15 @@ Encode the real domain in a data structure instead of scattering it across condi
 Do not force an abstraction. Prefer boring code if the current shape is already clear, local, and unlikely to grow. Be skeptical of an abstraction that adds indirection without removing branches, duplicated rules, invalid states, or lifecycle risk.
 
 The tell that you skipped this is a new feature that grows an existing if/else chain by one more branch, or a second boolean that must stay in sync with the first. Temporal decomposition is another tell. Phase-named modules repeat the same domain rules across steps.
+
+## WHEN TO USE
+
+Stateful logic, branchy code, or a shape repeated across files.
+
+## WHEN NOT TO USE
+
+Trivial pure functions.
+
+## VERIFICATION GATE
+
+State machine, typed model, or table named and scattered conditionals replaced.

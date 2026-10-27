@@ -1,8 +1,17 @@
 ---
 name: principle-laziness-protocol
-description: "Apply when refactoring, evaluating diff size, or tempted to add abstractions, layers, or signal threading. Bias toward deletion and the smallest change that solves the problem."
+description: Apply when refactoring, evaluating diff size, or tempted to add abstractions, layers, or
+  signal threading. Bias toward deletion and the smallest change that solves the problem.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Laziness Protocol
 
@@ -16,3 +25,15 @@ Writing code is cheap for you, which makes over-engineering easy. Counter it by 
 - **Sweat the small leaks.** Remove tiny pass-throughs, representation leaks, and duplicated choices before they spread. Small leaks compound into permanent coordination costs.
 
 **Prime directive:** If a human developer would find the code exhausting to maintain, it is a bad solution. Be lazy. Stay simple.
+
+## WHEN TO USE
+
+Refactoring, sizing a diff, or tempted to add abstractions, layers, or signal threading.
+
+## WHEN NOT TO USE
+
+Deletion would remove a real boundary guard — validation stays.
+
+## VERIFICATION GATE
+
+Deletion considered first; no new abstraction without a second caller.

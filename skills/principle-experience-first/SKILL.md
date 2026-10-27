@@ -1,8 +1,17 @@
 ---
 name: principle-experience-first
-description: "Apply when product, UX, or feature-scope tradeoffs come up. Choose user delight over implementation convenience; ship fewer polished features over more rough ones."
+description: Apply when product, UX, or feature-scope tradeoffs come up. Choose user delight over implementation
+  convenience; ship fewer polished features over more rough ones.
 disable-model-invocation: true
+metadata:
+  version: 1.0.0
+  domain: doctrine
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-27'
+  owned-by-agent: meta-architect
 ---
+
 
 # Experience First
 
@@ -17,3 +26,15 @@ The product is the experience. Every technical decision either helps or hurts it
 The user is whoever consumes the work. For a UI that is the end user. For a library or an internal API it is the colleague who imports it. The engineer who maintains the code next is a user too. Weigh their experience the same way, and explain impact from their seat.
 
 Foundations should serve the experience, not the other way around. Foundational thinking governs the *sequence* of work; this principle governs the *target*.
+
+## WHEN TO USE
+
+Product, UX, or feature-scope tradeoffs.
+
+## WHEN NOT TO USE
+
+The choice has no user-visible effect.
+
+## VERIFICATION GATE
+
+Choices justified by user impact; convenience shortcuts named where taken.
