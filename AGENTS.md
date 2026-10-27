@@ -17,6 +17,7 @@ Before taking any action (editing files, reading large codebases, writing implem
 1. **Invoke the `Skill` tool**: Identify the relevant domain, doctrine, and safety skills matching the task's verb, artifact, and work type (see §7 and §7.1), and call the `Skill` tool immediately. Bypassing skill invocation or executing without loading mandatory skills is a critical protocol violation.
 2. **Dispatch subagents via the `Agent` tool**: The primary thread is an **orchestrator and coordinator**, not a direct implementer. All non-trivial implementation, investigation, testing, and review **MUST** be delegated to specialized subagents dispatched via the `Agent` tool (see §5.1 and §6). Taking over implementation in the primary thread with direct `Read`/`Edit` calls instead of delegating to subagents is strictly prohibited unless the user explicitly requested in-thread execution or the task is purely trivial (e.g. a 1-word doc typo or single-sentence answer).
 3. **Parallel Multi-Subagent Dispatch**: When independent subtasks exist (e.g., development logic + test authoring, multiple subsystem modules, independent solution proposals for debate, or multi-domain components), the primary thread **MUST divide the work and dispatch multiple subagents concurrently in a single message with multiple `Agent` tool calls** so they execute in parallel, rather than serializing them one at a time. Serializing independent subagents one by one is strictly prohibited.
+4. **Native WebFetch Priority**: When operating in ZCode, whenever a task requires reading a web page, inspecting documentation, or extracting online information, **always use the harness's native `WebFetch` tool**. It converts pages to markdown and runs an internal fast model to extract only the needed facts directly into context with built-in caching, saving thousands of tokens compared to CLI dumping. `tools/webfetch.mjs` is preserved as a portable fallback for environments without native tools or for local shell scripts.
 
 ---
 
@@ -54,6 +55,7 @@ catalog later; do not silently invoke both.
    make. Read `git status` before any git operation.
 7. **Fail loudly.** Report checks that failed or could not run as limitations — never as
    passes.
+8. **Prioritize native `WebFetch` over scripts on ZCode.** Whenever reading a URL or fetching documentation on ZCode, invoke the native `WebFetch` tool. Its built-in model extraction and 15-minute response cache prevent token bloat and context clutter.
 
 ---
 

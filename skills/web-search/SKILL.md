@@ -29,9 +29,9 @@ capabilities, or for rare edge cases where local shell piping / raw byte inspect
 ## WHEN TO USE
 
 - Use when gathering external technical knowledge, reading library API docs, inspecting changelogs, or troubleshooting errors that the local repository cannot answer.
-- **Always use the native `WebFetch` tool whenever available in the current harness.** It is the primary, default, and most efficient method to read web pages and extract facts.
+- **On ZCode, always reach for the native `WebFetch` tool first.** It is the primary, default, and most efficient method to read web pages and extract facts without context bloat.
 - Use `tools/web_search.mjs` to discover candidate URLs across Web, GitHub, NPM, StackOverflow, and Wikipedia.
-- Use `tools/webfetch.mjs` ONLY when the harness lacks a native fetch tool, or in rare edge cases where piping raw stdout to a local script is necessary.
+- Use `tools/webfetch.mjs` when on a foreign harness that lacks a native fetch tool, or on ZCode when piping raw output to a local script or inspecting raw JSON endpoints.
 
 ## WHEN NOT TO USE
 
@@ -121,6 +121,6 @@ node tools/webfetch.mjs <url> --raw              # no HTML extraction / raw mark
 ## VERIFICATION GATE
 
 - [ ] Results were fetched during this session (not hallucinated or recalled from memory).
-- [ ] If native `WebFetch` was available in the harness, it was used instead of CLI fetchers.
+- [ ] On ZCode, native `WebFetch` was used as the primary tool to extract page information unless raw CLI processing was explicitly required.
 - [ ] Quotes trace directly to fetched content with valid URLs.
 - [ ] Failures (403, 404, JS-only) are reported as limitations with the path attempted.
