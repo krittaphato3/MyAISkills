@@ -1,12 +1,17 @@
 ---
 name: source-driven-development
-description: Use when framework-specific code must be written — ground every decision in official documentation, verify exact signatures, cite full URLs, and never rely on stale training data.
-version: 1.0.0
-grade: G3
-domain: delivery
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: code-implementer
+description: >-
+  Grounds implementation in current primary sources: verify exact API signatures,
+  versions, and behavior against official docs, changelogs, and source, then cite full
+  URLs. Use when writing framework- or library-specific code from memory, or when an API
+  may have changed. Broad unknown-domain research routes to deep-researcher.
+metadata:
+  version: 3.0.0
+  domain: delivery
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: code-implementer
 ---
 
 # Source-Driven Development
@@ -102,10 +107,10 @@ A change with a signature that deviates silently, a homepage-only citation, a de
 - W3C / WHATWG standards — the normative specification source when MDN and official docs disagree.
 - caniuse / browser-compat-data — the compatibility-data tier used when a standard is implemented inconsistently across runtimes.
 - systems-core-architect — the sibling delivery-domain skill that governs systems-language implementation quality; source-driven-development supplies the verified API ground truth it builds on.
-- superpowers systematic-debugging — the debugging discipline that re-verifies assumptions against the actual API when observed behavior contradicts the code.
+- systematic-debugging — the debugging discipline that re-verifies assumptions against the actual API when observed behavior contradicts the code.
 - The framework's own upgrade guides — every major-version documentation set publishes a migration path; the note to re-verify on major bump in this skill's PATTERNS maps to those guides.
 - semver.org — the semantic-versioning rules that define when a release breaks an API; the decision about when a citation must be re-fetched keys off the semver bump.
 - API deprecation policy docs — each major framework publishes a deprecation-and-removal policy; the FAILURE MODES "deprecated API" check uses that policy as its basis for what counts as deprecated.
 - MDN browser-compat-data — the machine-readable dataset behind the compatibility-data tier; it is the concrete source a citation resolves to when a standard varies across runtimes.
 
-Ownership: maintained by code-implementer; source-driven-development is the delivery-domain skill that keeps framework-specific code grounded in fetched, cited, official sources. Versioning and lint are enforced by tools/skill_lint.py and recorded in the catalog changelog.
+Ownership: maintained by code-implementer; source-driven-development is the delivery-domain skill that keeps framework-specific code grounded in fetched, cited, official sources.

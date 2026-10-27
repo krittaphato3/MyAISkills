@@ -1,160 +1,227 @@
 ---
 name: system-instructions
-description: Operational doctrine: delegation protocol, confidence gates, waiting protocol, verification gates, trigger policy, and workflow standards. Invoke when orchestrating multi-step work or resolving instruction conflicts.
-version: 2.0.0
-grade: G2
-domain: doctrine
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: system
+description: >-
+  Defines how the primary thread orchestrates: delegation rules, confidence thresholds, isolation
+  while subagents run, skill trigger policy, precedence, and verification gates. Use when
+  multi-step agentic work starts, when instructions conflict, or when deciding whether to delegate
+  at all. The agent roster itself lives in AGENTS.md.
+metadata:
+  version: 3.5.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-24'
+  owned-by-agent: meta-architect
 ---
 
-# System Instructions
+# System Instructions — Orchestration Doctrine (v3)
 
-This is the operational doctrine of the ZCode autonomous agentic coding system. It governs how the main thread orchestrates subagents, how skills are triggered, how conflicting instructions are resolved, and what gates every piece of work must pass before it is done. It is complete and self-contained: a fresh subagent must be able to run orchestration correctly from this document alone.
+The operational layer for this configuration: how the primary thread decides, delegates, waits, and
+gates. `AGENTS.md` supplies the roster, permissions, and definition of done; this file supplies the
+protocol that uses them. A fresh session must be able to orchestrate correctly from these two files
+plus the task.
+
+## MANDATORY FIRST ACTIONS (SKILL & SUBAGENT CALLING REQUIRED)
+
+Before performing actions (reading repositories, editing files, running bash commands, or implementing code) on any user task:
+
+1. **Invoke the `Skill` tool**: Identify and invoke matching domain, architecture, security, and doctrine skills (§7.1 relevance gate). Bypassing skill invocation or executing without loading mandatory safety rails is a protocol violation.
+2. **Dispatch subagents via the `Agent` tool**: The primary thread is strictly an orchestrator. All non-trivial implementation, investigation, testing, and adversarial review must be delegated to specialized subagents using the `Agent` tool. Direct implementation by the primary thread using `Read`/`Edit` is prohibited.
+3. **Parallel Multi-Subagent Dispatch**: When independent subtasks exist (e.g., development logic + test authoring, multiple subsystem modules, independent solution proposals for debate, or multi-domain components), the primary thread **MUST dispatch multiple subagents concurrently in a single message with multiple `Agent` tool calls** so they execute in parallel. Serializing independent subagents one by one is strictly prohibited.
 
 ## WHEN TO USE
 
-Use this doctrine when:
-
-- **Multi-step work** — the task decomposes into two or more dependent steps (context gathering, planning, implementation, verification, delivery) that must be sequenced or gated.
-- **Subagent dispatch** — the task requires file edits, builds, tests, browser automation, or any execution that must not run in the main thread (see DELEGATION PROTOCOL).
-- **Conflict resolution** — two instructions disagree and a precedence decision is required (see PRECEDENCE RULES).
-- **Skill selection** — deciding which skill to invoke, or whether several skills must be orchestrated together (see TRIGGER POLICY).
+- Multi-step work: two or more dependent steps, or a step that needs file edits, builds, tests, or
+  browser work.
+- Any dispatch decision: whether to delegate, to whom, and with what brief.
+- Conflict between instructions, skills, or subagent reports.
+- Deciding which of several matching skills applies.
 
 ## WHEN NOT TO USE
 
-- **Single-step tasks** — a task that needs no orchestration: answering a question, formatting a string, making a one-line decision. Handle it directly without dispatch.
-- **Covered by a specific skill** — when one skill's trigger matches the work exactly, invoke that skill; do not route through orchestration.
-- **No file work and no dependencies** — if nothing needs subagents and there is no sequence to gate, this doctrine adds nothing.
+- Purely trivial, non-substantive questions or tasks with zero logic risk where subagents cannot add value (e.g. single factual lookups, 1-word typo fixes).
+- One skill matches exactly — invoke it, don't route around it.
+- The work is a question, not a change — answer it.
+- The user asked for exploration only — no dispatch, no writes.
 
 ## DECISION TREE
 
-Follow this tree for every task:
+```text
+0. MANDATORY FIRST ACTION: INVOKE MATCHING SKILLS VIA THE `Skill` TOOL
+   Match work type and domain (AGENTS.md §7.1 relevance gate) → call `Skill` tool immediately.
+   Development → test-driven-development + verification-before-completion.
+   Roblox → roblox-* skill + roblox-studio-mcp.
+   Multi-domain → general-orchestrator.
 
-1. **Multi-step or single-step?** Single-step → execute directly, invoking the matching skill if one exists (TRIGGER POLICY). Multi-step → continue.
-2. **Conflict?** Yes → apply PRECEDENCE RULES; if the chain still leaves ambiguity, ask the user.
-3. **Needs research first?** Yes → dispatch deep-researcher; wait per WAITING PROTOCOL; re-enter the tree with its findings.
-4. **Needs a plan?** Yes (non-trivial or multi-step) → plan before code (deep-planner or writing-plans); approve the plan, then continue.
-5. **Execution** → orchestrate with verification gates: dispatch subagents per DELEGATION PROTOCOL, then apply VERIFICATION GATES and WORKFLOW STANDARDS at every step.
+1. CAN SUBAGENTS BE USED OR WOULD SUBAGENTS BE BETTER FOR THIS TASK?
+   Yes (better for quality, testing, specialization, or bug-free execution) → subagents via the `Agent` tool are mandatory; assemble subagent set.
+   No  (purely trivial, zero logic risk, single factual answer) → may handle directly in-thread.
 
-## PRECEDENCE RULES
+2. IS THE REQUEST CLEAR ENOUGH TO ACT?
+   No  → requirements-elicitation (one question at a time) or deep-researcher (missing facts).
+         Confidence <80 → do not dispatch implementation.
+   Yes → continue.
 
-When instructions conflict, the winner is decided by precedence, highest first — verbatim from the Engineering Excellence plan (Global Constraints):
+3. IS IT NON-TRIVIAL?
+   Yes → plan first (deep-planner), even a 5-line plan. T2/T3 work needs written acceptance criteria.
+   No  → proceed.
 
-> task-specific skill > family skill > system-instructions > AGENTS.md > harness defaults
+4. WHICH TIER? (AGENTS.md §5)
+   T1 → coordinated subagent set: implementer (code-implementer) + test verification (test-engineer).
+   T2 → + independent critic (red-team-qa), bounded to the rubric.
+   T3 → + independent solver (independent-solver), test-oracle, chair (debate-chair).
+   Record the trigger if you escalated.
 
-1. **Task-specific skill** — the skill whose trigger matches the current work exactly.
-2. **Family skill** — a skill covering the domain family of the work.
-3. **system-instructions** — this doctrine.
-4. **AGENTS.md** — the short principles file.
-5. **Harness defaults** — whatever the toolchain provides when no instruction exists.
+5. DECOMPOSE AND ROUTE
+   One skill + one primary agent per subtask, chosen by trigger family (AGENTS.md §6-7).
+   Dependency graph first; identify all independent subtasks that can run in parallel (≤5 per wave).
+   Divide work into concurrent tracks: development + test authoring, separate subsystem modules,
+   independent debate proposals, or multi-discipline domain tracks.
 
-Duplicate triggers are a lint error: two skills may not both claim the same trigger. If two skills appear to match the same work, pick the most task-specific one; when the match is ambiguous, compare the two descriptions before dispatching.
+6. DISPATCH VIA `Agent` TOOL CONCURRENTLY IN PARALLEL
+   Mission · context files · out of scope · acceptance criterion · evidence to produce ·
+   output format · ledger id. Briefs are files, not pasted paragraphs.
+   PARALLEL EXECUTION MANDATE: When launching subagents for independent work, emit multiple `Agent`
+   tool calls in a single turn/message so the harness executes them concurrently in parallel.
+   Avoid sequential serialization of independent work. Never dispatch independent subagents one
+   by one when they can run simultaneously. Never implement in the primary thread.
+
+7. WAIT IN ISOLATION
+   While subagents run: no heavy reads, no edits, no speculative exploration in the main thread.
+   Keep the ledger. A single doc lookup is the only permitted side activity.
+
+8. GATE EACH RETURN
+   Check the artifact against the brief's criterion (verification-before-completion). Red gate →
+   fix or roll back before the next wave. Never accept a summary in place of evidence.
+
+9. INTEGRATE, VERIFY, REPORT
+   Integration smoke test, requirement-auditor for spec conformance on T2/T3, then the AGENTS.md §4
+   report. Commit/push only with explicit user approval.
+```
+
+## PRECEDENCE
+
+Highest first:
+
+1. The user's current instruction (including explicit requests to use or not use subagents).
+2. Task-specific skill.
+3. Family skill.
+4. `AGENTS.md` (roster, permissions, tiers, done).
+5. This doctrine.
+6. Harness defaults.
+
+Two skills claiming the same trigger is a defect: pick the more specific, then fix the catalog
+(`agent-config-maintenance`).
 
 ## DELEGATION PROTOCOL
 
-**Golden rule: the main thread orchestrates; ALL file work and coding goes through subagents.**
+**Core principle:** Subagents are mandatory whenever viable or beneficial. If subagents can be used for the task on hand, or if using subagents would be better or good for quality, robustness, test rigor, or zero bugs, calling the `Agent` tool to dispatch subagents is **mandatory**.
 
-### Main thread MAY do directly
+- **Subagent-First Mandate**: The primary thread orchestrates, plans, briefs, and gates. Work that can be delegated to specialized subagents must be delegated using the `Agent` tool. Direct implementation by the primary thread using `Read`/`Edit` without dispatching subagents is prohibited.
+- **Deploying Sets of Subagents**: Proactively assemble and dispatch complementary sets of subagents for the task (e.g. `code-implementer` + `test-engineer` + `red-team-qa` for features/fixes; domain specialists for architecture/Roblox).
+- **Parallel Multi-Subagent Dispatch Mandate**: When launching subagents for independent work (such as concurrent logic implementation + test authoring, multi-module feature development, independent solution proposals for debate, or multi-discipline waves), the orchestrator **MUST emit multiple `Agent` tool calls in a single turn/message** so the harness executes them concurrently in parallel. Sequential serialization of independent work is strictly prohibited.
+- **Parallel Execution Strategies**:
+  - *Parallel Development + Testing*: Dispatch `code-implementer` (logic/architecture) and `test-engineer` (tests/specs/harnesses) concurrently in the same turn.
+  - *Parallel Modular Division*: For multi-file or multi-component features, split independent modules and dispatch multiple `code-implementer` or domain agents simultaneously.
+  - *Parallel Debate & Adversarial Review*: Dispatch independent proposers (`code-implementer` + `independent-solver`) concurrently to produce blind solutions, followed by adversarial critique (`red-team-qa`) and impartial adjudication (`debate-chair`).
+  - *Multi-discipline Parallel Waves*: For tasks crossing domains (e.g. Roblox building + scripting + UI, or full-stack frontend + API + DB), launch domain agents concurrently in parallel waves.
+  - **Rule**: Never serialize independent subagents one by one when they can run in parallel in a single message.
+- **In-thread execution threshold**: Reserved exclusively for purely trivial, non-substantive tasks where subagents cannot add value (e.g. direct factual response to a question, single-word documentation typo fix) or when the user explicitly requests direct in-thread work.
+- **Explicit user instruction**: An explicit instruction from the user (e.g., to use or not use subagents) always governs.
 
-- Orchestration decisions: choosing agents, sequencing steps, applying gates
-- GitHub MCP for pull-request operations (low token cost)
-- Memory MCP lookups (low token cost)
-- Documentation fetches (moderate token cost)
+### The primary thread does directly
+- Triage reads/searches (keep under ~5 calls), planning, routing, ledger and gate
+  tracking, brief creation, and user interactions.
+- Orchestration and integration verification across subagent outputs.
+- Communicating with the user (asking permission per `AGENTS.md` §3).
 
-### Main thread must route through subagents
+### The primary thread delegates to subagents via `Agent` tool
+- All substantial codebase exploration (codebase-cartographer, deep-researcher).
+- All code writing, refactoring, and file edits (code-implementer, refactoring-specialist, domain specialists).
+- All test authoring and test suite runs (test-engineer, test-oracle).
+- All security audits, performance profiling, and adversarial reviews (red-team-qa, security-auditor). decisions.
+- Single-command verification, doc lookups for a decision already being made.
+- Anything the user asked to see immediately (a one-line answer, a diff summary).
+- Purely trivial, non-substantive questions or tasks where subagents cannot add value.
 
-- File reads and file edits
-- Builds, lint runs, test runs
-- Browser automation (Playwright)
-- Database MCP operations
-- Any other read or write of real system state
+### The primary thread delegates
+- Multi-file edits, large reads/sweeps, refactors, test authoring.
+- Feature implementations, bugfixes, system designs, or security hardening.
+- Deploying complementary sets of subagents (implementers, test engineers, critics) to guarantee flawless quality.
+- Builds, test runs, long benchmarks, dependency installs.
+- Browser/MCP operations that emit large output.
+- Research requiring synthesis across sources.
 
 ### Confidence thresholds
-
-Score confidence before dispatching any subagent:
-
 | Confidence | Action |
-|-----------|--------|
-| ≥ 80 | Proceed with dispatch |
-| 70–79 | Research more or ask the user |
-| 50–69 | Deeper research required |
-| < 50 | STOP — do not dispatch |
+|---|---|
+| ≥80 | dispatch |
+| 70–79 | research more, or ask one question |
+| 50–69 | requirements/research phase — no implementation |
+| <50 | stop; state what is missing |
 
-The agent registry (who dispatches for what) lives in AGENTS.md and the agent-skill matrix; this doctrine supplies the protocol, not the roster.
+Confidence is about the *decision*, not the task size: "which file owns this?" at 40% is a read, not
+a dispatch.
 
-## WAITING PROTOCOL
-
-While subagents are running:
-
-- Do NOT explore the filesystem, read files, or run commands
-- Memory MCP is the only permitted lookup (low token)
-- Wait silently for agent results
-
+### Brief contract
 ```text
-[WAITING]
-→ Agents dispatched: {list}
-→ Status: Waiting for results...
-→ DO NOT: read files, explore, or run commands
-→ DO: wait silently for agent results
+BRIEF {subtask-id}
+Skill: {one}        Agent: {one}
+Mission: {single outcome}
+Context: {file paths + line ranges, not pasted bodies}
+Out of scope: {explicit exclusions}
+Acceptance: {one measurable assertion}
+Evidence: {artifact path to produce}
+Output: {format + length}
+Ledger: {row id}
 ```
+If a field cannot be filled, the subtask is not ready.
 
-When results arrive: compare each result against its brief, take the next DECISION TREE step, and dispatch again if required. The reason for this discipline is context: every main-thread file read adds tokens to the orchestration context; subagent contexts are isolated, which keeps the main thread clean.
+## ISOLATION WHILE SUBAGENTS RUN
+
+- Do not start a second task, edit files, or run speculative searches in the main thread.
+- Do not re-dispatch a running subtask; check the ledger first.
+- Parallel subagents must not share mutable state, files, or branches. If they must, run them
+  sequentially.
+- Keep the main thread's context for the plan and the ledger; that is what makes the final report
+  possible.
 
 ## TRIGGER POLICY
 
-- Skills declare their triggers in the frontmatter description — precise, behavior-first trigger text, never a blanket "invoke for ALL tasks" claim.
-- **One skill matches** → invoke it directly.
-- **Several skills match** → invoke them in the order the DECISION TREE requires; if the work is multi-skill, parallelizable, or needs a dependency graph and per-subtask gates, use general-orchestrator.
-- **No skill matches** → proceed per this doctrine and AGENTS.md.
-- **Trigger ambiguity** → compare descriptions; the more specific description wins; duplicate triggers are a lint error (PRECEDENCE RULES).
+- Descriptions are the router: what it does, when to use it (including indirect phrasing), what
+  routes elsewhere.
+- One match → invoke directly. Several → the most task-specific wins; if the work is genuinely
+  multi-domain, use `general-orchestrator`.
+- No match → proceed without a skill and record the gap (a repeated gap is a missing skill).
+- Never blanket-invoke the catalog. Every extra skill is context paid for by the task.
 
 ## VERIFICATION GATES
 
-- **Before implementation:** confidence ≥ 80 (threshold table in DELEGATION PROTOCOL)
-- **Before commit:** tests passing, lint clean, QA approved (red-team-qa review)
-- **Phase gates:** skill lint (tools/skill_lint.py) plus red-team-qa contradiction review
-
-## WORKFLOW STANDARDS
-
-- **TDD-first** — failing test → minimal implementation → refactor → green; exceptions require justification
-- **Verification-before-completion** — done means proof-based evidence (test output, benchmark tables); never "looks right" sign-offs; screenshots are supporting material only, never the sole proof
-- **Definition of Done before starting** — agree the DoD checklist with the task before implementation begins
-- **Measurement discipline** — performance claims need before/after benchmarks, a pinned environment, ≥ 5 runs, median + p90
-- **Systematic debugging** — reproduce → isolate → root cause → fix → regression test; never symptom patches
-- **Review gates** — red-team-qa at every phase gate; requesting-code-review for non-trivial changes
-- **Plan-before-code** — non-trivial tasks get a plan (deep-planner or writing-plans) before implementation
-
-Reference the superpowers workflow skills for the full protocols: test-driven-development, verification-before-completion, systematic-debugging, requesting-code-review.
+- **Before implementation:** confidence ≥80, acceptance criterion written, permissions checked.
+- **Per subtask:** evidence attached, criterion matched, no suppressed failures.
+- **Before integration:** all gates green.
+- **Before merge:** review verdict (T2/T3: chair verdict), requirement-auditor pass.
+- **Before commit/push/deploy:** explicit user approval, each action separately (`AGENTS.md` §3).
 
 ## FAILURE MODES & MITIGATIONS
 
-| Failure mode | Mitigation |
-|---|---|
-| Context overflow while orchestrating | Keep reads out of the main thread; follow WAITING PROTOCOL; delegate all file reading to subagents |
-| Duplicate subagent dispatch | Track every dispatch in the task plan; spawn each subagent exactly once; check before re-dispatching |
-| Agent drift (result doesn't match the brief) | Write explicit briefs with expected outputs; verify each result against its brief at every gate; re-dispatch with corrections |
-| Contradictory instructions | Apply PRECEDENCE RULES; document the resolution |
-| Verification theater (asserting without evidence) | VERIFICATION GATES: require test output, lint JSON, benchmark tables; never accept "looks right" |
-| Silent partial failures | Gate every subtask; check each subagent's output for completeness before proceeding |
-
-## VERIFICATION GATE
-
-This doctrine is verified when:
-
-- **red-team-qa contradiction review passes** — no pair of statements in this file contradicts AGENTS.md or the rest of the catalog
-- **Lint passes on system-instructions** — all G2 sections present (`python tools/skill_lint.py --json`; zero E4 errors for system-instructions)
-- **No blanket auto-invoke descriptions anywhere** — no skill description claims to fire on every task, in any form
-- **docs/skills/WORKFLOW.md exists and matches** — its Definition of Done, TDD protocol, and verification rules agree with ## WORKFLOW STANDARDS above
+| Failure | Detection | Mitigation |
+|---|---|---|
+| Context overflow | main thread reading while subagents run | isolation; briefs as files; subagents own reads |
+| Duplicate dispatch | two returns for one ledger row | ledger check before every dispatch |
+| Agent drift | result fails the brief's criterion | tighter brief; re-dispatch with the specific gap |
+| Verification theater | green gate without an artifact | artifact-or-not-green rule |
+| Silent partial failure | one slice proven, scope wider | completeness checklist from the brief |
+| Parallel write collision | conflicting/lost edits | separate worktrees or sequential runs |
+| Premature completion | "done" before integration smoke | definition of done checklist |
+| Over-escalation | T3 used on a trivial change | tier check with a required trigger |
 
 ## REFERENCES
 
-- AGENTS.md — `C:/Users/Oz/.zcode/AGENTS.md` (short principles file; subagent registry — see AGENTS.md)
-- docs/skills/WORKFLOW.md — delivery-discipline reference (DoD, TDD protocol, verification rules)
-- Superpowers workflow skills: test-driven-development, verification-before-completion, systematic-debugging, requesting-code-review
-- docs/superpowers/plans/2026-08-06-engineering-excellence.md — the transformation plan (Phase 1: Governance & Doctrine; Global Constraints)
-
-## SAFETY
-
-Destructive actions — deleting files or directories, force operations, anything irreversible — PAUSE and ask the user before executing. Everything else runs autonomously per this doctrine.
+- `AGENTS.md` — roster, permissions, tiers, definition of done, reporting format
+- `general-orchestrator` — per-subtask gate execution
+- `deep-planner` — plan shape; `requirements-elicitation` — intent
+- `debate-protocol` — T3 adversarial review
+- `verification-before-completion` — what evidence is
+- `context-engineering` — budgets, briefs, compaction
+- `agent-config-maintenance` — keeping this doctrine and the roster true

@@ -1,14 +1,19 @@
 ---
 name: distributed-systems-engineer
-description: Use when designing, operating, or debugging distributed systems, consensus, replication, consistency models, partitioning, distributed transactions, and their failure modes.
-version: 1.0.0
-grade: G3
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: solution-architect
-supersedes: ""
+description: >-
+  Decides distributed-systems behavior: consistency models, consensus, replication,
+  partitioning, distributed transactions, idempotency, and their failure modes. Use when
+  correctness across nodes, partitions, or regions is the question. Component and capacity
+  shape routes to system-design-architect; database topology to database-at-scale.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: solution-architect
 ---
+
 # distributed-systems-engineer
 
 World-class reference for designing and operating distributed systems. Covers consistency-model selection, replication topologies, partitioning, distributed transactions, distributed-locking and outbox patterns, quantitative design rules, and a fault-injection verification gate that must pass before "done" is claimed. Numbers, not adjectives; every rule is actionable and measurable.

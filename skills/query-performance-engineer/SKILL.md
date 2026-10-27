@@ -1,12 +1,17 @@
 ---
 name: query-performance-engineer
-description: Diagnose and optimize slow database queries — index strategies, N+1 fixes, connection pooling, caching. Use when a query is proven slow (EXPLAIN ANALYZE) or access patterns need index/denormalize/cache/shard decisions.
-version: 0.2.0
-grade: G2
-domain: production
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: db-architect
+description: >-
+  Diagnoses and fixes slow database queries: EXPLAIN and ANALYZE reading, index strategy,
+  N+1 elimination, join and pagination rewrites, pooling, and caching. Use when a specific
+  query or endpoint is proven slow. Topology, replicas, shards, and migrations route to
+  database-at-scale; non-database profiling to performance-profiler.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: db-architect
 ---
 
 # QUERY PERFORMANCE ENGINEER

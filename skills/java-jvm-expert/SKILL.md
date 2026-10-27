@@ -1,12 +1,17 @@
 ---
 name: java-jvm-expert
-description: Use when writing or refactoring Java code, JVM applications, or backend services.
-version: 1.0.0
-grade: G2
-domain: languages
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: code-implementer
+description: >-
+  Writes and refactors production Java and JVM services: modern language features,
+  generics, streams, concurrency, Spring or Jakarta patterns, GC and heap behavior, and
+  build tooling. Use for Java or Kotlin code, JVM tuning, or a JVM-specific bug. Other
+  systems languages route to systems-core-architect.
+metadata:
+  version: 3.0.0
+  domain: languages
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: code-implementer
 ---
 
 # Java / JVM Expert (G2)

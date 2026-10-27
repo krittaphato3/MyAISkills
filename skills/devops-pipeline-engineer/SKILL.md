@@ -1,64 +1,27 @@
 ---
 name: devops-pipeline-engineer
-description: Design CI/CD pipelines, automate deployments, and configure Infrastructure as Code — GitHub Actions, caching, matrix builds, deployment strategies, rollback. Use when standing up or optimizing a build/release pipeline.
-version: 0.2.0
-grade: G2
-domain: production
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: devops-engineer
+description: >-
+  Designs CI/CD and deployment infrastructure: GitHub Actions, caching, matrix builds,
+  environment promotion, IaC, canary or blue-green rollout, and rollback. Use when
+  standing up or fixing a build/release pipeline or infrastructure configuration.
+  Containers route to container-optimizer; monitoring and SLOs to observability-sre; a
+  live outage to incident-response-engineer.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: devops-engineer
 ---
 
 # DEVOPS PIPELINE ENGINEER SKILL
 
 Expert knowledge in CI/CD workflows, Infrastructure as Code, deployment strategies, and pipeline optimization.
 
-## GITHUB ACTIONS PATTERNS
-### Basic Workflow
-```yaml
-name: CI/CD
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+## GITHUB ACTIONS, DEPLOY STRATEGIES, IAC, ROLLBACK, BRANCH PROTECTION
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm test
-      - run: npm run lint
-```
-
-### Matrix Builds
-```yaml
-strategy:
-  matrix:
-    node-version: [18, 20, 22]
-    os: [ubuntu-latest, windows-latest]
-  fail-fast: false
-```
-
-### Caching
-```yaml
-- uses: actions/cache@v4
-  with:
-    path: ~/.npm
-    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-```
-
-### Secrets Management
-```yaml
-env:
-  API_KEY: ${{ secrets.API_KEY }}
-```
+See `references/actions-deploy-rollback.md` (workflow YAML, matrix/cache/secrets, blue-green/canary/rolling/flags, Terraform/Pulumi, rollback commands, branch rules) — load only the section needed.
 
 ## PIPELINE OPTIMIZATION
 - Cache dependencies between runs
@@ -66,50 +29,6 @@ env:
 - Use matrix builds for multi-platform testing
 - Artifact passing between jobs
 - Skip CI on doc-only changes
-
-## DEPLOYMENT STRATEGIES
-### Blue-Green
-- Two identical environments
-- Switch traffic atomically
-- Instant rollback by switching back
-
-### Canary
-- Deploy to small percentage first
-- Monitor metrics
-- Gradually increase traffic
-- Auto-rollback on errors
-
-### Rolling
-- Replace instances one at a time
-- Maintain capacity throughout
-- Slow but safe
-
-### Feature Flags
-- Deploy code with flag off
-- Enable flag when ready
-- No deployment needed for feature release
-
-## INFRASTRUCTURE AS CODE
-### Terraform
-```hcl
-resource "aws_instance" "web" {
-  ami           = "ami-0c55b159cbfafe1f0"
-  instance_type = "t2.micro"
-  
-  tags = {
-    Name = "WebServer"
-  }
-}
-```
-
-### Pulumi (TypeScript)
-```typescript
-const server = new aws.ec2.Instance("web", {
-  ami: "ami-0c55b159cbfafe1f0",
-  instanceType: "t2.micro",
-  tags: { Name: "WebServer" }
-});
-```
 
 ## PIPELINE STAGES
 1. **Build**: Compile, bundle, generate artifacts
@@ -119,25 +38,6 @@ const server = new aws.ec2.Instance("web", {
 5. **Verify**: Run smoke tests against staging
 6. **Deploy**: Deploy to production
 7. **Monitor**: Health checks, metrics, alerts
-
-## ROLLBACK PROCEDURES
-```bash
-# Quick rollback (last known good)
-kubectl rollout undo deployment/myapp
-
-# Terraform rollback
-terraform apply -target=module.previous_version
-
-# Database rollback (if needed)
-psql -f rollback_migration.sql
-```
-
-## BRANCH PROTECTION
-- Require PR reviews (2 approvals for main)
-- Require status checks to pass
-- Require up-to-date branches
-- Restrict force pushes
-- Require signed commits
 
 ## OUTPUT FORMAT
 ```text

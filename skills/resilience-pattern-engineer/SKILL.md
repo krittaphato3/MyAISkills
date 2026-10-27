@@ -1,12 +1,17 @@
 ---
 name: resilience-pattern-engineer
-description: Implement resilience patterns — error handling, retries, circuit breakers, rate limiting, timeouts, backoff. Use when hardening a service's failure behavior against transient errors and overload.
-version: 0.2.0
-grade: G2
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: code-implementer
+description: >-
+  Implements runtime resilience: error taxonomy, retries with backoff and jitter,
+  timeouts, circuit breakers, bulkheads, rate limiting, fallbacks, and health checks. Use
+  when a service must degrade gracefully under failure or overload. Queue durability
+  routes to background-jobs-engineer; incident command to incident-response-engineer.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: code-implementer
 ---
 
 # RESILIENCE PATTERN ENGINEER

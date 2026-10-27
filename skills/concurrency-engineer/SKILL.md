@@ -1,13 +1,20 @@
 ---
 name: concurrency-engineer
-description: Use when designing, writing, or debugging concurrency and parallelism — threads, goroutines, async, actors, CSP/channels, locks, lock-free structures, cancellation, and data-race/deadlock safety.
-version: 1.0.0
-grade: G3
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: code-implementer
+description: >-
+  Designs and debugs concurrency and parallelism: threads, goroutines, async/await,
+  actors, channels and CSP, locks, lock-free structures, cancellation, and data-race or
+  deadlock safety. Use when correctness depends on interleaving, shared state, or
+  backpressure. Multi-node consistency routes to distributed-systems-engineer; queued work
+  to background-jobs-engineer.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: code-implementer
 ---
+
 # concurrency-engineer
 
 World-class guidance for writing correct, scalable concurrent and parallel code: choosing the right primitive (threads vs async vs actors vs CSP), guarding shared state with locks or message passing, using lock-free structures only when justified, and proving safety with race/deadlock detectors, stress tests, and model checking. Per-language memory models and atomic orderings (C++ `std::atomic`, Go happens-before, Rust atomics, JMM/JSR-133) are owned by systems-core-architect, cited by name — this skill covers the language-agnostic coordination design, failure modes, and numeric budgets that sit on top of those models.

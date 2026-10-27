@@ -1,172 +1,26 @@
 ---
 name: dependency-supply-chain-guardian
-description: Audit dependencies for vulnerabilities, supply-chain attacks, and license compliance; generate SBOMs; plan safe update strategies. Use when adding/updating dependencies, triaging a detected vulnerability, or checking licenses.
-version: 0.2.0
-grade: G2
-domain: production
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: dependency-guardian
+description: >-
+  Audits and governs dependencies: CVE triage, supply-chain and typosquat risk, license
+  compatibility, SBOM generation, lockfile hygiene, and safe update strategy. Use when
+  adding or upgrading a package, responding to a security alert, or preparing a release
+  review. Fixing a vulnerability in your own code routes to security-hardening-specialist.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: dependency-guardian
 ---
 
 # DEPENDENCY SUPPLY CHAIN GUARDIAN SKILL
 
 Expert knowledge in Software Composition Analysis, supply chain attack prevention, license compliance, and SBOM generation.
 
-## VULNERABILITY SCANNING
+## SCAN / LICENSE / SBOM / UPDATE PLAYBOOKS
 
-### JavaScript/Node.js
-```bash
-npm audit
-npm audit fix --dry-run
-npx snyk test
-npx audit-ci --critical
-```
-
-### Python
-```bash
-pip-audit
-safety check
-bandit -r .
-```
-
-### Go
-```bash
-govulncheck ./...
-go list -m all | nancy sleuth
-```
-
-### Rust
-```bash
-cargo audit
-cargo deny check
-```
-
-### Universal
-```bash
-trivy fs --format json .
-syft . -o spdx-json > sbom.json
-```
-
-## SUPPLY CHAIN ATTACK PATTERNS
-
-### Typosquatting
-- **Attack**: Publish similar-named package
-- **Examples**: `lodahs` vs `lodash`, `expresss` vs `express`
-- **Defense**: Verify publisher, check download counts, review code
-
-### Dependency Confusion
-- **Attack**: Publish private package name to public registry
-- **Defense**: Use scoped packages (`@mycompany/pkg`), namespace packages
-
-### Maintainer Compromise
-- **Attack**: Compromise maintainer account, inject malicious code
-- **Defense**: Pin versions, review changelogs, use 2FA for publishing
-
-### Malicious Code Injection
-- **Attack**: Inject code via postinstall scripts
-- **Defense**: Review package source, disable postinstall scripts
-
-### Brandjacking
-- **Attack**: Impersonate official packages
-- **Defense**: Verify repository URL, check organization ownership
-
-## LICENSE COMPLIANCE
-
-### License Compatibility
-| License | Commercial | Modify | Distribute | Patents |
-|---------|------------|--------|------------|---------|
-| MIT | ✅ | ✅ | ✅ | ✅ |
-| Apache 2.0 | ✅ | ✅ | ✅ | ✅ |
-| BSD 2-Clause | ✅ | ✅ | ✅ | ⚠️ |
-| BSD 3-Clause | ✅ | ✅ | ✅ | ⚠️ |
-| LGPL 2.1 | ✅ | ✅ | ⚠️ | ⚠️ |
-| LGPL 3.0 | ✅ | ✅ | ⚠️ | ✅ |
-| GPL 2.0 | ✅ | ⚠️ | ⚠️ | ⚠️ |
-| GPL 3.0 | ✅ | ⚠️ | ⚠️ | ✅ |
-| AGPL 3.0 | ⚠️ | ⚠️ | ⚠️ | ✅ |
-
-### Checking Tools
-```bash
-# JavaScript
-npx license-checker --summary
-npx license-checker --failOn "GPL-3.0;AGPL-3.0"
-
-# Python
-pip-licenses --format=json
-pip-licenses --fail-on="GPL-3.0"
-
-# Go
-go-licenses check ./...
-```
-
-## SBOM GENERATION
-
-### SPDX Format
-```json
-{
-  "spdxVersion": "SPDX-2.3",
-  "dataLicense": "CC0-1.0",
-  "packages": [
-    {
-      "SPDXID": "SPDXRef-Package",
-      "name": "my-project",
-      "versionInfo": "1.0.0",
-      "licenseConcluded": "MIT"
-    }
-  ]
-}
-```
-
-### CycloneDX Format
-```json
-{
-  "bomFormat": "CycloneDX",
-  "specVersion": "1.4",
-  "components": [
-    {
-      "type": "library",
-      "name": "lodash",
-      "version": "4.17.21",
-      "licenses": [{"license": {"id": "MIT"}}]
-    }
-  ]
-}
-```
-
-### Generation Commands
-```bash
-# Syft (SPDX or CycloneDX)
-syft . -o spdx-json > sbom.json
-syft . -o cyclonedx-json > sbom.json
-
-# npm
-npx sbom-generator
-```
-
-## DEPENDENCY UPDATE STRATEGIES
-
-### Automated Updates
-- **Renovate Bot**: Configurable, supports monorepos
-- **Dependabot**: GitHub native, security-focused
-
-### Update Strategy
-1. Patch updates: Auto-merge (bug fixes)
-2. Minor updates: Review changelog, auto-merge if safe
-3. Major updates: Manual review, test thoroughly
-
-### Renovate Config
-```json
-{
-  "extends": ["config:base"],
-  "schedule": ["every weekend"],
-  "automerge": true,
-  "packageRules": [
-    {"matchUpdateTypes": ["patch"], "automerge": true},
-    {"matchUpdateTypes": ["major"], "automerge": false}
-  ]
-}
-```
+See `references/playbooks.md` (per-ecosystem scan commands, attack patterns, license matrix, SBOM formats, Renovate config) — load only the section needed.
 
 ## OUTPUT FORMAT
 ```text

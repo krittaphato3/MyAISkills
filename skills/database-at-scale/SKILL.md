@@ -1,13 +1,19 @@
 ---
 name: database-at-scale
-description: Use when scaling a database beyond one node, choosing replication or sharding topology, running a zero-downtime migration, or sizing pools and shard limits.
-version: 1.0.0
-grade: G3
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: db-architect
+description: >-
+  Chooses and operates database topology beyond one node: replication, sharding,
+  partitioning, zero-downtime migrations, pool sizing, and rebalance or DR cadence. Use
+  when scale-out, failover, or a risky migration is the question. A single slow query
+  routes to query-performance-engineer first; schema shape routes to db-architect.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: db-architect
 ---
+
 # database-at-scale
 
 World-class reference for taking a database from one node to many without losing correctness or availability. Covers the scale ladder (scale-up vs replicas vs shard vs managed), shard-key selection, replication topology and isolation by workload, zero-downtime migration (expand/contract, dual-write, backfill), connection math, quantitative shard and batch-size limits, and a verification gate that must pass before production cutover. All rules are concrete budgets and formulas, not adjectives.

@@ -1,12 +1,17 @@
 ---
 name: refactoring-intelligence
-description: Detect code smells, apply SOLID principles, and perform safe AST-based refactoring. Use when a change preserves behavior but must reduce complexity, duplication, or technical debt, and tests already pin current behavior.
-version: 0.2.0
-grade: G2
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: refactoring-specialist
+description: >-
+  Detects code smells and performs behavior-preserving restructuring: SOLID and coupling
+  analysis, duplication removal, AST-assisted moves, and measured complexity reduction.
+  Use when tests pin current behavior and the goal is clarity rather than new behavior.
+  New behavior routes to code-implementer; legacy cutover to legacy-modernization.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: refactoring-specialist
 ---
 
 # REFACTORING INTELLIGENCE

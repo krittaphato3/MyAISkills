@@ -1,14 +1,20 @@
 ---
 name: incident-response-engineer
-description: Use when a production service is degraded, unavailable, or failing its SLOs and you must classify severity, contain the blast radius, coordinate a war room, and drive a blameless postmortem with measurable follow-through.
-version: 1.0.0
-grade: G3
-domain: production
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: devops-engineer
-supersedes: ""
+description: >-
+  Runs production incident response: severity classification, blast-radius containment,
+  war-room coordination, communication cadence, mitigation, and a blameless postmortem
+  with owned follow-ups. Use when a live service is degraded or failing its SLOs.
+  Root-causing a reproducible bug routes to systematic-debugging; SLO design to
+  observability-sre.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: devops-engineer
 ---
+
 # incident-response-engineer
 
 World-class reference for running a production incident from first page to closed postmortem. Covers SEV1-3 classification with time-to-mitigate targets, contain-first sequencing (rollback vs forward-fix vs feature-flag off), war-room roles and communication cadence, quantitative MTTR/MTTD and error-budget burn-rate rules, and a verification gate built on game-day drills and postmortem action-item follow-through. Numbers, not adjectives; every rule is measurable and every metric has a target. Self-contained and actionable in the field without external tooling.

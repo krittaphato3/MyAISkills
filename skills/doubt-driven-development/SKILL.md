@@ -1,12 +1,17 @@
 ---
 name: doubt-driven-development
-description: Adversarial fresh-context review of a claimed solution — CLAIM → EXTRACT → DOUBT → RECONCILE → STOP. Use as the review METHOD companion to the red-team-qa gate.
-version: 1.0.0
-grade: G3
-domain: delivery
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: red-team-qa
+description: >-
+  Applies adversarial fresh-context review to a claimed solution: state the claim, extract
+  its hidden assumptions, attack each with evidence, then reconcile or escalate. Use as
+  the method behind a red-team review, or when a 'done' claim feels too easy to believe.
+  Full multi-agent adversarial adjudication routes to debate-protocol.
+metadata:
+  version: 3.0.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: red-team-qa
 ---
 
 # DOUBT-DRIVEN DEVELOPMENT
@@ -113,5 +118,5 @@ The first failure mode decides the pipeline tolerates; the last decides it is on
 
 - Our red-team-qa gate — the defensive production pipeline this method feeds; a lightly different standpoint of the same review discipline.
 - requesting-code-review — the contract for what a reviewer is asked to attack and return.
-- WORKFLOW.md — where the review pass sits in the delivery lifecycle, before merge.
+- verification-before-completion — where the review pass sits in the delivery lifecycle, before merge.
 - The CLAIM → EXTRACT → DOUBT → RECONCILE → STOP stance draws on adversarial-review practice and Microsoft's "attack yourself before launching" review norm.

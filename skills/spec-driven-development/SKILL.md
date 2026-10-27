@@ -1,12 +1,17 @@
 ---
 name: spec-driven-development
-description: Use when a feature or project is large enough to write a PRD (objectives, commands, structure, testing, boundaries) before any code — the PRD is the contract, code only starts after sign-off. Feeds deep-planner when the PRD becomes a plan.
-version: 1.0.0
-grade: G3
-domain: doctrine
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: planner
+description: >-
+  Writes a PRD as a contract before code: objectives, non-goals, commands, structure,
+  testing strategy, boundaries, and acceptance criteria, then builds only against the
+  signed-off spec. Use for features or projects large enough that drift is expensive.
+  Small tasks skip it; turning a spec into tasks routes to deep-planner.
+metadata:
+  version: 3.0.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: planner
 ---
 
 # Spec-Driven Development
@@ -119,4 +124,4 @@ A PRD with a blank acceptance cell, an empty out-of-scope list, or no recorded s
 - Acceptance test-driven development — the practice of writing failing acceptance tests from criteria, which the test-first mapping pattern implements.
 - Vertical slicing practice — the slice-thinness rule's source: one slice is a full thin vertical cut demonstrable end-to-end, not a horizontal layer.
 
-Ownership: maintained by planner; spec-driven-development is a doctrine-domain skill that writes the contract before the build. Versioning and lint are enforced by tools/skill_lint.py and recorded in the catalog changelog.
+Ownership: maintained by planner; spec-driven-development is a doctrine-domain skill that writes the contract before the build.

@@ -1,12 +1,17 @@
 ---
 name: requirements-elicitation
-description: Use when an ask is underspecified to extract the user's underlying intent through one-question-at-a-time interviewing until confidence passes ~95%. Feeds deep-planner (turns intent into an executable plan).
-version: 1.0.0
-grade: G3
-domain: doctrine
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: planner
+description: >-
+  Extracts the user's real intent from an underspecified ask through one focused question
+  at a time, restating requirements until confidence is high enough to build. Use when the
+  request is ambiguous, contradictory, or missing acceptance criteria. Writing the spec
+  afterward routes to spec-driven-development.
+metadata:
+  version: 3.0.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: planner
 ---
 
 # Requirements Elicitation
@@ -118,4 +123,4 @@ A record lacking the explicit yes, or whose restate has a blank cell, does not p
 - MoSCoW / weighted scoring — the priority model that turns values-in-tension into a recorded must-have/should-have, backing the tie-break pattern and QUANTITATIVE RULES.
 - The Mom Test — the interviewing canon that teaches a single question at a time and separates stated wants from defended opinions, the source of the "do not have to justify" probe.
 
-Ownership: maintained by planner; requirements-elicitation is a doctrine-domain skill that captures and confirms intent before it is planned. Versioning and lint are enforced by tools/skill_lint.py and recorded in the catalog changelog.
+Ownership: maintained by planner; requirements-elicitation is a doctrine-domain skill that captures and confirms intent before it is planned.

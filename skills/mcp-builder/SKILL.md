@@ -1,13 +1,18 @@
 ---
 name: mcp-builder
-description: Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).
+description: >-
+  Builds production MCP servers: tool schema design, transport, auth, error contracts,
+  pagination, evaluation, and packaging for Python (FastMCP) or TypeScript (MCP SDK). Use
+  when exposing an external service or dataset to agents as tools. Consuming existing MCP
+  tools routes to mcp-agent; general API design to api-design-architect.
 license: Complete terms in LICENSE.txt
-version: 0.2.0
-grade: G2
-domain: meta
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: mcp-agent
+metadata:
+  version: 3.0.0
+  domain: meta
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: mcp-agent
 ---
 
 # MCP Server Development Guide
@@ -201,45 +206,7 @@ Create an XML file with this structure:
 
 # Reference Files
 
-## 📚 Documentation Library
-
-Load these resources as needed during development:
-
-### Core MCP Documentation (Load First)
-- **MCP Protocol**: Start with sitemap at `https://modelcontextprotocol.io/sitemap.xml`, then fetch specific pages with `.md` suffix
-- [📋 MCP Best Practices](./reference/mcp_best_practices.md) - Universal MCP guidelines including:
-  - Server and tool naming conventions
-  - Response format guidelines (JSON vs Markdown)
-  - Pagination best practices
-  - Transport selection (streamable HTTP vs stdio)
-  - Security and error handling standards
-
-### SDK Documentation (Load During Phase 1/2)
-- **Python SDK**: Fetch from `https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/main/README.md`
-- **TypeScript SDK**: Fetch from `https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/main/README.md`
-
-### Language-Specific Implementation Guides (Load During Phase 2)
-- [🐍 Python Implementation Guide](./reference/python_mcp_server.md) - Complete Python/FastMCP guide with:
-  - Server initialization patterns
-  - Pydantic model examples
-  - Tool registration with `@mcp.tool`
-  - Complete working examples
-  - Quality checklist
-
-- [⚡ TypeScript Implementation Guide](./reference/node_mcp_server.md) - Complete TypeScript guide with:
-  - Project structure
-  - Zod schema patterns
-  - Tool registration with `server.registerTool`
-  - Complete working examples
-  - Quality checklist
-
-### Evaluation Guide (Load During Phase 4)
-- [✅ Evaluation Guide](./reference/evaluation.md) - Complete evaluation creation guide with:
-  - Question creation guidelines
-  - Answer verification strategies
-  - XML format specifications
-  - Example questions and answers
-  - Running an evaluation with the provided scripts
+See `./reference/library.md` (protocol docs, SDK READMEs, Python/TS implementation guides, evaluation guide) — load per phase.
 
 ## WHEN TO USE
 - You must enable an LLM to interact with an external service through well-designed tools (MCP server).

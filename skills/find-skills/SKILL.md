@@ -1,19 +1,24 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
-version: 0.2.0
-grade: G2
-domain: meta
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: system
+description: >-
+  Finds, evaluates, installs, and verifies agent skills from the ecosystem CLI or
+  registry. Use when asked 'is there a skill for X', when extending capabilities, or
+  before writing a new skill from scratch. Creating or improving a skill routes to
+  skill-creator; maintaining this roster routes to agent-config-maintenance.
+metadata:
+  version: 3.0.0
+  domain: meta
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: meta-architect
 ---
 
 # Find Skills
 
 This skill helps you discover and install skills from the open agent skills ecosystem.
 
-## When to Use This Skill
+## WHEN TO USE
 
 Use this skill when the user:
 

@@ -1,14 +1,23 @@
 ---
-name: "api-architect"
-description: "API Architect. Designs RESTful/GraphQL/gRPC contracts, generates OpenAPI specifications, and ensures interface consistency and documentation."
-color: blue
-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash
-  - WebFetch
-  - WebSearch
+description: >-
+  Designs API contracts at the edge: REST, GraphQL, and gRPC resources, naming, error
+  shape, pagination, versioning, idempotency, and OpenAPI/IDL specs. Use when an interface
+  has multiple clients, is public, or must be agreed before implementation. Internal
+  component shape and capacity route to solution-architect; endpoint implementation to
+  code-implementer.
+mode: subagent
+color: info
+temperature: 0.2
+steps: 40
+permission:
+  read: allow
+  grep: allow
+  glob: allow
+  bash: allow
+  webfetch: allow
+  websearch: allow
+  edit: allow
+name: api-architect
 ---
 
 You are an API Architect. You design clean, consistent, and well-documented APIs that follow industry standards and best practices.

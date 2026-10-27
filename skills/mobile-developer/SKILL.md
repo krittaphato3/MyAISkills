@@ -1,12 +1,17 @@
 ---
 name: mobile-developer
-description: Build mobile apps across React Native, Flutter, native iOS (Swift), and native Android (Kotlin). Use when writing cross-platform or native mobile screens, state, navigation, storage, or platform integration.
-version: 0.2.0
-grade: G2
-domain: delivery
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: mobile-developer
+description: >-
+  Builds mobile apps in React Native, Flutter, or native Swift and Kotlin: screens,
+  navigation, state, local storage, permissions, push, and platform integration. Use when
+  the deliverable is an iOS or Android app or a mobile-specific bug. Desktop shells route
+  to desktop-app-developer; shared web UI to frontend-web-engineer.
+metadata:
+  version: 3.0.0
+  domain: delivery
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: mobile-developer
 ---
 
 # MOBILE DEVELOPER
@@ -15,184 +20,19 @@ Expert mobile development across native and cross-platform frameworks.
 
 ## REACT NATIVE
 
-### Component Structure
-```jsx
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-
-const ItemList = ({ data, onSelect }) => {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item} onPress={() => onSelect(item)}>
-      <Text style={styles.title}>{item.title}</Text>
-    </TouchableOpacity>
-  );
-
-  return (
-    <FlatList
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-    />
-  );
-};
-
-const styles = StyleSheet.create({
-  item: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  title: {
-    fontSize: 16,
-  },
-});
-```
-
-### Navigation
-```jsx
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stack = createNativeStackNavigator();
-
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-```
+See `references/react-native.md` — component + navigation patterns. Load only for React Native tasks.
 
 ## FLUTTER / DART
 
-### Widget Structure
-```dart
-import 'package:flutter/material.dart';
-
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Counter App'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('You have pushed the button this many times:'),
-            Text('$_counter', style: Theme.of(context).textTheme.headline4),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-```
-
-### State Management (Provider)
-```dart
-class CounterModel extends ChangeNotifier {
-  int _count = 0;
-  
-  int get count => _count;
-  
-  void increment() {
-    _count++;
-    notifyListeners();
-  }
-}
-
-// Usage
-ChangeNotifierProvider(
-  create: (_) => CounterModel(),
-  child: Consumer<CounterModel>(
-    builder: (context, counter, _) => Text('${counter.count}'),
-  ),
-)
-```
+See `references/flutter.md` — widget + Provider patterns. Load only for Flutter tasks.
 
 ## NATIVE ANDROID / KOTLIN
 
-### Activity with ViewModel
-```kotlin
-class MainViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    
-    fun loadData() {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            val data = repository.fetchData()
-            _uiState.value = _uiState.value.copy(
-                data = data,
-                isLoading = false
-            )
-        }
-    }
-}
-
-data class UiState(
-    val isLoading: Boolean = false,
-    val data: List<Item> = emptyList(),
-    val error: String? = null
-)
-```
+See `references/android-kotlin.md` — ViewModel + StateFlow pattern. Load only for native Android tasks.
 
 ## NATIVE IOS / SWIFT
 
-### SwiftUI View
-```swift
-import SwiftUI
-
-struct ContentView: View {
-    @StateObject private var viewModel = ContentViewModel()
-    
-    var body: some View {
-        NavigationView {
-            List(viewModel.items) { item in
-                NavigationLink(destination: DetailView(item: item)) {
-                    Text(item.title)
-                }
-            }
-            .navigationTitle("Items")
-            .onAppear {
-                viewModel.loadItems()
-            }
-        }
-    }
-}
-
-class ContentViewModel: ObservableObject {
-    @Published var items: [Item] = []
-    
-    func loadItems() {
-        // Fetch items
-    }
-}
-```
+See `references/ios-swift.md` — SwiftUI + ObservableObject pattern. Load only for native iOS tasks.
 
 ## CROSS-PLATFORM PATTERNS
 
@@ -261,7 +101,7 @@ PATTERNS:
 - **A web/dashboard UI** — browser-only UI belongs to UI/UX skills, not mobile.
 - **Backend or service code for the app** — the API, auth, and infra are devops/api design, not this.
 - **Pure accessibility audit** of a mobile screen — accessibility-specialist handles the review; this skill implements the native solution.
-- **Game-engine mobile work** — use the game-developer / roblox-lua-developer skills.
+- **Game-engine mobile work** — use the game-developer skill (Unity/Unreal/Godot); Roblox mobile work uses the `roblox-*` suite (`roblox-ui-designer` for touch-safe UI, `roblox-world-building` for device budgets).
 - **One-line wrapper or a mocked prototype** — a throwaway scaffold doesn't need navigation and state-management decisions.
 
 ## DECISION TREE

@@ -1,13 +1,19 @@
 ---
 name: observability-sre
-description: Use when defining SLIs/SLOs and error budgets, choosing monitoring metrics (golden signals), setting burn-rate alerts, or structuring logs, traces, and dashboards that drive action.
-version: 1.0.0
-grade: G3
-domain: production
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: devops-engineer
+description: >-
+  Designs observability and reliability targets: SLIs and SLOs, error budgets,
+  golden-signal metrics, burn-rate alerts, structured logs, traces, and dashboards that
+  drive action. Use when defining 'healthy', reducing alert noise, or instrumenting a
+  service. Active outages route to incident-response-engineer.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: devops-engineer
 ---
+
 # observability-sre
 
 World-class reference for making a service measurably reliable rather than merely monitored. Covers SLI selection from the four golden signals, SLO targets and windows, error-budget accounting, burn-rate alerting, the three pillars (metrics/logs/traces), structured logging, RED/USE, and a verification gate that must pass before an operability claim is made. Every rule is a number, not an adjective.

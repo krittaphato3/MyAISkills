@@ -1,12 +1,18 @@
 ---
 name: deep-planner
-description: Use when a goal or spec must become an executable plan before code is written — decompose into independently testable tasks, map a dependency graph and critical path, estimate with ranges, and register risks. Consumes research; produces the plan general-orchestrator executes.
-version: 1.0.0
-grade: G3
-domain: doctrine
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: planner
+description: >-
+  Turns a goal or spec into an executable plan: independently testable tasks, a dependency
+  graph and critical path, range estimates, a risk register, and escalation triggers. Use
+  before code on multi-task or multi-day work, or when an approved plan is required.
+  Consumes research and emits the plan general-orchestrator executes; single-step work
+  needs no plan.
+metadata:
+  version: 3.0.0
+  domain: doctrine
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: planner
 ---
 
 # Deep Planner
@@ -18,7 +24,7 @@ The discipline that turns a goal or spec into an executable plan rather than an 
 - **Multi-task goals** — any goal that will decompose into two or more deliverables requiring sequencing, so the work needs a task graph, not a single instruction.
 - **Spec to plan** — a requirements spec or interface contract that must become an executable sequence of tasks before code, schema, or UI work can be gated.
 - **Research-informed planning** — a goal whose unknowns are material. When deep-researcher output exists, consume it first; when it does not, this skill flags the research gaps and emits the questions before finalizing (DECISION TREE step 0).
-- **Handoff to execution** — the output is a plan consumed by general-orchestrator. If the work is non-trivial and WORKFLOW.md requires plan-before-code, planning applies by mandate.
+- **Handoff to execution** — the output is a plan consumed by general-orchestrator. If the work is non-trivial, AGENTS.md plan-before-code applies by mandate.
 - **Dependency-heavy work** — tasks where order matters, where some things must finish before others start, and where the critical path determines duration.
 - **Effort > one horizon** — work that will span multiple milestones or checkpoints and needs schedule commitment: only a plan with ranges can be re-planned deliberately instead of patched reactively.
 
@@ -131,4 +137,4 @@ A plan with a blank acceptance cell, an uncomputed critical path, or an unmitiga
 - Dependency-graph practice (CPM/network scheduling) — critical path and slack analysis, the basis for PATTERNS 2 and the QUANTITATIVE RULES critical-path-is-not-raw-sum rule.
 - Predecessor skills: deep-researcher (research input), system-instructions v2 (delegation + confidence gates), general-orchestrator (consumes this plan). These are the documented edges of the pipeline.
 
-Ownership: maintained by planner; deep-planner is the doctrine-domain flagship that turns research into executable, gateable plans. Versioning and lint are enforced by tools/skill_lint.py and recorded in the catalog changelog.
+Ownership: maintained by planner; deep-planner is the doctrine-domain flagship that turns research into executable, gateable plans.

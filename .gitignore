@@ -1,4 +1,4 @@
-# Runtime state — never commit
+# Runtime state & user data — never commit
 v2/
 tmp/
 workspace/
@@ -7,3 +7,13 @@ docs/skills/.sdd/
 lint_out.json
 __pycache__/
 *.pyc
+*.log
+.env*
+node_modules/
+.playwright-mcp/
+.agent/
+.agents/
+.claude/
+.freebuff/
+.video_agent/
+backup*/

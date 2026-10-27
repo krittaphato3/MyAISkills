@@ -1,12 +1,17 @@
 ---
 name: monorepo-workspace-architect
-description: Configure multi-package monorepos and their build systems — Turborepo, Nx, Lerna, npm/pnpm/yarn workspaces. Use when structuring workspaces, optimizing build caching/affected commands, or enforcing package boundaries.
-version: 0.2.0
-grade: G2
-domain: production
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: devops-engineer
+description: >-
+  Configures multi-package repositories: pnpm, npm, or yarn workspaces, Turborepo or Nx,
+  task graphs, caching, affected builds, and package boundaries. Use when setting up a
+  monorepo, fixing slow or incorrect builds, or enforcing dependency direction. CI
+  pipeline authoring routes to devops-pipeline-engineer.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: devops-engineer
 ---
 
 # MONOREPO WORKSPACE ARCHITECTECT SKILL
@@ -56,200 +61,13 @@ packages:
 }
 ```
 
-## TURBOREPO PATTERNS
+## TURBOREPO + NX PATTERNS
 
-### turbo.json
-```json
-{
-  "$schema": "https://turbo.build/schema.json",
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "test": {
-      "dependsOn": ["build"]
-    },
-    "lint": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
-  }
-}
-```
+See `references/build-systems.md` (turbo.json, nx.json, affected commands, graphs) — load only when configuring that build system.
 
-### Commands
-```bash
-# Build all packages (with caching)
-turbo run build
+## BOUNDARIES, BUILD GRAPH, SHARING, CI
 
-# Build only affected packages
-turbo run build --filter=...[HEAD^]
-
-# Build package and its dependents
-turbo run build --filter=@myorg/ui...
-
-# Run test for specific package
-turbo run test --filter=@myorg/core
-```
-
-### Remote Caching
-```json
-{
-  "remoteCache": {
-    "signature": true
-  }
-}
-```
-
-## NX PATTERNS
-
-### nx.json
-```json
-{
-  "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "test": {
-      "inputs": ["default", "^production"]
-    }
-  },
-  "defaultBase": "main"
-}
-```
-
-### Affected Commands
-```bash
-# Build only affected packages
-nx affected --target=build
-
-# Test only affected packages
-nx affected --target=test
-
-# Lint only affected packages
-nx affected --target=lint
-```
-
-### Project Graph
-```bash
-# Visualize dependencies
-nx graph
-
-# Show affected projects
-nx affected:graph
-```
-
-## PACKAGE BOUNDARY ENFORCEMENT
-
-### ESLint Rules
-```json
-{
-  "rules": {
-    "import/no-restricted-paths": ["error", {
-      "zones": [{
-        "target": "./packages/core",
-        "from": "./packages/ui"
-      }]
-    }]
-  }
-}
-```
-
-### Dependency Rules
-```json
-{
-  "rules": {
-    "import/no-extraneous-dependencies": "error",
-    "import/no-relative-parent-imports": "error"
-  }
-}
-```
-
-## BUILD GRAPH OPTIMIZATION
-
-### Parallelization
-- Identify independent packages
-- Use `--concurrency` flag
-- Avoid unnecessary dependencies
-
-### Caching Strategies
-```json
-{
-  "cache": {
-    "inputs": ["src/**", "package.json", "tsconfig.json"],
-    "outputs": ["dist/**"]
-  }
-}
-```
-
-### Incremental Builds
-- Only rebuild changed packages
-- Use content hashing for cache keys
-- Share build artifacts between packages
-
-## CODE SHARING PATTERNS
-
-### Shared Configuration
-```
-packages/
-  config/
-    eslint/
-      base.js
-      react.js
-    typescript/
-      base.json
-      react.json
-```
-
-### Shared Components
-```
-packages/
-  ui/
-    src/
-      Button/
-        Button.tsx
-        Button.test.tsx
-      index.ts
-    package.json
-```
-
-### Package References
-```json
-{
-  "dependencies": {
-    "@myorg/ui": "workspace:*"
-  }
-}
-```
-
-## CI/CD FOR MONOREPOS
-
-### GitHub Actions
-```yaml
-name: CI
-on: [push, pull_request]
-
-jobs:
-  main:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-      - run: pnpm install
-      - run: pnpm turbo run build test lint
-```
-
-### Selective Testing
-```bash
-# Only test affected packages
-turbo run test --filter=...[origin/main]
-
-# Only build changed packages
-turbo run build --filter=...[HEAD^1]
-```
+See `references/boundaries-and-ci.md` (ESLint zones, caching, shared config/components, monorepo CI + selective testing) — load only the section needed.
 
 ## OUTPUT FORMAT
 ```text

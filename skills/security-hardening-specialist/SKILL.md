@@ -1,12 +1,18 @@
 ---
 name: security-hardening-specialist
-description: Harden application security — authentication, authorization, input validation, secrets handling, vulnerability remediation. Use when implementing or reviewing auth flows, validation, or a detected vulnerability's fix.
-version: 0.2.0
-grade: G2
-domain: security
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: security-auditor
+description: >-
+  Implements defensive security: authentication and session design, authorization checks,
+  input validation, output encoding, secrets handling, security headers, and remediation
+  of a detected vulnerability. Use when building or reviewing a trust boundary. Authorized
+  attack work routes to cybersecurity-specialist; privacy law to privacy-compliance;
+  design-level risk assessment to threat-modeling.
+metadata:
+  version: 3.0.0
+  domain: security
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: security-auditor
 ---
 
 # SECURITY HARDENING SPECIALIST

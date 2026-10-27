@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "browser-testing": {
+    "playwright": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+      "args": ["-y", "@playwright/mcp@latest", "--headless", "--isolated", "--caps", "vision"]
     },
     "github": {
       "command": "npx",
@@ -10,6 +10,10 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
       }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\Oz"]
     }
   }
 }

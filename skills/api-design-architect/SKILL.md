@@ -1,12 +1,18 @@
 ---
 name: api-design-architect
-description: Design API contracts — REST/GraphQL/gRPC services, endpoints, OpenAPI specs, and API versioning. Use when a public or multi-client interface must be specified with consistent naming, error shape, pagination, and versioning before implementation.
-version: 0.2.0
-grade: G2
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: api-architect
+description: >-
+  Designs API contracts for REST, GraphQL, and gRPC: resources, endpoints, naming, error
+  shape, pagination, versioning, idempotency, and OpenAPI or IDL specs. Use when an
+  interface has more than one client, is public, or must be agreed before implementation.
+  Internal module boundaries route to system-design-architect; implementing the endpoint
+  routes to code-implementer.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: api-architect
 ---
 
 # API DESIGN ARCHITECT

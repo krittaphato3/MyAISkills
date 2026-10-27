@@ -1,12 +1,17 @@
 ---
 name: github-flow-master
-description: Create professional pull requests, write conventional commit messages, and manage GitHub workflows. Use when opening/describing a PR, structuring a PR description, or applying branch/commit/review conventions.
-version: 0.2.0
-grade: G2
-domain: production
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: code-implementer
+description: >-
+  Handles Git and GitHub collaboration: branch strategy, conventional commits, PR
+  descriptions, review etiquette, labels, and release notes. Use when preparing a change
+  for review or a release. Committing, pushing, merging, or tagging requires explicit user
+  approval first; deployment pipelines route to devops-pipeline-engineer.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: git-master
 ---
 
 # GITHUB FLOW MASTER
@@ -65,66 +70,7 @@ Resolves #
 
 ## PR TYPES WITH EXAMPLES
 
-### Bug Fix
-```markdown
-## Summary
-Prevents duplicate form submissions by adding server-side idempotency check.
-
-## Motivation
-Users could submit forms multiple times, causing duplicate database entries.
-
-## Changes
-- Added debounce logic to form submit handler
-- Implemented server-side idempotency key
-- Added database unique constraint
-
-## Testing
-- [x] Unit tests for debounce logic
-- [x] Manual testing: rapid clicking scenario
-
-Closes #123
-```
-
-### New Feature
-```markdown
-## Summary
-Implements dark mode toggle with automatic system preference detection.
-
-## Motivation
-Users requested dark mode for eye strain reduction.
-
-## Implementation Details
-- Uses CSS custom properties for theming
-- Stores preference in localStorage
-- Respects prefers-color-scheme media query
-
-## Screenshots
-<details>
-<summary>Light Mode</summary>
-![Light](url)
-</details>
-<details>
-<summary>Dark Mode</summary>
-![Dark](url)
-</details>
-
-Closes #456
-```
-
-### Performance Optimization
-```markdown
-## Summary
-Implements lazy loading for images below the fold, reducing LCP by 40%.
-
-## Motivation
-Core Web Vitals showed LCP at 4.2s (threshold: 2.5s).
-
-## Performance Metrics
-- Before: LCP 4.2s, FID 180ms
-- After: LCP 2.1s, FID 85ms
-
-Closes #789
-```
+See `references/pr-examples.md` (bug-fix / feature / perf templates) — load only when drafting that type.
 
 ## COMMIT MESSAGE FORMAT (Conventional Commits)
 
@@ -168,6 +114,23 @@ feat!: redesign API response format
 BREAKING CHANGE: response format changed from XML to JSON
 ```
 
+## PERMISSION GATE (NON-NEGOTIABLE)
+
+Nothing in this skill authorizes a state-changing git command. Before executing:
+
+| Action | Requirement |
+|---|---|
+| draft message / propose branch name | none — this is text |
+| `git add` your own files | none — reversible |
+| `git commit` | explicit user yes, after showing file list + draft message |
+| `git push` | a **separate** explicit yes |
+| open/edit/merge PR, tag, release | a **separate** explicit yes |
+| branch delete, reset, force, rebase shared history | explicit yes + state what is lost |
+
+Ask one action at a time. "Commit and push?" is a violation. A passing build is not deploy approval.
+Approval covers one action in one run, never the rest of the session. See `AGENTS.md` §3 and the
+`git-master` agent.
+
 ## GIT WORKFLOW
 
 ### Branch Naming
@@ -200,61 +163,9 @@ release/{version}                 → release/1.2.0
 - Separate subject from body with blank line
 - Use body to explain what and why, not how
 
-## LABEL STRATEGY
+## LABEL STRATEGY + REVIEW REQUESTS + SIZE GUIDELINES
 
-### Status Labels
-| Label | Use When |
-|-------|----------|
-| `work-in-progress` | PR not ready for review |
-| `ready-for-review` | PR complete, awaiting review |
-| `needs-revision` | PR requires changes |
-| `approved` | PR has required approvals |
-
-### Type Labels
-| Label | Use When |
-|-------|----------|
-| `bug` | Addresses a bug |
-| `enhancement` | New feature |
-| `documentation` | Doc changes |
-| `performance` | Performance improvements |
-| `security` | Security changes |
-| `breaking-change` | Breaking changes |
-
-### Size Labels
-| Label | Files Changed |
-|-------|---------------|
-| `size/XS` | 1-10 lines |
-| `size/S` | 10-50 lines |
-| `size/M` | 50-200 lines |
-| `size/L` | 200-500 lines |
-| `size/XL` | 500+ lines |
-
-## REVIEW REQUEST BEST PRACTICES
-
-### When to Request
-- Mark PR as "Ready for Review" when complete
-- Use draft PRs for work-in-progress
-- Don't request review on WIP PRs
-
-### Who to Request
-1. CODEOWNERS (automatic)
-2. Subject matter experts
-3. Team leads for architectural decisions
-
-### How to Request
-- Use @mentions to tag reviewers
-- Explain why their input is needed
-- Be explicit about feedback desired
-- Set timeline expectations
-
-## PR SIZE GUIDELINES
-
-| Size | Review Time | Recommendation |
-|------|-------------|----------------|
-| XS (< 50 lines) | 5-10 min | Easy review |
-| S (50-200 lines) | 15-30 min | Standard review |
-| M (200-500 lines) | 30-60 min | Consider splitting |
-| L (500+ lines) | 1+ hours | Split into smaller PRs |
+See `references/review-guides.md` — load only when labeling, requesting review, or sizing a PR.
 
 ## OUTPUT FORMAT
 ```text
@@ -265,7 +176,7 @@ Branch: {branch name}
 Type: {feat|fix|docs|perf|refactor}
 Size: {XS|S|M|L|XL}
 
-DESCRIPTION:
+description:
 {summary}
 
 TESTING:

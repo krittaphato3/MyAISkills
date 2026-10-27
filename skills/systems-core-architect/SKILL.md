@@ -1,14 +1,19 @@
 ---
 name: systems-core-architect
-description: Use when writing non-fullstack systems languages like C++, Rust, Go, or backend Python.
-version: 1.0.0
-grade: G3
-domain: languages
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: code-implementer
-supersedes: ""
+description: >-
+  Writes and reviews systems-language code: Rust, Go, C and C++, and backend Python —
+  ownership and lifetimes, error propagation, memory layout, FFI, and
+  performance-sensitive design. Use for low-level services, CLIs, or native code. JVM work
+  routes to java-jvm-expert; data and ML Python to ml-python-scientist.
+metadata:
+  version: 3.0.0
+  domain: languages
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: code-implementer
 ---
+
 # systems-core-architect
 
 World-class guidance for performance-critical, memory-critical systems code in C++, Rust, Go, and backend Python. Covers language selection, per-language patterns, concurrency and memory models, quantitative performance budgets, and a verification gate that must pass before "done" is claimed.

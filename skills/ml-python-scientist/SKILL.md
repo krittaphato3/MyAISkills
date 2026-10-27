@@ -1,12 +1,18 @@
 ---
 name: ml-python-scientist
-description: Use when writing Python, Data Science, or Machine Learning code (PyTorch, TensorFlow, Pandas, NumPy).
-version: 1.0.0
-grade: G2
-domain: languages
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: ml-engineer
+description: >-
+  Writes Python for data science and machine learning: pandas and NumPy, scikit-learn,
+  PyTorch or TensorFlow training loops, experiment tracking, reproducibility, and
+  evaluation. Use for notebooks, model code, and analysis. Serving a model in a product
+  routes to llm-engineer or ml-engineer; general Python services to
+  systems-core-architect.
+metadata:
+  version: 3.0.0
+  domain: languages
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: ml-engineer
 ---
 
 # ml-python-scientist

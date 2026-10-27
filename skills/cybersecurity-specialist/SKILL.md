@@ -1,12 +1,18 @@
 ---
 name: cybersecurity-specialist
-description: Perform authorized security testing, penetration testing, exploit development, and vulnerability research. Use for authorized engagements, bug bounties, security research, CTF, and lab environments where a credentialed test scope applies.
-version: 0.2.0
-grade: G2
-domain: security
-status: active
-last-reviewed: 2026-08-07
-owned-by-agent: cybersecurity-specialist
+description: >-
+  Performs authorized offensive security work only: penetration testing, exploit
+  development, vulnerability research, CTF and lab exercises, and bug-bounty scope with
+  written authorization. Use when the goal is to attack a system you are permitted to test
+  and produce a severity-rated finding. Defensive fixes route to
+  security-hardening-specialist; privacy obligations to privacy-compliance.
+metadata:
+  version: 3.0.0
+  domain: security
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: cybersecurity-specialist
 ---
 
 # CYBERSECURITY SPECIALIST

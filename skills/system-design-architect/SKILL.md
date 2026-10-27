@@ -1,12 +1,18 @@
 ---
 name: system-design-architect
-description: Design system architecture — capacity estimation, scalability/sharding, caching, load balancing, and Architecture Decision Records. Use when selecting high-level components or when a system's shape must be justified at scale.
-version: 1.0.0
-grade: G3
-domain: architecture
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: solution-architect
+description: >-
+  Shapes systems and does the capacity math: component selection, boundaries, data flow,
+  caching, load balancing, and back-of-envelope sizing that justifies the design. Use when
+  choosing an architecture or defending one at scale. Consistency and replication behavior
+  routes to distributed-systems-engineer; database topology to database-at-scale; the
+  decision record to adr-engineering.
+metadata:
+  version: 3.0.0
+  domain: architecture
+  grade: G3
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: solution-architect
 ---
 
 # SYSTEM DESIGN ARCHITECT

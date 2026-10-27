@@ -1,12 +1,18 @@
 ---
 name: performance-profiler
-description: Profile, benchmark, and optimize performance — latency, throughput, CPU/memory/IO, profilers, and flame graphs. Use when a named performance or memory problem is measured or must be proven with before/after evidence.
-version: 0.2.0
-grade: G2
-domain: production
-status: active
-last-reviewed: 2026-08-06
-owned-by-agent: performance-engineer
+description: >-
+  Profiles and fixes measured CPU, memory, and IO problems: sampling profilers, flame
+  graphs, allocation and GC pressure, syscall or IO waits, and before/after benchmark
+  proof. Use when a performance problem is named and measurable outside the database. SQL
+  slowness routes to query-performance-engineer; browser metrics to web-performance; a
+  live outage to incident-response-engineer.
+metadata:
+  version: 3.0.0
+  domain: production
+  grade: G2
+  status: active
+  last-reviewed: '2026-10-22'
+  owned-by-agent: performance-engineer
 ---
 
 # PERFORMANCE PROFILER
