@@ -1,4 +1,4 @@
-# ZCode Autonomous Engineering System
+# MyAISkills
 
 > Enterprise-grade agentic operating system and skills architecture featuring dual-track parallel subagent concurrency, strict verification gates, zero-token local defense, and anti-slop code hygiene.
 
