@@ -6,11 +6,11 @@ description: >-
   bug fixes, and pinned refactors. Exploration spikes and doc-only changes are exempt; reviewing
   the result routes to requesting-code-review.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-10-30'
   owned-by-agent: test-engineer
 ---
 
@@ -109,6 +109,30 @@ Push assertions down: a rule that can be a unit test should not be an E2E test.
 For T3 changes, tests come from `test-oracle`, written against the spec before the implementation
 exists. Tests written by the implementer are smoke checks, not an independent oracle — they encode
 the same misunderstanding as the code.
+
+### 7. Where red-first pays, and where it does not
+
+Red-first has real signal when the failure predates the fix: you watch the same command flip.
+That is the bug-fix case, and it is the case worth defending.
+
+For greenfield features, design before tests. Name the data shape, edge cases, and contracts
+first; tests derived from a design are stronger than a design derived from the first test. When
+the agent writes both the test and the implementation, a red step only proves the agent ran
+something. The evidence that survives that critique is a test that fails when the behavior is
+deliberately broken, which is what `mutation-testing` measures.
+
+Practical split:
+
+| Situation | Approach |
+|---|---|
+| Bug fix with a cheap local repro | Red-first. Required. |
+| Greenfield feature | Design first, then tests per slice, then verify behavior |
+| Legacy behavior nobody documented | Characterization tests before any change |
+| Agent wrote code and tests together | Mutation pass, or an independent oracle on T2/T3 |
+| Refactor | Pin behavior first, change structure, stay green |
+
+Do not turn this into a reason to skip tests. The rule that survives every case is: a test you
+have never seen fail is a test you cannot trust.
 
 ## FAILURE MODES & MITIGATIONS
 

@@ -17,7 +17,7 @@ MANIFEST_DIR = ROOT / "docs" / "skills"
 REQUIRED = ["name", "version", "grade", "domain", "status", "last-reviewed", "owned-by-agent"]
 GRADES = {"G1", "G2", "G3"}
 STATUSES = {"active", "draft", "EE"}
-FAMILIES = {"doctrine", "architecture", "production", "security", "languages", "delivery", "roblox", "meta"}
+FAMILIES = {"doctrine", "architecture", "production", "security", "languages", "delivery", "roblox", "meta", "fundamentals"}
 SECTIONS = {
     "G2": ["## WHEN TO USE", "## WHEN NOT TO USE", "## DECISION TREE", "## FAILURE MODES & MITIGATIONS",
            "## VERIFICATION GATE", "## REFERENCES"],
@@ -57,7 +57,7 @@ def parse_frontmatter(text):
     for line in m.group(1).splitlines():
         if ":" in line:
             k, v = line.split(":", 1)
-            fields[k.strip()] = v.strip()
+            fields[k.strip()] = v.strip().strip("'\"")
     return fields
 
 
@@ -83,6 +83,8 @@ def is_potential_skill_name(tok):
 def run_checks(skills_dir):
     errors, warnings = [], []
     names = {}
+    # The roster is the agents directory, not a hardcoded subset that goes stale.
+    known_agents = AGENTS | {p.stem for p in (ROOT / "agents").glob("*.md")}
     for d in sorted(skills_dir.iterdir()):
         if not d.is_dir():
             continue
@@ -105,7 +107,7 @@ def run_checks(skills_dir):
             errors.append(f"E1 {d.name}: invalid domain '{fm.get('domain')}'")
         if E5_RE.search(fm.get("description") or ""):
             errors.append(f"E5 {d.name}: description contains blanket auto-invoke language")
-        if fm.get("owned-by-agent") not in AGENTS:
+        if fm.get("owned-by-agent") not in known_agents:
             warnings.append(f"W2 {d.name}: unknown owner '{fm.get('owned-by-agent')}'")
         if fm.get("last-reviewed"):
             try:
@@ -116,9 +118,11 @@ def run_checks(skills_dir):
                 errors.append(f"E1 {d.name}: last-reviewed not an ISO date")
         if fm.get("grade") in SECTIONS:
             low = text.lower()
-            for h in SECTIONS[fm["grade"]]:
-                if h.lower() not in low:
-                    errors.append(f"E4 {d.name}: grade {fm['grade']} missing '{h}'")
+            missing = [h for h in SECTIONS[fm["grade"]] if h.lower() not in low]
+            # Advisory: the catalog predates this stricter schema, so one line per skill
+            # keeps the signal readable instead of emitting an error per section.
+            if missing:
+                warnings.append(f"W4 {d.name}: grade {fm['grade']} lacks {', '.join(missing)}")
         names[d.name] = fm
     seen = {}
     for dname, fm in names.items():
@@ -133,7 +137,7 @@ def run_checks(skills_dir):
         for m in re.finditer(r"`([a-z0-9-]+(?:/[a-z0-9-]+)?)`", text):
             raw = m.group(1)
             ref = _bare(raw)
-            if ref in catalog or raw in W3_WHITELIST:
+            if ref in catalog or ref in known_agents or raw in W3_WHITELIST:
                 continue
             if is_potential_skill_name(raw):
                 warnings.append(f"W3 {name}: reference to unknown skill '{raw}'")

@@ -6,11 +6,11 @@ description: >-
   reporting any task complete, and whenever words like fixed, passes, faster, or secure appear. A
   screenshot alone never suffices.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-10-30'
   owned-by-agent: test-engineer
 ---
 
@@ -108,6 +108,30 @@ NOT RUN    e2e — no browser available in this environment
 LIMITATION visual layout unverified; logic covered by DOM assertions
 ```
 
+### 6. Evidence ledger and claim labels
+
+Before reporting, write the ledger. It is the difference between a summary and a defense.
+
+```text
+CLAIM                                  ARTIFACT                         LABEL
+replay credits once                    tests/webhook.test.ts 8/8       measured
+handler is idempotent across retries   repro script output             measured
+typecheck clean                         tsc --noEmit, exit 0            measured
+no other caller of the retry path      grep + call sites read          inferred
+staging replay not performed           -                               NOT RUN
+```
+
+- **measured**: a command ran and its output is attached.
+- **inferred**: follows from evidence, but was not itself observed. Say what it rests on.
+- **guess**: no evidence. Allowed only when labeled, never presented as a result.
+
+Three rules make the ledger honest:
+
+1. **Never hand the human a check you could run.** If a command can answer it, run it.
+2. **A prediction is a guess, not evidence.** "Should work now" is a guess with extra words.
+3. **Never fabricate a link, transcript, or citation.** Reference only artifacts you produced or
+   read this session.
+
 ## FAILURE MODES & MITIGATIONS
 
 1. **Verification theater** — the gate checks something adjacent because it is easy. *DETECT:* the
@@ -141,6 +165,8 @@ LIMITATION visual layout unverified; logic covered by DOM assertions
 - [ ] Any unrun check is named with a reason and marked unverified.
 - [ ] No check was weakened, skipped, or silenced to pass.
 - [ ] Report contains VERIFIED / NOT RUN / LIMITATION lines.
+- [ ] Ledger written; every claim is labeled measured, inferred, or guess.
+- [ ] No check handed to the human that a command could have run.
 
 ## REFERENCES
 

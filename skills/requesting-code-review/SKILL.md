@@ -6,11 +6,11 @@ description: >-
   Deciding between conflicting reviews or candidate implementations routes to debate-protocol; the
   author's self-check never replaces review.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-10-30'
   owned-by-agent: red-team-qa
 ---
 
@@ -53,6 +53,9 @@ that the review did not happen.
    Domain-specific risk   → relevant specialist (db-architect, compliance-engineer, ...)
    Two reviewers disagree → debate-protocol with debate-chair
    Never the author. Never the agent that proposed the design.
+   Split the review into two independent axes (standards, then spec) per
+   `references/two-axis-review.md`. One blended verdict hides the change that is clean
+   but solves the wrong problem.
 
 3. REVIEW AGAINST THE RUBRIC, NOT VIBES
    Correctness · spec conformance · security · regressions · performance · maintainability ·

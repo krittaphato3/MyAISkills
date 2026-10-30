@@ -8,11 +8,11 @@ description: >-
   when a flow crosses several screens. Formal conformance audits route to accessibility-audit;
   visual craft (color, type, hierarchy) to refactoring-ui; spacing math to ui-layout-spacing.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-10-30'
   owned-by-agent: design-critic
 ---
 
@@ -119,6 +119,7 @@ review pass that catches those — on the running interface, with evidence, befo
 
 ## REFERENCES
 
+- `references/ui-conformance-checklist.md` — the itemized pass to run alongside the heuristics
 - `accessibility-audit` — formal WCAG 2.2 AA conformance
 - `refactoring-ui`, `impeccable`, `ui-layout-spacing` — visual craft and layout
 - `frontend-web-engineer` — implementation of accepted findings

@@ -39,6 +39,15 @@
     { "query": "the lobby lighting looks flat and washed out", "skill": "roblox-world-building", "agent": "roblox-builder", "work": ["roblox"], "note": "relevance gate: roblox tag satisfied by a roblox-* primary" },
     { "query": "configure rojo default.project.json and generate sourcemaps for luau-lsp", "skill": "roblox-toolchain", "agent": "roblox-scripter", "work": ["roblox"] },
     { "query": "audit this free marketplace model for hidden require backdoors before parenting to workspace", "skill": "roblox-asset-security", "skills": ["verification-before-completion"], "agent": "roblox-security-engineer", "work": ["roblox", "security"] },
-    { "query": "search the web for the latest Playwright MCP configuration docs and extract the flags", "skill": "browser-automation", "agent": "browser-automation" }
+    { "query": "search the web for the latest Playwright MCP configuration docs and extract the flags", "skill": "browser-automation", "agent": "browser-automation" },
+    { "query": "the checkout button does nothing on mobile safari but works on desktop", "skill": "webapp-qa", "skills": ["verification-before-completion"], "agent": "ui-ux-architect" },
+    { "query": "are our tests actually catching bugs or just executing lines", "skill": "mutation-testing", "agent": "test-engineer" },
+    { "query": "it is green, is it actually safe to ship", "skill": "ship-gate", "skills": ["verification-before-completion"], "agent": "red-team-qa", "size": "big" },
+    { "query": "i have told you three times not to add defensive null checks everywhere", "skill": "correct", "agent": "meta-architect" },
+    { "query": "the retry fix failed again the same way, maybe the webhook is not the problem", "skill": "principle-attack-the-premise", "agent": "red-team-qa" },
+    { "query": "is this 2.1x speedup real or did the benchmark just measure the cache", "skill": "benchmark-checklist", "agent": "performance-engineer" },
+    { "query": "sharpen this before you start: make the dashboard better", "skill": "sharpen", "agent": "meta-architect" },
+    { "query": "what changed since my last message", "skill": "ketchup", "agent": "meta-architect" },
+    { "query": "restate what i actually asked for before you write any code", "skill": "in-your-own-words", "agent": "planner" }
   ]
 }
