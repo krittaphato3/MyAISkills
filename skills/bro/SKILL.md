@@ -3,7 +3,6 @@ name: bro
 description: Restates the last message in plain human language with no jargon. Use when the user asks
   for plain language, says 'bro', or signals the previous explanation was unclear. Precision specs and
   contracts keep their technical vocabulary.
-disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: doctrine

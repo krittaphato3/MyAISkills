@@ -57,9 +57,11 @@ on the first run and proves nothing.
    Add the cases the first test missed: empty/null, boundary values, error paths, large input,
    concurrency, and one integration case if a real boundary is involved.
 
-6. RUN THE FULL SUITE + LINT
-   Green only counts if the whole suite and the typechecker agree. Fix regressions you caused;
-   do not "fix" them by relaxing assertions.
+6. RUN THE FULL REGRESSION SUITE + LINT
+   Single-file test runs are for the inner red-green edit loop ONLY. Completion strictly requires
+   running the entire package or workspace regression suite. Zero test loosening: fix regressions
+   you caused; do not weaken, comment out, or delete pre-existing tests. If a fix causes cascading
+   breakages, trigger the circuit breaker: `git restore` back to baseline and restart clean.
 ```
 
 ## PATTERNS

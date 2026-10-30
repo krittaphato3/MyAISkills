@@ -4,7 +4,6 @@ description: 'Design an auditable playbook when no narrower one fits: a large mi
   multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis
   loop, and logs decisions via show-me-your-work. Use for /figure-it-out, ''figure it out'', a large migration,
   or when no narrower playbook applies.'
-disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: doctrine
@@ -23,7 +22,7 @@ Don't reinvent a playbook you already have. A focused single-unit task that matc
 
 ## Start
 
-Open a todolist whose first item is to read the Principles section of the **poteto-mode** skill. Then add the phases below as todos.
+Open a todolist whose first item is to read the Principles section of the **ozone-mode** skill. Then add the phases below as todos.
 
 ## Phase A: Frame
 
@@ -71,7 +70,7 @@ A large or cross-cutting effort no bundled playbook fits; work a human reviews a
 
 ## WHEN NOT TO USE
 
-A narrower playbook fits — `poteto-mode` routes to it.
+A narrower playbook fits — `ozone-mode` routes to it.
 One task driven to a predicate — the autonomous-run playbook.
 
 ## VERIFICATION GATE

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-30",
-  "count": 140,
+  "generated": "2026-10-31",
+  "count": 141,
   "skills": [
     {
       "name": "accessibility-audit",
@@ -135,11 +135,11 @@
     {
       "name": "blast-radius",
       "path": "skills\\blast-radius\\SKILL.md",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "grade": "G2",
       "domain": "architecture",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-10-31",
       "owned-by-agent": "refactoring-specialist"
     },
     {
@@ -461,6 +461,16 @@
       "status": "active",
       "last-reviewed": "2026-10-30",
       "owned-by-agent": "meta-architect"
+    },
+    {
+      "name": "learner",
+      "path": "skills\\learner\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "meta",
+      "status": "active",
+      "last-reviewed": "2026-10-31",
+      "owned-by-agent": "deep-researcher"
     },
     {
       "name": "legacy-modernization",

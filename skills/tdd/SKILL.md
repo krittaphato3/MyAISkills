@@ -1,8 +1,10 @@
 ---
 name: tdd
-description: Use only when the user explicitly asks for TDD, a failing test, or a regression test, OR
-  when the bug has an obvious cheap local test target. Skip when the test path is unclear, expensive,
-  integration-heavy, or not requested.
+description: >-
+  Companion to the /tdd command. Explicit invocation only: use when the user types /tdd or asks
+  for the red-green cycle by name. Routing for test-first work belongs to
+  test-driven-development; this skill supplies the command's step list and must not compete
+  with that doctrine on description matching.
 disable-model-invocation: true
 metadata:
   version: 1.0.0

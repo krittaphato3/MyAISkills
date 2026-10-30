@@ -1,74 +1,80 @@
 ---
 name: blast-radius
-description: Find what a change could break somewhere else before it ships, beyond the diff, and prove
-  the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius
-  of X', 'what could this break', or reviewing a small diff you don't trust.
-disable-model-invocation: true
+description: >-
+  Find what a change could break somewhere else before it ships, beyond the diff, and prove the one
+  fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X',
+  'what could this break', or reviewing a small diff you don't trust.
 metadata:
-  version: 1.0.0
+  version: 2.0.0
   domain: architecture
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-10-31'
   owned-by-agent: refactoring-specialist
 ---
 
+# Blast Radius
 
-# Blast radius
-
-Find what a change breaks somewhere else, before it ships. Use for "blast radius of X", "what could this break", or reviewing a small diff you don't trust yet.
-
-Companion to `how` and `why`. `how` tells you what the code does. `why` tells you why it's shaped that way. Blast radius tells you what it breaks somewhere else.
-
-Listing the callers is not the job. The agent can grep those in a second. The job is the breakage grep won't show you.
-
-## Don't trust your own writeup
-
-A blast-radius writeup that sounds right is worthless. It reads as convincing whether or not it's true, and that is the trap you are walking into. So don't hand back the writeup. Find the one or two facts the whole thing depends on and prove them by running code. Words are where you start, not what you ship.
-
-### How sure are you
-
-For each fact the change's safety depends on, get it as far down this list as is cheap, and say where it stopped.
-
-1. You said so. Worthless on its own.
-2. You pointed at the line. A real `file:line`, or the library's own source.
-3. You showed the bad case can't happen. You walked the failure step by step and it doesn't reach.
-4. You ran it. A script or test that calls the real code and fails loud if you're wrong.
-5. You reproduced it in the running app.
-
-Any safety fact you can't get to step 4, say so out loud. Don't write it up as settled. Step 4 is usually one small script that imports the same library the app ships and calls the exact function you're worried about.
-
-## Steps
-
-1. Read the change. The diff, the symbols it adds, changes, and deletes, and what it now does differently, including the part the diff doesn't spell out. Use `why` step 2 to pull the PR and commits.
-2. Find the one fact it's safe because of. Most changes that look scary are safe because of a single fact, like "this call only drops already-dead cache entries and does nothing else". Find that fact. If it holds, most of the scary cases die at once. Spend your time here, not on a long list of maybes.
-3. Look where grep stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, Solid versus React. Follow what a symbol search misses: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream.
-4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed; list the ones you checked and cleared separately. Same rules as `why`. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
-5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened. If you can't prove it cheaply, mark it unproven. Don't round up.
-6. For a big or wide change, run it as an `arena`. Ask several models the same question and merge the answers. Different models catch different real bugs.
-
-## What to hand back
-
-- **What it does.** What changed, including the part that isn't obvious.
-- **The one fact it's safe because of.** State it, say which step you got it to, and show the proof. If you couldn't prove it, write unproven.
-- **Risks.** Only the real ones. Each names how it breaks, the `file:line`, how likely and how bad, and how to check. Paste the proof for the ones that matter.
-- **Cleared.** What you checked and why it's fine.
-- **Before you merge.** The cheapest test or repro that catches the real bug, including the script you wrote.
-
-Write it through `unslop`, cite real code, and strip anything private before it goes anywhere public.
-
-**Reply:** the writeup above, with the one safety fact either proven or marked unproven.
+Find what a change breaks somewhere else before it ships. Listing callers is necessary but insufficient;
+the core job is identifying and eliminating breakage where text search stops: serialized state, wire formats,
+lifecycle timings, and unstated caller assumptions.
 
 ## WHEN TO USE
 
-Before changing shared code or refactoring; "what could this break elsewhere".
+- Before modifying a shared utility, public interface, database schema, or exported contract.
+- Assessing regression risk for a complex refactoring or behavior change.
+- Reviewing a seemingly small diff touching core abstractions.
 
 ## WHEN NOT TO USE
 
-Local private code with no callers.
-A live incident — `incident-response-engineer` first.
+- Pure private logic with strictly verified local callers.
+- Active incident containment (route to `incident-response-engineer`).
+
+## DECISION TREE
+
+```text
+1. ENUMERATE DIRECT CALLERS
+   Search all direct usages: `rg -w "<symbol>"`. Never rely on memory.
+   Examine every call site for assumptions about nullability, throw behavior, or parameter defaults.
+
+2. TRACE BEYOND GREP
+   Follow boundaries text search cannot see:
+   - Serialized payloads: JSON schemas, wire formats, Redis keys, DB rows.
+   - Execution timing: microtasks, race conditions, mount/unmount lifecycles.
+   - Cross-language / multi-package consumers.
+
+3. FORMULATE THE SAFETY INVARIANT
+   Define the single concrete condition that guarantees callers won't break:
+   "This change preserves the return shape for all non-empty inputs and defaults empty inputs to []."
+
+4. EXECUTE LEVEL 4 PROOF
+   Words are not evidence. Prove the safety invariant with running code:
+   - Level 1: "I think it is safe." (Unacceptable)
+   - Level 2: Pointed at line numbers in code.
+   - Level 3: Logical proof of non-reachability.
+   - Level 4: Executable test or probe script calling the real code and asserting safety. (Mandatory)
+   If a safety invariant cannot reach Level 4 cheaply, mark it explicitly as UNPROVEN in the ledger.
+
+5. VERIFY DOWNSTREAM SUITES
+   Run the full test suites of all consumer packages or modules identified in step 1.
+```
+
+## FAILURE MODES & MITIGATIONS
+
+| Failure Mode | Mitigation |
+|---|---|
+| Believing a plausible writeup | Words are not proof. Require an executable probe script or passing test. |
+| Missing dynamic callers | Check string-based lookups, event emitters, and reflection hooks. |
+| Incomplete regression runs | Run the test suites of every identified consumer module. |
 
 ## VERIFICATION GATE
 
-Consumers enumerated by search, not memory.
-The safety fact is proven by running code, and the suites that must pass are listed.
+- [ ] All direct consumers identified via `rg -w` search.
+- [ ] Safety invariant stated explicitly and validated with Level 4 executable proof.
+- [ ] Downstream consumer test suites run and green.
+
+## REFERENCES
+
+- `skills/how/SKILL.md` — What the code currently does
+- `skills/why/SKILL.md` — Why it was shaped that way
+- `skills/ship-gate/SKILL.md` — Pre-ship verification gate and blast-radius audit

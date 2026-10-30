@@ -48,9 +48,10 @@ symptom hunt can burn a session.
    One command, one probe, one assertion. Cheapest observation that splits true from false.
    Do not test the symptom again; test the belief.
 
-4. ACT ON THE ANSWER
-   Premise false  -> delete both fixes, redesign from the real behavior.
-   Premise true   -> the mechanism is elsewhere; bisect the call path with instrumentation.
+4. TRIGGER CIRCUIT BREAKER & ACT ON THE ANSWER
+   Premise false  -> STOP DIGGING. Cleanly revert the failed edits (`git restore <files>`).
+                    Do not patch a broken patch. Redesign from the proven behavior on a clean baseline.
+   Premise true   -> The mechanism is elsewhere; bisect the call path with instrumentation.
 
 5. RECORD IT
    Add the premise to the change description or a comment only where the code cannot show it.
@@ -59,10 +60,11 @@ symptom hunt can burn a session.
 ## FAILURE MODES & MITIGATIONS
 
 1. **Guard stacking** — a third null check instead of asking why the value is null. *DETECT:* the diff adds branches without removing a cause. *FIX:* test the premise about where null originates.
-2. **Theory preservation** — evidence is explained away to keep the model. *DETECT:* "probably", "should still". *FIX:* name the observation that would falsify the model and go get it.
-3. **Symptom bisect** — hours spent narrowing the symptom with no premise written. *DETECT:* no sentence starting "I assume". *FIX:* write three premises, test the riskiest.
-4. **Authority premise** — "the docs say" treated as behavior. *DETECT:* no run of the actual call. *FIX:* observe it.
-5. **Premise creep** — the fix grows to accommodate a premise nobody checked. *DETECT:* the design now has an option that exists only for the theory. *FIX:* test the premise before keeping the option.
+2. **Patch-on-patch sprawl** — keeping a failed fix and adding more hacks when it breaks other tests. *DETECT:* escalating diff across unrelated files. *FIX:* `git restore` back to clean baseline and attack the premise.
+3. **Theory preservation** — evidence is explained away to keep the model. *DETECT:* "probably", "should still". *FIX:* name the observation that would falsify the model and go get it.
+4. **Symptom bisect** — hours spent narrowing the symptom with no premise written. *DETECT:* no sentence starting "I assume". *FIX:* write three premises, test the riskiest.
+5. **Authority premise** — "the docs say" treated as behavior. *DETECT:* no run of the actual call. *FIX:* observe it.
+6. **Premise creep** — the fix grows to accommodate a premise nobody checked. *DETECT:* the design now has an option that exists only for the theory. *FIX:* test the premise before keeping the option.
 
 ## VERIFICATION GATE
 

@@ -3,7 +3,6 @@ name: no-comments
 description: Removes narrating comments and encodes the constraints worth keeping as code or checks. Use
   before review or merge when a diff gained explanatory comments, or when comments restate code. Non-obvious
   why-comments forced by external systems stay.
-disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: delivery

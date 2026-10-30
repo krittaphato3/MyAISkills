@@ -44,7 +44,7 @@ wrong claims.
    Behavior change   → the test that would fail without the change
    Type contract     → typecheck / compiler
    Style/regression  → lint (whole project, not just touched files)
-   Performance       → benchmark: before/after, pinned env, ≥5 runs, median + p75
+   Performance       → benchmark: before/after, pinned env, ≥5 runs, median + p95
    Security          → traversal/IDOR/forged-signature cases + scanner output
    UI                → DOM/HTTP assertion or test; screenshot is supporting only
    Data              → query with counts + checksum before/after
@@ -82,7 +82,7 @@ wrong claims.
 | "Fixed the bug" | Repro that failed before, passes now; regression test path |
 | "Tests pass" | Full suite output + count; not "the relevant ones" |
 | "Types are fine" | `tsc --noEmit` / `cargo check` / `mypy` output |
-| "Faster" | Before/after table, ≥5 runs, p50+p95, same machine/build |
+| "Faster" | Before/after table, ≥5 runs, median + p95, same machine/build |
 | "Secure" | The attack case run and rejected + the control that rejects it |
 | "Works end to end" | One real request/DOM flow exercised, with output |
 | "No regressions" | Full suite + the specific adjacent behavior exercised |
@@ -153,7 +153,7 @@ Three rules make the ledger honest:
 
 - ≥1 artifact per GREEN gate; 0 artifacts = not green, no exceptions.
 - Flaky retries ≤2, then FAIL; record the root cause even if it passes.
-- Performance: ≥5 runs, median + p75/p95, identical environment, before *and* after.
+- Performance: ≥5 runs, median + p95, identical environment, before *and* after.
 - Re-run affected checks after the final edit — results from before the last change do not count.
 - Coverage alone never satisfies a gate; the assertion must test behavior, not lines.
 

@@ -5,7 +5,6 @@ description: >-
   the principles, and holds the non-negotiables for evidence, scope, and independent verification.
   Use for /ozone-mode or any non-trivial engineering task that must ship without a follow-up bug
   report. Trivial edits and factual questions stay in-thread.
-disable-model-invocation: true
 mode: true
 icon: zap
 color: cyan
@@ -46,6 +45,11 @@ is. Every rule below exists because a specific failure mode has already happened
    plan, the decisions, and the evidence ledger.
 10. **Plain prose.** Short declarative sentences. No emojis. No fabricated links. No euphemism
     standing in for an unproven claim.
+11. **Revert over sprawl (Circuit breaker).** Max 2 repair attempts. If tests cascade into failure
+    or edits sprawl across unrelated files, stop digging. Run `git restore` back to the clean baseline
+    checkpoint, attack the flawed premise, and start clean.
+12. **Full-suite regression.** Never declare done on a single-file test run. The full package or
+    workspace regression suite must run green on the exact final head.
 
 ## Principles
 
@@ -123,12 +127,13 @@ nothing fits, use `figure-it-out` and design an auditable sequence.
 
 ## Routed skills
 
-Four skills fire on their own trigger, outside the playbook table:
+Five skills fire on their own trigger, outside the playbook table:
 
 | Situation | Skill |
 |---|---|
 | The request is underspecified or could be read two ways | `sharpen` |
 | Before acting on a multi-file task | `in-your-own-words` |
+| Unfamiliar technology, novel framework, or missing domain skill | `learner` |
 | A number is about to be reported | `benchmark-checklist` |
 | The user returns after a gap and asks what happened | `ketchup` |
 
@@ -199,7 +204,8 @@ was not verified and why. No emojis, no filler, no restating the request.
 
 ## WHEN TO USE
 
-`/ozone-mode`, or any non-trivial change where a shipped bug would cost more than the verification.
+Any non-trivial change where a shipped bug would cost more than the verification, or an explicit
+`/ozone-mode`. The description triggers this skill automatically; the slash command forces it.
 
 ## WHEN NOT TO USE
 

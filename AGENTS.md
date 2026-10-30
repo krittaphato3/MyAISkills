@@ -24,8 +24,9 @@ description later. Do not silently load both.
 
 ## 2. NON-NEGOTIABLES
 
-1. **Route before acting.** Non-trivial work starts at `/ozone-mode`, which matches a playbook.
-   Trivial work stays in-thread. Never start a multi-file change with no declared mode.
+1. **Route before acting, automatically.** Match the task to a skill by its description, then to
+   a playbook. `/ozone-mode` is an explicit invocation, not a prerequisite. Trivial work stays
+   in-thread. Never start a multi-file change with no declared mode.
 2. **Ask before anything hard to undo.** Commit, push, PR, merge, tag, release, deploy, publish,
    delete, history rewrite, force-push, dropping data. A coding request is not permission to ship.
    Full matrix in §3.
@@ -41,6 +42,12 @@ description later. Do not silently load both.
 7. **Fail loudly.** A check that failed or could not run is reported as a limitation, never a pass.
 8. **Zero decorative emojis.** No emojis in replies, code, comments, docs, commits, or PR bodies.
    Plain-text status labels only. Professional prose, clean typography.
+9. **Revert over sprawl (Circuit breaker).** Max 2 repair attempts. If an attempted fix breaks
+   previously passing tests, cascades across unrelated files, or expands scope: stop digging. Do not
+   patch a broken patch. Cleanly discard uncommitted edits (`git restore` on your modified files) back
+   to the clean baseline checkpoint, attack the flawed premise, and restart clean.
+10. **Zero test-loosening.** Never delete, comment out, or weaken an existing test assertion to make
+    a check pass. An existing test failure indicates a regression in your code, not an inconvenient test.
 
 ---
 
@@ -73,11 +80,13 @@ description later. Do not silently load both.
 
 ```text
 request
+  → baseline        git status & suite health; confirm clean starting state
   → classify        T0/T1/T2/T3 (§5), and read-only vs write
-  → route           /ozone-mode matches a playbook (skills/ozone-mode/playbooks/)
-  → ground          name the data shape, quote the acceptance criterion, find the callers
-  → act             smallest change that meets the criterion
-  → prove           zero-token checks first, then independent verification
+  → route           description match picks the skill and playbook (skills/ozone-mode/playbooks/)
+  → ground          name the data shape, quote acceptance criterion, search all callers (rg -w)
+  → act             genuine TDD: RED artifact first, then smallest diff that meets the criterion
+  → prove           zero-token checks first, then full regression suite (no single-file pass)
+  → audit           line-by-line git diff self-review: no debug code, no loosened tests, no sprawl
   → gate            /ship-check: claim-to-diff audit, blast radius, evidence ledger
   → report          DONE / CHANGED / VERIFIED / GAPS
 ```
@@ -132,7 +141,9 @@ NO-FANOUT   "Do not spawn subagents. Report back to the parent."
 
 ## 7. SKILL ROUTING
 
-Match the work type first, then load only the skills it cannot be done without.
+Routing is automatic. Every skill's `description` is a trigger, so match the work type first and
+load only the skills it cannot be done without. `/ozone-mode` is the explicit form of the same
+router, not a gate in front of it.
 
 | Work type | Load |
 |---|---|
@@ -145,6 +156,14 @@ Match the work type first, then load only the skills it cannot be done without.
 | Research or external docs | `web-search` / `browser-automation` |
 | Shipping anything | `ship-gate` |
 | Same correction twice | `correct` |
+| Unfamiliar technology, novel framework, or missing domain skill | `learner` |
+| Writing, docs, README, reports | `technical-writing`; long-form docs -> `readme-architect` |
+| Research, external facts, page reading | `web-search` / `browser-automation` |
+| Planning, specs, ambiguous scope | `deep-planner`, `spec-driven-development`, `requirements-elicitation` |
+| Learning or explaining a topic | `teach` |
+| Product and scope tradeoffs | `product-engineering`, `principle-experience-first` |
+| Data analysis, scripts, one-off computation | `ml-python-scientist`, `principle-build-the-lever` |
+| Editing this configuration | `agent-config-maintenance`, `skill-creator` |
 
 Rules:
 
@@ -164,8 +183,11 @@ All lines true and evidenced before reporting completion:
 - [ ] Nothing extra shipped, nothing silently deferred.
 - [ ] A mode and playbook were declared for non-trivial work.
 - [ ] The changed behavior was exercised the way the user will use it: test, request, DOM, or run.
-- [ ] Typecheck, lint, and the relevant tests are green, with output from after the last edit.
-- [ ] The diff contains no secrets, debug artifacts, dead code, or unrelated changes.
+- [ ] For bugfixes or new features, a raw pre-fix RED failure artifact is recorded in the evidence ledger.
+- [ ] Typecheck, lint, and the full workspace/package regression suite are green (single-file runs prohibited as final proof).
+- [ ] Zero pre-existing tests were weakened, skipped, or deleted; any assertion change is an explicit contract change.
+- [ ] All direct callers of modified symbols were searched (`rg -w`) and verified unbroken.
+- [ ] The git diff was reviewed line-by-line: no secrets, debug artifacts (`console.log`, prints), dead code, or sprawl.
 - [ ] An independent reviewer or adversarial pass covered T2/T3 work.
 - [ ] `ship-gate` ran: claim-to-diff audit, blast radius stated.
 - [ ] Unrun checks are named with a reason and marked unverified.
@@ -206,4 +228,4 @@ python tools/skill_lint.py --regen          # second validator + docs/skills/ski
 - Changes to this file or the roster are `meta-architect` work and get a version bump.
 - A skill unexercised for 6 months, or overlapping a newer one, points at its replacement in its
   description; delete only after all references are gone.
-- Version: 4.0.0 · last reviewed 2026-10-30
+- Version: 4.1.0 · last reviewed 2026-10-30

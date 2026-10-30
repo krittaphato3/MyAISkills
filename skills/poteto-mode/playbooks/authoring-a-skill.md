@@ -2,7 +2,7 @@
 
 **You own the skill's voice.** Agent-facing prose has a higher bar than human prose; unhelpful sentences become instructions.
 
-1. Use the **skill-authoring** skill (Agent Skills standard format: a directory with a frontmatter-carrying SKILL.md).
+1. Use the **skill-creator** skill (Agent Skills standard format: a directory with a frontmatter-carrying SKILL.md).
 2. Validate the skill: frontmatter has `name` and `description`, referenced files exist, cross-skill links resolve.
 3. Test cases if structural; skip if subjective.
 4. Run **Opening a PR**.

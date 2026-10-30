@@ -42,26 +42,34 @@ This gate is the difference between "it works on my machine" and "I can defend t
    Note the exact commit or working-tree state being gated. Any later edit voids the verdict.
 
 2. RUN THE DETERMINISTIC CHECKS
-   Typecheck, lint, full test suite, build if the build is the artifact.
-   Preserve exit status. Capture raw output. Run after the last edit.
+   Typecheck, lint, and full workspace/package test suite. Single-file test runs are prohibited
+   as completion proof. Run after the final edit. Preserve exit status and capture raw output.
 
-3. AUDIT CLAIMS AGAINST THE DIFF
+3. VERIFY PRE-FIX RED EVIDENCE
+   For any behavior change or bugfix, verify the evidence ledger holds the raw pre-fix failure
+   artifact (expected vs. actual). A test that was never observed failing is unproven.
+
+4. AUDIT CLAIMS AGAINST THE DIFF
    For every sentence you intend to report: which hunk proves it?
    No hunk -> delete the claim or do the work. This catches "adds tenant isolation" when the
    diff filters by user id.
 
-4. CHECK THE DIFF ITSELF
-   Unrelated files, dead code, debug prints, weakened tests, new suppressions, secrets,
-   an abstraction with one caller, a config change nobody mentioned.
+5. CHECK THE DIFF ITSELF (LINE-BY-LINE SELF-REVIEW)
+   Line-by-line audit: unrelated files, dead code, debug prints (console.log, print), altered
+   pre-existing tests, loosened assertions, new suppressions, secrets, an abstraction with one
+   caller, or file sprawl.
 
-5. DISPATCH THE INDEPENDENT VERDICT
+6. DISPATCH THE INDEPENDENT VERDICT
+   Required for T2/T3 and for any change touching auth, money, migrations, or PII. For T1 the
+   claim-to-diff audit plus your own re-run is the verdict; say so explicitly.
    Fresh-context reviewer, edit denied, briefed with intent + criterion + diff + evidence.
    It re-runs the check on this head. Findings need a reproduction to be blockers.
 
-6. STATE THE BLAST RADIUS
-   Who else calls the changed path. What breaks if this is wrong. The rollback step.
+7. STATE THE BLAST RADIUS & REVERT POINT
+   Identify all direct callers via symbol search (rg -w). Formulate the single safety invariant
+   and prove it. State the clean rollback command (e.g. git restore <files>).
 
-7. REPORT AND ASK
+8. REPORT AND ASK
    DONE / CHANGED / VERIFIED / GAPS, then a separate request for commit, push, or deploy.
 ```
 
@@ -90,7 +98,7 @@ This gate is the difference between "it works on my machine" and "I can defend t
 - [ ] Typecheck, lint, and full suite green, output captured after the last edit.
 - [ ] Every reported claim traces to a hunk.
 - [ ] Diff scanned for unrelated changes, suppressions, secrets, debug artifacts.
-- [ ] Independent reviewer verdict on this exact head.
+- [ ] Independent verdict on this head for T2/T3 or auth/money/migration/PII; T1 audit stated.
 - [ ] Blast radius and rollback stated.
 - [ ] NOT RUN items listed with reasons.
 - [ ] Approval requested separately for commit, push, and deploy.

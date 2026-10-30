@@ -3,7 +3,6 @@ name: principle-build-the-lever
 description: 'Use for any non-trivial work, not just bulk work: edits, migrations, analyses, checks.
   Build the tool that does it or proves it (codemod, script, generator, or a skill your subagents follow)
   instead of working by hand. The tool is the artifact a reviewer can rerun.'
-disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: doctrine

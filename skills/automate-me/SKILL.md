@@ -3,7 +3,6 @@ name: automate-me
 description: Use for "automate me", "create/update/refresh my -mode skill", "turn/capture my preferences
   or working style into a skill", or wanting agents to follow how the user works. Drafts or revises a
   personal -mode skill via direct authoring + unslop, optionally pulling fresh evidence from recent transcripts.
-disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: meta
@@ -18,13 +17,13 @@ metadata:
 
 A guided flow for turning the user's working conventions into a skill agents will follow. The output is one `-mode` skill tailored to them (e.g. `jay-mode`, `priya-mode`).
 
-This skill orchestrates three others: an inline mining pass (see step 1), `skill-authoring` (authoring), and the **unslop** skill (prose discipline). It sequences them; it doesn't replace them.
+This skill orchestrates three others: an inline mining pass (see step 1), `skill-creator` (authoring), and the **unslop** skill (prose discipline). It sequences them; it doesn't replace them.
 
 ## Flow
 
 ### 0. Check for an existing skill
 
-Look recursively for `.pi/skills/**/*-mode/SKILL.md` and `~/.pi/agent/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`.pi/skills/<handle>/`), not only at the top level. If one exists, confirm intent by asking a structured question (unless they already said "update my skill" or similar):
+Look recursively for `skills/**/*-mode/SKILL.md` and `skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`skills/<handle>/`), not only at the top level. If one exists, confirm intent by asking a structured question (unless they already said "update my skill" or similar):
 
 - Update the existing skill (default for repeat runs)
 - Start fresh (rare; ask why before doing it)
@@ -68,23 +67,23 @@ Group the combined signals into sections. Common ones (use only what applies):
 - **Prose / code discipline**: principles, lint tools, style guides.
 - **Review and verify**: repro posture, verification skills, live-testing tools.
 - **Process**: git worktrees, commits, PRs, review/merge tooling.
-- **Skills**: skill-authoring habits, fix-the-skill-first, proposing new skills.
+- **Skills**: skill-creator habits, fix-the-skill-first, proposing new skills.
 
 The **poteto-mode** skill shows the shape. Read it for granularity. Don't copy its content; the user's rules are not the same as poteto-mode's.
 
 ### 4. Draft the skill
 
-Use `skill-authoring` skill to author the skill. Placement:
+Use `skill-creator` skill to author the skill. Placement:
 
-- Path: preserve an existing mode skill's category. For a new mode, use `.pi/skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle; otherwise default to `.pi/skills/<handle>-mode/SKILL.md` in the project (or `~/.pi/agent/skills/<handle>-mode/` if the user prefers a personal skill).
+- Path: preserve an existing mode skill's category. For a new mode, use `skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle; otherwise default to `skills/<handle>-mode/SKILL.md` in the project (or `skills/<handle>-mode/` if the user prefers a personal skill).
 - Handle: the user's first name or chosen identifier.
 - Frontmatter `description`: trigger on their name + `/<handle>-mode` + "work in their style", not on generic keywords like "write code" or "review PR".
 - Frontmatter formatting: follow standard YAML frontmatter rules. Keep `description` as one YAML scalar; quote it or use `description: >-` with indented continuation lines when punctuation or wrapping requires it.
-- Frontmatter `disable-model-invocation: true` by default. Mode skills are heavy and opinionated; they should only apply when the user explicitly invokes them (by name or slash command), not auto-trigger on description matching. Opt out only if the user explicitly wants their mode to apply on every turn.
+- Frontmatter: leave disable-model-invocation off, so the mode auto-triggers from its description. Set it to true only for a pure alias that must never compete with its target, or for a skill destructive enough to require an explicit command.
 
 ### 5. Iterate on prose
 
-Apply the **unslop** skill and skill-authoring writing guidelines to every line. Both apply to any agent-read prose, not just skills.
+Apply the **unslop** skill and skill-creator writing guidelines to every line. Both apply to any agent-read prose, not just skills.
 
 Show the draft to the user and take feedback. Expect multiple iterations. Cut ruthlessly; a mode skill is not a manual.
 
@@ -116,7 +115,7 @@ Run a description-optimization loop only if the skill's trigger accuracy turns o
 
 - The **poteto-mode** skill: example of the output shape.
 - The **unslop** skill: prose discipline for every line.
-- `skill-authoring` skill: skill authoring process and writing guidelines.
+- `skill-creator` skill: skill authoring process and writing guidelines.
 
 ## WHEN TO USE
 

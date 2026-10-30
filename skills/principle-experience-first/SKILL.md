@@ -2,7 +2,6 @@
 name: principle-experience-first
 description: Apply when product, UX, or feature-scope tradeoffs come up. Choose user delight over implementation
   convenience; ship fewer polished features over more rough ones.
-disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: doctrine

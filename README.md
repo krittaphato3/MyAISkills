@@ -1,363 +1,443 @@
-# ZCode — An Agentic Engineering System
+# ZCode Autonomous Engineering System (v4.0.0 / beta-v2)
 
-A configuration layer for AI coding agents that turns "plausible-looking output" into
-"verified work". It is built for one developer paying per token, so every mechanism here has
-to earn its cost twice: once in quality, once in tokens not spent.
+> Production-grade agentic operating system and skills architecture featuring dual-track parallel subagent concurrency, strict verification gates, zero-token local defense, git revert circuit breakers, and zero-slop engineering hygiene.
 
-The system is four layers deep and each layer is loaded only when needed:
+---
+
+## Executive Overview
+
+The **ZCode Autonomous Engineering System** is a disciplined, multi-agent operating configuration designed to orchestrate complex software engineering workflows at Staff+ quality. Rather than relying on monolithic, single-prompt LLM execution ("vibe coding"), ZCode enforces a layered, adversarial multi-agent hierarchy governed by a compact operating contract (`AGENTS.md`), 141 modular domain and doctrine skills, 23 deterministic playbooks, and 51 specialized autonomous subagents.
+
+Key engineering capabilities include:
+- **Disciplined Token Economics**: Slashes always-loaded per-request context by ~60% (from 32.5 KB to 12.9 KB in `AGENTS.md`), preserving context window capacity for actual code and reasoning.
+- **Genuine Test-Driven Development**: Mandates capturing raw pre-fix failure artifacts (RED proof) before production code is written; prohibits single-file test runs as final verification.
+- **Real-Engineer Git Circuit Breaker**: Enforces a strict revert-over-sprawl protocol (`git restore` on uncommitted edits after 2 failed repairs) to prevent patch-on-patch degradation.
+- **Autonomous Knowledge Acquisition**: The `learner` meta-skill enables agents to ground themselves in unfamiliar technologies via canonical documentation and isolated verification spikes before authoring application logic.
+- **Strict Pre-Ship Gating**: The `ship-gate` engine (`/ship-check`) audits every reported claim line-by-line against git diff hunks, verifies caller blast radiuses across packages, and enforces whole-workspace regression passes.
+
+---
+
+## Table of Contents
+
+- [System Architecture](#system-architecture)
+- [Core Operational Flows](#core-operational-flows)
+  - [1. Request-to-Ship Lifecycle](#1-request-to-ship-lifecycle)
+  - [2. The Real-Engineer Git Circuit Breaker](#2-the-real-engineer-git-circuit-breaker)
+  - [3. Dual-Track Concurrency (Author vs. Oracle)](#3-dual-track-concurrency-author-vs-oracle)
+  - [4. The Learner Protocol (Just-in-Time Knowledge Acquisition)](#4-the-learner-protocol-just-in-time-knowledge-acquisition)
+- [The Six-Layer Hierarchy](#the-six-layer-hierarchy)
+  - [Layer 1: Commands & User Entry Points](#layer-1-commands--user-entry-points)
+  - [Layer 2: Mode Router (`ozone-mode`)](#layer-2-mode-router-ozone-mode)
+  - [Layer 3: Workflow Playbooks](#layer-3-workflow-playbooks)
+  - [Layer 4: Modular Skills Ecosystem (141 Skills)](#layer-4-modular-skills-ecosystem-141-skills)
+  - [Layer 5: Autonomous Subagent Swarm (51 Agents)](#layer-5-autonomous-subagent-swarm-51-agents)
+  - [Layer 6: Verification & Quality Assurance Gates](#layer-6-verification--quality-assurance-gates)
+- [Work Tiers (T0–T3) & Cost Discipline](#work-tiers-t0t3--cost-discipline)
+- [Permission Matrix](#permission-matrix)
+- [Repository Structure](#repository-structure)
+- [Maintenance & Validation Harness](#maintenance--validation-harness)
+- [Engineering Provenance](#engineering-provenance)
+
+---
+
+## System Architecture
+
+The following diagram illustrates the interaction between the primary orchestrator, policy rails, subagent pools, toolchains, and verification gates:
 
 ```text
-command  (/ozone-mode, /ship-check, /tdd, ...)   you type this
-   ↓
-mode     (skills/ozone-mode)                     the router: principles, playbook match
-   ↓
-playbook (skills/ozone-mode/references)          the steps for this class of task
-   ↓
-skill    (skills/<name>)                         the doctrine for one narrow problem
-   ↓
-subagent (agents/<name>)                         scoped worker with a written brief
-   ↓
-gate     (ship-gate + verification skills)       proof before "done"
++---------------------------------------------------------------------------------------------------+
+|                                         USER INSTRUCTION                                          |
+|                               (Natural Language Request or Slash Command)                         |
++-------------------------------------------------+-------------------------------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                                LAYER 0: ROOT OPERATING CONTRACT                                   |
+|                                            (AGENTS.md)                                            |
+|    - Non-Negotiables: Evidence over claims, Zero test-loosening, Zero decorative emojis            |
+|    - Git Revert Circuit Breaker: Max 2 repairs; revert to clean baseline before sprawling         |
+|    - Pre-flight baseline: Verify `git status` & suite health before editing                      |
++-------------------------------------------------+-------------------------------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                                LAYER 1: UNIFIED MODE ROUTER                                       |
+|                                     (skills/ozone-mode)                                           |
+|    - Tier Classifier: Assigns T0 (in-thread), T1 (verified), T2 (adversarial), T3 (debate)        |
+|    - Playbook Selector: Matches 1 of 23 task playbooks                                            |
+|    - Principle Index: Lazy-loads 1-line architectural principles on demand                        |
++-------------------+-----------------------------------------------------------+-------------------+
+                    |                                                           |
+                    v                                                           v
++---------------------------------------+                   +---------------------------------------+
+|          WORKFLOW PLAYBOOKS           |                   |         LOCAL ZERO-TOKEN DEFENSE      |
+|         (skills/ozone-mode/playbooks) |                   | - tools/repo_map.py (AST graph)       |
+| - bug-fix.md (Repro -> TDD -> Fix)    |                   | - tools/lint_config.py (validation)   |
+| - feature.md (Model -> Slice -> Gate) |                   | - Typecheckers: tsc --noEmit, pyright |
+| - refactoring.md, perf-issue.md, etc. |                   | - Local linters: eslint, ruff, biome  |
++-------------------+-------------------+                   +-------------------+-------------------+
+                    |                                                           |
+                    +-----------------------------+-----------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                           LAYER 2: MODULAR SKILLS & ADAPTIVE LEARNING                             |
+|                                                                                                   |
+|   +------------------------------------+                 +------------------------------------+   |
+|   |         CATALOG SKILLS             |                 |       LEARNER PROTOCOL             |   |
+|   |   (141 verified domain skills)     |                 |   (skills/learner/SKILL.md)        |   |
+|   | - test-driven-development          |                 | - Identifies unfamiliar APIs/SDKs  |   |
+|   | - blast-radius, mutation-testing   |                 | - Grounds via WebFetch & .d.ts     |   |
+|   | - architecture, security, roblox   |                 | - Runs isolated probe spike        |   |
+|   +-----------------+------------------+                 | - Codifies just-in-time skill      |   |
+|                     |                                    +-----------------+------------------+   |
++---------------------|------------------------------------------------------|----------------------+
+                      |                                                      |
+                      +---------------------------+--------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                           LAYER 3: PARALLEL SUBAGENT DISPATCH (Single Turn)                       |
+|                                                                                                   |
+|   +------------------------------------+                 +------------------------------------+   |
+|   |         DEVELOPMENT TRACK          |                 |            QUALITY TRACK           |   |
+|   |   (e.g., code-implementer,         |                 |   (e.g., test-oracle,              |   |
+|   |    solution-architect, scripter)   |                 |    red-team-qa, comment-sicko)     |   |
+|   +-----------------+------------------+                 +-----------------+------------------+   |
+|                     |                                                      |                      |
+|                     | [Writes code & data structures]                      | [Writes blind tests  |
+|                     |                                                      |  against spec]       |
+|                     v                                                      v                      |
+|   +------------------------------------+                 +------------------------------------+   |
+|   |       PROPOSED IMPLEMENTATION      |                 |        INDEPENDENT ORACLE SUITE    |   |
+|   +-----------------+------------------+                 +-----------------+------------------+   |
++---------------------|------------------------------------------------------|----------------------+
+                      |                                                      |
+                      +---------------------------+--------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                           LAYER 4: PRE-SHIP VERIFICATION & GATING                                 |
+|                                       (commands/ship-check)                                       |
+|    - Whole-Workspace Regression: Runs full suite (single-file passes rejected as final proof)     |
+|    - Claim-to-Diff Audit: Maps every summary sentence to an actual diff hunk                     |
+|    - Caller Blast Radius: Enforces `rg -w` symbol search and verifies downstream safety            |
+|    - Diff Hygiene: Line-by-line audit stripping debug prints, dead code, and test weakening       |
++-------------------------------------------------+-------------------------------------------------+
+                                                  |
+                                                  v
++---------------------------------------------------------------------------------------------------+
+|                                     STRUCTURED REPORT & SHIP                                      |
+|                      DONE   ·   CHANGED   ·   VERIFIED   ·   GAPS                             |
+|          (Explicit user permission required before `git commit`, `git push`, or deploy)          |
++---------------------------------------------------------------------------------------------------+
 ```
 
-Nothing above is loaded speculatively. `AGENTS.md` is the only file every request pays for.
+---
+
+## Core Operational Flows
+
+### 1. Request-to-Ship Lifecycle
+
+The sequential lifecycle every engineering task executes from receipt to completion:
+
+```text
+[ USER REQUEST ]
+       │
+       ▼
+[ 1. BASELINE AUDIT ] ───► Read `git status`; run baseline tests. Confirm clean starting point.
+       │
+       ▼
+[ 2. TIER & ROUTE ] ────► Classify T0-T3; match playbook (e.g., bug-fix.md) & domain skills.
+       │
+       ▼
+[ 3. GROUND & SEARCH ] ─► Define types & state machines; search all callers (`rg -w <symbol>`).
+       │
+       ▼
+[ 4. GENUINE TDD ] ─────► Write repro test; execute; capture raw failing RED output (expected vs actual).
+       │
+       ▼
+[ 5. SURGICAL EDIT ] ───► Write smallest code diff that turns the RED test GREEN.
+       │
+       ▼
+[ 6. REVERT GATE? ] ────► Did repair fail twice or cascade into 3+ files?
+       │                    ├── YES ──► STOP. `git restore <files>`; attack premise; restart clean.
+       │                    └── NO  ──► Proceed to full verification.
+       ▼
+[ 7. FULL REGRESSION ] ─► Run full workspace test suite + typecheck + linter (no single-file pass).
+       │
+       ▼
+[ 8. DIFF SELF-AUDIT ] ─► Line-by-line review: strip debug logs, dead code, and unrequested diffs.
+       │
+       ▼
+[ 9. SHIP CHECK ] ──────► Execute `/ship-check`: audit claims against hunks; prove caller invariants.
+       │
+       ▼
+[ 10. REPORT & ASK ] ───► Print DONE/CHANGED/VERIFIED/GAPS. Request approval for commit/push.
+```
 
 ---
 
-## Contents
+### 2. The Real-Engineer Git Circuit Breaker
 
-- [Why this exists](#why-this-exists)
-- [The request lifecycle](#the-request-lifecycle)
-- [Layer 1: commands](#layer-1-commands)
-- [Layer 2: the mode router](#layer-2-the-mode-router)
-- [Layer 3: playbooks](#layer-3-playbooks)
-- [Layer 4: skills](#layer-4-skills)
-- [Layer 5: subagents](#layer-5-subagents)
-- [Layer 6: gates](#layer-6-gates)
-- [Token economy](#token-economy)
-- [Repository map](#repository-map)
-- [Extending the system](#extending-the-system)
-- [Provenance](#provenance)
-- [Limits](#limits)
+The circuit breaker stops the "patch-on-patch" death spiral where an agent turns a minor bug into
+a sprawling architectural defect:
+
+```text
+       [ IMPLEMENTATION / REPAIR ATTEMPT ]
+                       │
+                       ▼
+            [ RUN DETERMINISTIC CHECKS ]
+                       │
+       ┌───────────────┴───────────────┐
+       ▼                               ▼
+  [ CHECKS PASS ]             [ CHECKS FAIL / REGRESSION ]
+       │                               │
+       │                               ▼
+       │                    [ EVALUATE FAILURE SCOPE ]
+       │                               │
+       │               ┌───────────────┴───────────────┐
+       │               ▼                               ▼
+       │      [ Simple local typo ]          [ Cascading Errors / 2nd Fail ]
+       │               │                               │
+       │               ▼                               ▼
+       │      [ 1 targeted fix ]               [ TRIGGER CIRCUIT BREAKER ]
+       │               │                               │
+       │               └───────────────┬───────────────┘
+       │                               │
+       │                               ▼
+       │                    [ STOP DIGGING: git restore ]
+       │                    Discard uncommitted dirty diffs.
+       │                               │
+       │                               ▼
+       │                    [ ATTACK THE PREMISE ]
+       │                    Identify the false assumption.
+       │                               │
+       │                               ▼
+       │                    [ CLEAN RE-GROUNDING ]
+       │                    Restart clean from baseline.
+       ▼                               │
+[ PROCEED TO SHIP GATE ] ◄─────────────┘
+```
 
 ---
 
-## Why this exists
+### 3. Dual-Track Concurrency (Author vs. Oracle)
 
-Agents fail in a small number of repeatable ways, and each one has a structural fix:
+For all non-trivial tasks (T2/T3), ZCode separates the author of the logic from the author of the test
+to prevent self-grading confirmation bias:
 
-| Failure | Symptom you see | Mechanism that stops it |
+```text
+                     [ TASK DISPATCH (Single Turn) ]
+                                    │
+            ┌───────────────────────┴───────────────────────┐
+            ▼                                               ▼
+ [ TRACK 1: IMPLEMENTER ]                       [ TRACK 2: TEST ORACLE ]
+   Agent: code-implementer                        Agent: test-oracle
+   Input: Architecture spec                       Input: Domain requirements only
+          & data structures                              (Implementation hidden)
+            │                                               │
+            ▼                                               ▼
+ [ PRODUCES: Logic & Types ]                    [ PRODUCES: Blind Test Suite ]
+   - Algorithm implementation                     - Acceptance boundary tests
+   - Discriminated unions                         - Malformed input tests
+   - State transition machine                     - Edge-case invariant checks
+            │                                               │
+            └───────────────────────┬───────────────────────┘
+                                    │
+                                    ▼
+                    [ CROSS-VALIDATION EXECUTION ]
+                    Run Track 2 tests against Track 1 code.
+                    Discrepancies indicate specification flaws
+                    or unhandled domain edges.
+```
+
+---
+
+### 4. The Learner Protocol (Just-in-Time Knowledge Acquisition)
+
+When encountering unfamiliar frameworks, undocumented APIs, or novel external SDKs:
+
+```text
+[ UNKNOWN DOMAIN / UNFAMILIAR TECH ENCOUNTERED ]
+                       │
+                       ▼
+[ 1. IDENTIFY KNOWLEDGE GAPS ] ──► Enumerate exact unknowns (types, lifecycles, error states).
+                       │
+                       ▼
+[ 2. CANONICAL RESEARCH ] ──────► Pull official docs via `WebFetch`; read `.d.ts` & source interfaces.
+                       │
+                       ▼
+[ 3. ISOLATED PROBE SPIKE ] ────► Execute 10-line standalone probe script in scratchpad. Verify behavior.
+                       │
+                       ▼
+[ 4. CODIFY JIT SKILL ] ────────► Author `skills/<domain>/SKILL.md` (mental model, recipes, gotchas).
+                       │
+                       ▼
+[ 5. GROUNDED EXECUTION ] ──────► Execute original task under `ozone-mode` with zero guesswork.
+```
+
+---
+
+## The Six-Layer Hierarchy
+
+### Layer 1: Commands & User Entry Points (`commands/`)
+Thin entry points invoked directly by the user or harness:
+- `/ozone-mode [task]`: Activates the staff engineering router, selects playbooks, and establishes tiers.
+- `/ship-check`: Executes the comprehensive pre-ship claim-to-diff verification gate.
+- `/tdd [task]`: Enforces strict test-first development with mandatory RED failure capture.
+- `/fetch [url]`, `/search [query]`: Information gathering prioritizing native harness tools.
+- `/unslop`: Strips AI fluff, conversational padding, decorative comments, and speculative abstractions.
+
+### Layer 2: Mode Router (`skills/ozone-mode/SKILL.md`)
+The single operational spine governing all sessions:
+- **Non-Negotiables**: Evidence over claims, zero test loosening, smallest safe diff, plain prose.
+- **Principle Catalog**: One-line indexing of 24 core architectural principles (lazy-loaded).
+- **Tiers & Ceilings**: Sets concurrency caps (5 concurrent subagents per wave, hard ceiling of 8).
+- **Stop Rules**: Maximum 2 repair attempts before triggering circuit-breaker rollbacks.
+
+### Layer 3: Workflow Playbooks (`skills/ozone-mode/playbooks/`)
+23 deterministic playbooks defining exact, non-skippable steps for distinct engineering situations:
+- `bug-fix.md`: Minimal repro -> binary search -> RED test artifact -> fix -> full regression.
+- `feature.md`: Domain modeling -> slice-by-slice TDD -> blast-radius audit -> independent review.
+- `refactoring.md`: Characterization tests -> structural transformation -> zero-regression proof.
+- `perf-issue.md`: Baseline trace -> single-metric hypothesis -> before/after benchmark verification.
+- `autonomous-run.md`, `autopilot-full.md`: Long-running and multi-phase execution management.
+
+### Layer 4: Modular Skills Ecosystem (141 Skills)
+141 modular domain and doctrine skills categorized across 9 core domains:
+
+| Domain | Skill Count | Primary Focus |
 |---|---|---|
-| Unverified "done" | "Fixed it" with no artifact | `verification-before-completion`, `ship-gate` |
-| Wrong-reason green | Test passes because the test is wrong | RED-first proof, `mutation-testing`, independent oracle |
-| Scope drift | Extra features, drive-by refactors | `principle-laziness-protocol`, claim-to-diff audit |
-| Premise error | Three fixes, same wrong assumption | `principle-attack-the-premise` |
-| Review theatre | Same context reviews itself | Separation of duties, fresh-context reviewer |
-| Context decay | Quality drops late in long sessions | Tiering, subagent isolation, `handoff` |
-| Repeated correction | You point out the same bug again | `correct`: encode the rule as a sensor |
+| **doctrine** | 48 | Engineering principles: TDD, mutation testing, anti-premise, model-the-domain. |
+| **delivery** | 32 | Verification & QA: ship-gate, webapp-qa, benchmark-checklist, ketchup. |
+| **production** | 14 | Deployment, release engineering, and GitHub flow management. |
+| **roblox** | 14 | Roblox Studio MCP integration, Luau scripting, UI/UX, and physics. |
+| **architecture** | 12 | Systems design, API contracts, blast radius analysis, monorepos. |
+| **meta** | 12 | System maintenance: learner, correct, skill-creator, agent-config. |
+| **security** | 4 | Threat modeling, security hardening, vulnerability audits. |
+| **languages** | 4 | Deep language expertise: TypeScript, Python, JVM, Luau. |
+| **fundamentals**| 1 | Foundational computer science and data structures. |
 
-The system's thesis is the same one behind Lauren Tan's pstack: throughput without quality is
-not a goal. Write less, verify more, and only parallelize what you can independently check.
+### Layer 5: Autonomous Subagent Swarm (51 Agents)
+Specialized subagents tailored for specific operational roles:
+- **Orchestration**: `ozone-agent`, `general-purpose`, `meta-architect`, `debate-chair`.
+- **Implementation**: `code-implementer`, `refactoring-specialist`, `frontend-web-engineer`, `mobile-developer`.
+- **Quality & Review**: `test-oracle`, `red-team-qa`, `comment-sicko`, `design-critic`, `security-auditor`.
+- **Research & Discovery**: `deep-researcher`, `codebase-cartographer`, `algorithm-specialist`.
 
----
-
-## The request lifecycle
-
-```text
- 1. CLASSIFY   size (T0–T3) and direction (read-only vs write)
- 2. ROUTE      /ozone-mode matches one playbook and copies its steps into the todo list
- 3. GROUND     data shape named, acceptance criterion quoted, callers found
- 4. ACT        smallest diff that meets the criterion
- 5. PROVE      zero-token checks (typecheck, lint, tests) then independent verification
- 6. GATE       /ship-check: claim-to-diff audit, blast radius, evidence ledger
- 7. REPORT     DONE / CHANGED / VERIFIED / GAPS
-```
-
-Two rules make the lifecycle real:
-
-- Every skipped step stays visible as `skip: <reason>`.
-- Step 5 happens after the last edit. Evidence from before the final change does not count.
-
-### Worked example
-
-Request: "the Stripe webhook fires twice and we double-credit the customer."
-
-```text
-CLASSIFY  T2. Wrong behavior, money, unknown mechanism, no oracle yet.
-ROUTE     Bug fix playbook. Steps: reproduce, root-cause, regression test, fix, verify.
-GROUND    Acceptance criterion: "replaying the same event id credits once."
-          Data shape: (event_id, account_id, amount, applied_at) with a uniqueness constraint.
-ACT       Add idempotency key + unique index; no retry logic change, no new abstraction.
-PROVE     Repro fails before, passes after. Full suite green. Typecheck clean.
-GATE      Independent reviewer re-runs the repro. Diff touches 3 files, all traceable to the
-          criterion. Blast radius: other webhook handlers share the retry path, checked.
-REPORT    DONE / CHANGED / VERIFIED (command + output) / GAPS (no staging replay).
-```
-
-The value is not the ceremony. It is that each step produces something a reviewer can re-run.
+### Layer 6: Verification & Quality Assurance Gates
+Enforced via `skills/ship-gate/SKILL.md` before any task is marked complete:
+- **Head Freezing**: Bind all testing artifacts to the exact final commit head.
+- **RED Evidence Ledger**: Require captured failure output for bugfixes and features.
+- **Whole-Workspace Regression**: Run full package/workspace test suites (no single-file bypass).
+- **Claim-to-Diff Traceability**: Every sentence in the completion report must cite a diff hunk.
+- **Direct-Caller Blast Radius**: Identify all direct callers via `rg -w` and verify contracts.
+- **Diff Hygiene**: Line-by-line self-audit confirming zero debug code, dead code, or test weakening.
 
 ---
 
-## Layer 1: commands
+## Work Tiers (T0–T3) & Cost Discipline
 
-Commands are the human interface. They live in `commands/*.md` and expand into a full
-instruction set with `$ARGUMENTS` substituted.
+Cost discipline ensures compute is invested where risk resides, eliminating wasteful multi-agent overhead
+on routine edits:
 
-| Command | Purpose |
-|---|---|
-| `/ozone-mode <task>` | **Primary entry point.** Router: principles, playbook, tiers, gates. |
-| `/ship-check` | Pre-ship gate. Runs deterministic checks, audits claims against the diff, states blast radius. |
-| `/tdd` | Red-green cycle for one behavior, with RED evidence captured. |
-| `/verify` | Prove a specific claim with the cheapest real check. |
-| `/review` | Package a change and dispatch an independent reviewer. |
-| `/ux-review` | Interface quality pass: states, keyboard, hierarchy, copy. |
-| `/unslop` | Strip AI tells from prose, comments, and replies. |
-| `/map` | Map a codebase before touching it. |
-| `/architect` | Settle shape and callers before writing code. |
-| `/algorithms` | Complexity, invariants, and a proof plan for hot paths. |
-| `/blast-radius` | What a small diff could break outside itself. |
-| `/parallel-dev` | Explicit fan-out with capped waves. |
-| `/product` | Problem framing and scope cutting. |
-| `/fetch`, `/search` | Read the web or search it, with citations. |
-| `/handoff` | Compress state so a fresh session can resume. |
+| Tier | When to Use | Execution Shape | Adversarial Review | Token Cost Multiplier |
+|---|---|---|---|---|
+| **T0 Direct** | Typos, documentation, 1-line trivial fix, factual query | In-thread, zero subagents | Self-audit | 1x baseline |
+| **T1 Verified** | Standard feature or bugfix in known codebase | 1 implementer subagent, local checks | Claim-to-diff gate | ~1.5x |
+| **T2 Adversarial** | Multi-file logic, unknown root cause, no oracle | Implementer + test author (parallel) | Independent reviewer (`red-team-qa`) | ~2.5x |
+| **T3 Debate** | Auth, money, data migrations, PII, architectural forks | 2 independent proposers + test oracle | Critic + formal adjudication | ~5x |
 
-Commands are thin. They exist to set the mode and the argument, not to duplicate skill bodies.
+### Cost Discipline Invariants
+- **Zero-Token Local Defense**: Run compilers (`tsc --noEmit`), linters (`eslint`, `ruff`), and local test suites first. Never pay model tokens for syntax errors that local tooling prints instantly.
+- **Lazy Loading**: Unmatched skills cost only their one-line description in memory (~30 tokens). Detailed references and playbooks are loaded strictly on demand.
+- **Stop Rules**: Maximum 2 retries on a flaky gate; maximum 2 debate rounds; maximum 2 repair attempts before triggering the circuit breaker. A round yielding no new evidence halts execution.
 
 ---
 
-## Layer 2: the mode router
+## Permission Matrix
 
-`skills/ozone-mode/SKILL.md` is the spine. It does five things:
+ZCode respects clear boundaries between autonomous local actions and outward-facing operations:
 
-1. **States the non-negotiables** the rest of the run inherits: evidence over claims, no weakened
-   checks, smallest diff, independent verification, plain prose.
-2. **Indexes the principles** as one line each, with the trigger that makes each one apply. The
-   agent reads the leaf skill only for principles the task actually touches.
-3. **Matches a playbook** and copies its steps into the todo list verbatim.
-4. **Sets the tier**, which decides how many subagents and how much adversarial review.
-5. **Defines the reply**: short declarative sentences, measured/inferred/guess labels, no
-   fabricated links, no emojis.
-
-The mode is sticky for the task. It is not a persona and it does not add a second opinion; it
-routes to the cheapest mechanism that can produce proof.
-
-`skills/ozone-mode/playbooks/` holds one file per playbook. Only the matched file is read, so
-the other twenty-two cost nothing.
-
----
-
-## Layer 3: playbooks
-
-A playbook is the step list for one class of task. Twenty-three are defined, and `figure-it-out`
-covers the ones that do not fit by designing a bespoke, auditable sequence. The ones you will
-reach for most:
-
-| Playbook | Ends when |
-|---|---|
-| Investigation | A cited answer exists; no code changed |
-| Bug fix | Repro failed before, passes after, regression test kept |
-| Feature | Behavior meets a named criterion, with tests and types |
-| Refactor | Behavior pinned by tests, structure changed, suite green throughout |
-| Performance | Before/after table on a pinned environment, bottleneck named |
-| Prototype | A decision is settled by observation, throwaway code deleted |
-| Visual parity | Screenshots match at named breakpoints, diff explained |
-| Test hardening | Tests provably fail when the behavior is broken |
-| Security review | Attack cases run and rejected, with the control that rejects them |
-| Session pickup | State, decisions, and next step reconstructed from artifacts |
-| Multi-phase plan | Phases sequenced, each ending in a check |
-| Ship | Independent verdict on the exact head, blast radius stated |
-
-Playbooks are deliberately short. If a playbook needs a page of prose per step, the step is
-probably a skill.
-
----
-
-## Layer 4: skills
-
-130+ skills across nine domains, each a directory with a `SKILL.md`:
-
-```text
-skills/<name>/SKILL.md          frontmatter + doctrine (the only file loaded on match)
-skills/<name>/references/*.md   deeper material, loaded only when a step asks for it
-```
-
-**Domains.** `doctrine` (how to think and verify), `architecture` (shape, data, scale),
-`delivery` (frontend, mobile, desktop, QA, docs), `production` (CI, observability, integration),
-`security`, `languages`, `roblox`, `meta` (config maintenance), `fundamentals`.
-
-**Grades.** G1 is a narrow technique. G2 requires the full section set: when to use, when not to
-use, decision tree, failure modes, verification gate, references. G3 adds quantitative rules and
-is reserved for doctrine that changes outcomes.
-
-**The description is the routing surface.** It is the only part loaded before a match, so it
-must say what the skill does, when to use it, and what routes elsewhere. The catalog in
-`skills/INDEX.md` is generated from those descriptions; edit the skill, not the index.
-
-Why so many skills do not blow the budget: an unmatched skill costs one description line. A
-matched skill costs its body once. Long material goes in `references/` and is read on demand.
-
-Two rules keep the catalog honest:
-
-- No two skills may share a trigger. Duplicate descriptions are a lint error.
-- A skill that overlaps a newer one points at the replacement instead of quietly competing.
-
----
-
-## Layer 5: subagents
-
-`agents/*.md` are scoped workers: a description, permissions, a step budget, and a body of
-standing orders. They are grouped by function rather than listed individually here.
-
-| Group | Examples | Used for |
+| Action Class | Autonomous Permission | Human Approval Required |
 |---|---|---|
-| Orchestration and quality | `planner`, `red-team-qa`, `requirement-auditor`, `debate-chair`, `test-oracle` | Decomposition, adversarial review, independent verdicts |
-| Research and analysis | `deep-researcher`, `solution-architect`, `db-architect`, `performance-engineer` | Grounding before design |
-| Implementation | `code-implementer`, `refactoring-specialist`, `test-engineer`, `ui-ux-architect` | Writing code and tests |
-| Domain | `roblox-*`, `mobile-developer`, `desktop-developer`, `llm-engineer` | Specialized execution |
-| Production and security | `security-auditor`, `devops-engineer`, `dependency-guardian` | Hardening and delivery |
-
-### The brief
-
-Every dispatch carries six fields: goal, scope with non-goals, context as file pointers,
-constraints, the evidence format wanted, and an explicit no-fanout line.
-
-### The rules
-
-- **Capability without a brief is cost without output.** A vague brief returns a vague report,
-  and you pay for the tokens twice when you re-dispatch.
-- **Reviewers never edit.** `edit: deny` agents exist so a verdict cannot be quietly repaired
-  into a pass.
-- **The author never certifies.** "The builder said the tests passed" is not evidence.
-- **Fresh context per unit.** Resumed subagents silently drop directives added mid-run.
-- **You own the result.** Read the diff, write the summary.
-- **Recursion guard.** Without a no-fanout line a subagent can re-enter the router and spawn
-  its own children. That is how a small task becomes a fifty-agent bill.
+| Read files, AST search, grep, symbol navigation | Allowed | No |
+| Run local test suites, linters, compilers, builds | Allowed | No |
+| Write or edit files within task scope | Allowed | No |
+| Install project-local dependencies | Allowed | No |
+| Stage changes (`git add`) | Allowed | No |
+| **`git commit`** | **PROHIBITED** | **MANDATORY**: Display diffstat, draft message, and wait. |
+| **`git push`, PR creation, merge, release** | **PROHIBITED** | **MANDATORY**: Separate approval from commit. |
+| **Deploy / publish** | **PROHIBITED** | **MANDATORY**: Explicit standalone confirmation. |
+| **Destructive commands** (`rm -rf`, `reset --hard`, force push) | **PROHIBITED** | **MANDATORY**: State exactly what will be lost. |
+| Secrets, credentials, global system modifications | **PROHIBITED** | **MANDATORY**: Requires explicit approval. |
 
 ---
 
-## Layer 6: gates
-
-Quality is enforced by mechanisms, in this order of cost:
-
-1. **Zero-token, deterministic.** Typecheck, lint, unit tests, schema validation, link checks.
-   These catch most defects for no model cost. Run them before asking any model to look.
-2. **Structural.** Small diff, one concern, no new abstraction with one caller, no boolean-flag
-   proliferation, no dead code left behind.
-3. **Independent verification.** A fresh-context agent re-runs the check on the exact head.
-4. **Adversarial review.** `red-team-qa` or `/interrogate` tries to break the change; findings
-   need a reproduction to count.
-5. **Ship gate.** `/ship-check` audits every claim in the summary against the diff, states the
-   blast radius, and lists what was not verified.
-
-`/ship-check` is the answer to "why do I keep finding bugs after it ships": it is the step that
-refuses to report done while a claim lacks an artifact.
-
-Two failure modes it is built to catch:
-
-- **Claim drift.** The summary says "adds tenant isolation" but the diff only filters by user id.
-- **Stale green.** Tests passed before the last edit, or the test was weakened to pass.
-
----
-
-## Token economy
-
-The design assumption is one developer with a real bill.
-
-| Mechanism | Effect |
-|---|---|
-| `AGENTS.md` kept to ~10KB | Saves roughly 5k tokens on every single request |
-| Unmatched skills cost one description | 130 skills without a 130-body tax |
-| `references/` loaded on demand | Long doctrine never rides along by default |
-| Tiering T0–T3 | Trivial work pays no subagent tax |
-| Local checks first | A stack trace costs zero model tokens |
-| Wave cap of 5 | Prevents the fan-out bill that follows a recursion bug |
-| Fresh subagent with a consolidated brief | Avoids paying twice for a dropped directive |
-
-What this deliberately does not do: run a swarm on every task, keep a permanent review panel,
-or re-read the whole repo per request. Multi-agent fan-out is roughly an order of magnitude more
-expensive than a single thread; it is reserved for work that genuinely partitions.
-
----
-
-## Repository map
+## Repository Structure
 
 ```text
-AGENTS.md                     always-loaded rules: permissions, tiers, DoD
-README.md                     this document
-commands/                     slash commands, the human interface
-agents/                       subagent definitions (frontmatter + standing orders)
-skills/                       the catalog
-  INDEX.md                    generated: every skill, grade, owner, trigger
-  ozone-mode/                 the router
-    playbooks/                one file per task class
-  <name>/SKILL.md             one skill
-  <name>/references/          lazy-loaded depth
-tools/
-  lint_config.py              validates skills + agents, regenerates INDEX.md
-  skill_lint.py               second validator, grade sections, staleness
-  routing_cases.json          routing regression fixtures
-  repo_map.py                 AST symbol map for orientation
-docs/                         research notes, skill manifests
+.zcode/
+├── AGENTS.md                         Always-loaded operational contract (12.9 KB)
+├── README.md                         Comprehensive system architecture and guide
+├── commands/                         User-facing slash commands (ozone-mode, ship-check, etc.)
+├── agents/                           51 specialized autonomous subagent profiles
+├── skills/                           141 modular domain & doctrine skills
+│   ├── INDEX.md                      Auto-generated catalog index
+│   ├── ozone-mode/                   Unified engineering router
+│   │   ├── playbooks/                23 deterministic task workflows
+│   │   └── references/               Deep architectural principles
+│   ├── ship-gate/                    Pre-ship claim and diff verification gate
+│   ├── learner/                      Autonomous research & skill synthesizer
+│   ├── test-driven-development/      Genuine TDD & regression methodology
+│   ├── blast-radius/                 Caller search and safety invariant proof
+│   └── <skill-name>/                 Domain skills with decision trees & gates
+├── tools/
+│   ├── lint_config.py                Catalog validator and index generator
+│   ├── skill_lint.py                 Deep skill schema and grade validator
+│   ├── routing_cases.json            Router regression test fixtures
+│   └── repo_map.py                   Zero-token AST repository mapping utility
+└── docs/
+    ├── RESEARCH-2026-10-30.md        Engineering research foundation and citations
+    └── skills/skills.json            Machine-readable skill catalog manifest
 ```
 
 ---
 
-## Extending the system
+## Maintenance & Validation Harness
 
-**Add a skill.** Create `skills/<name>/SKILL.md` with frontmatter (`name`, `description`,
-`metadata` carrying `version`, `domain`, `grade`, `status`, `last-reviewed`, `owned-by-agent`).
-Write a description that states what it does, when to use it, and what routes elsewhere. Include
-the sections your grade requires. Then run both linters and regenerate the index.
-
-**Add an agent.** Create `agents/<name>.md` with `name`, a description carrying a "Use when"
-clause, `mode: subagent`, a `permission` block, and `steps` between 5 and 200. Set `edit: deny`
-for anything whose job is judgment.
-
-**Add a command.** Create `commands/<name>.md` with a description and argument hint, then keep
-the body thin: set the mode, pass `$ARGUMENTS`, point at the skill that owns the method.
-
-**Retire a skill.** Point its description at the replacement, keep the directory until no
-references remain, then delete. Do not leave two skills claiming one trigger.
+To maintain zero-defect catalog integrity, ZCode includes strict automated linters:
 
 ```bash
+# Validate catalog configuration and regenerate skills/INDEX.md
 python tools/lint_config.py --write-index
+
+# Strict validation (warnings treated as build failures)
+python tools/lint_config.py --strict
+
+# Validate structural sections (Decision Tree, Gates, References) and regenerate skills.json
 python tools/skill_lint.py --regen
 ```
 
----
-
-## Provenance
-
-The workflow is a synthesis, not a copy. Primary sources:
-
-- **pstack** (Lauren Tan, `cursor/plugins`, v0.15.36): playbook routing, principle index,
-  prove-it-works, guard-the-context-window, never-block-on-the-human, "green is not safe".
-- **Superpowers** (Jesse Vincent): RED-first discipline, verification-before-completion,
-  two-stage subagent review.
-- **Matt Pocock's skills**: two-axis review (standards versus spec), and the warning that
-  review findings are hypotheses until reproduced.
-- **Birgitta Böckeler / martinfowler.com**: the harness model. Feedforward guides plus feedback
-  sensors; computational checks before inferential ones. Also the honest finding that mandating
-  TDD inside the agent loop shows no measurable quality gain, while mutation testing does measure
-  whether tests can fail.
-- **Kent Beck**: augmented coding, and the three tells of an agent off track: loops, unrequested
-  functionality, tests disabled or deleted.
-- **Charity Majors**: nondeterministic systems require more discipline, not less; characterization
-  tests and observability over correctness theatre.
-- **Simon Willison**: vibe engineering means staying accountable for the software you ship.
-- **Stripe minions**: bounded retries, deterministic nodes for mechanical steps, isolation instead
-  of permission prompts.
-
-Details and URLs: `docs/RESEARCH-2026-10-30.md`.
+### Style & Typography Doctrine
+- **Zero Decorative Emojis**: Strictly prohibited in code, comments, documentation, commit messages, and PR descriptions.
+- **Plain-Text Status Labels**: Use clean labels: `PASS`, `FAIL`, `DONE`, `CHANGED`, `VERIFIED`, `GAPS`, `HOLD`, `SHIP`.
+- **Professional Prose**: Clear, imperative, declarative sentences without corporate AI fluff or conversational padding.
 
 ---
 
-## Limits
+## Engineering Provenance
 
-- **Correctness is not a sensor.** If the requirement was never stated, no gate can catch the
-  gap. `requirements-elicitation` exists for that, and it is the cheapest skill in the catalog.
-- **AI review finds hypotheses.** A finding without a reproduction is a note, not a blocker.
-- **Behaviour verification is unsolved.** Browser and E2E gates catch what they are pointed at,
-  not what nobody thought to check. Say what was not verified.
-- **Tiers are judgment.** The tier decides cost; picking T2 for a typo wastes money, picking T0
-  for a migration risks data. When unsure, size up one tier and say why.
+The ZCode system synthesizes verified principles from leading software and AI systems engineering:
+
+- **pstack** (Lauren Tan, Staff Engineer at Cursor / React Core): Playbook routing, principle indexing, domain modeling, and "green is not safe" doctrine.
+- **Superpowers** (Jesse Vincent): RED-first failure artifacts, verification-before-completion, and two-stage subagent review.
+- **Matt Pocock**: Two-axis review protocol (Standards vs. Spec), and treating unverified review findings as hypotheses rather than blockers.
+- **Birgitta Böckeler & Martin Fowler**: Harness engineering, computational feedback sensors, and mutation testing over superficial test metrics.
+- **Kent Beck**: Augmented coding principles, red-first signal analysis, and early detection of agent drift (loops, unrequested code, test disabling).
+- **Charity Majors**: Rigorous observability and characterization testing over correctness theatre.
+- **Simon Willison**: Accountability in agentic coding; treating generated code as personal responsibility.
+- **Stripe Minions**: Deterministic execution nodes, bounded retries, and strict subagent brief isolation.
+
+Detailed citations, links, and comparative benchmarks are preserved in `docs/RESEARCH-2026-10-30.md`.
