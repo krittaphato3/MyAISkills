@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-31",
-  "count": 141,
+  "generated": "2026-11-03",
+  "count": 142,
   "skills": [
     {
       "name": "accessibility-audit",
@@ -155,11 +155,11 @@
     {
       "name": "browser-automation",
       "path": "skills\\browser-automation\\SKILL.md",
-      "version": "3.2.0",
+      "version": "4.0.0",
       "grade": "G2",
       "domain": "meta",
       "status": "active",
-      "last-reviewed": "2026-10-24",
+      "last-reviewed": "2026-11-03",
       "owned-by-agent": "browser-automation"
     },
     {
@@ -391,6 +391,16 @@
       "status": "active",
       "last-reviewed": "2026-10-22",
       "owned-by-agent": "git-master"
+    },
+    {
+      "name": "graphify",
+      "path": "skills\\graphify\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "architecture",
+      "status": "active",
+      "last-reviewed": "2026-11-03",
+      "owned-by-agent": "solution-architect"
     },
     {
       "name": "how",
@@ -1385,11 +1395,11 @@
     {
       "name": "web-search",
       "path": "skills\\web-search\\SKILL.md",
-      "version": "3.2.0",
+      "version": "4.0.0",
       "grade": "G2",
       "domain": "meta",
       "status": "active",
-      "last-reviewed": "2026-10-28",
+      "last-reviewed": "2026-11-03",
       "owned-by-agent": "browser-automation"
     },
     {

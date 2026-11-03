@@ -1,126 +1,239 @@
 ---
 name: web-search
 description: >-
-  Searches the web and reads external documentation with dual-track architecture: strictly prioritizes
-  the native harness WebFetch tool whenever available for maximum token efficiency and built-in caching,
-  paired with local CLI tools/web_search.mjs for multi-engine querying (Web, GitHub, npm, StackOverflow, Wikipedia),
-  and tools/webfetch.mjs as a zero-dependency fallback only when no native tool exists. Use whenever a task requires
-  gathering external information, reading library documentation, verifying repository links, or troubleshooting errors.
-  Multi-source research synthesis routes to deep-researcher; Google-default browser operations route to browser-automation.
+  Searches the web, extracts online documentation, and investigates external facts with a resilient 4-tier
+  search and reading ladder. Prioritizes in-app native WebFetch for zero-token-bloat reading and native WebSearch
+  for discovery; seamlessly escalates to Playwright MCP for anti-bot immune headless browser searching (Bing/Google)
+  and JS-rendered SPAs; integrates in-app Browser Use (control-browser) for ZCode desktop in-app browser (iab)
+  verification; and retains tools/web_search.mjs and tools/webfetch.mjs as portable CLI fallbacks. Use whenever a task
+  requires gathering online information, reading library API docs, researching technical problems, or verifying URLs.
+  Multi-source deep research synthesis routes to deep-researcher; complex UI interactions route to browser-automation.
 metadata:
-  version: 3.2.0
+  version: 4.0.0
   domain: meta
   grade: G2
   status: active
-  last-reviewed: '2026-10-28'
+  last-reviewed: '2026-11-03'
   owned-by-agent: browser-automation
 ---
 
-# Web Search & Fetch (Native Harness WebFetch Priority)
+# Web Search, Fetch, and Online Research Ladder
 
-This skill governs web search and online documentation retrieval across environments. **Whenever the host
-harness provides a native `WebFetch` tool (as ZCode does), it MUST be used instead of CLI scripts.** In most cases,
-native `WebFetch` is vastly more efficient: it keeps raw HTML dumps out of the conversation context window,
-uses a fast internal model to synthesize targeted answers, and automatically leverages a 15-minute response cache.
-
-The local CLI `tools/webfetch.mjs` is strictly a portable fallback for non-ZCode harnesses lacking native web
-capabilities, or for rare edge cases where local shell piping / raw byte inspection is required.
+This skill establishes the comprehensive, multi-tier search and online retrieval architecture for ZCode and external harnesses. It eliminates common search and research flaws (such as anti-bot blocks, empty JavaScript pages, unhandled provider errors, and context window bloat) by orchestrating in-app built-in tools, Playwright MCP, in-app Browser Use, and portable CLI fallbacks.
 
 ## WHEN TO USE
 
-- Use when gathering external technical knowledge, reading library API docs, inspecting changelogs, or troubleshooting errors that the local repository cannot answer.
-- **On ZCode, always reach for the native `WebFetch` tool first.** It is the primary, default, and most efficient method to read web pages and extract facts without context bloat.
-- Use `tools/web_search.mjs` to discover candidate URLs across Web, GitHub, NPM, StackOverflow, and Wikipedia.
-- Use `tools/webfetch.mjs` when on a foreign harness that lacks a native fetch tool, or on ZCode when piping raw output to a local script or inspecting raw JSON endpoints.
+- Searching the web for technical documentation, library APIs, framework updates, or RFCs.
+- Researching bugs, troubleshooting error stack traces, and gathering community solutions from GitHub, StackOverflow, or blogs.
+- Reading and extracting facts from external URLs with token efficiency.
+- Inspecting JavaScript-heavy Single Page Applications (SPAs) or Cloudflare-protected documentation portals.
+- Viewing or operating web pages in ZCode Desktop's In-App Browser (`iab`).
+- Verifying whether a library, tool, or syntax still exists or has changed in modern releases (`source-driven-development`).
 
 ## WHEN NOT TO USE
 
-- The local codebase already answers the question — grep first.
-- Multi-source synthesis with structured citations — `deep-researcher` (agent), which coordinates these tools.
-- Google-default browser searching, interactive SPA navigation, authenticated flows, or visual regression — `browser-automation`.
+- The local repository or workspace already contains the answer — grep/read local files first.
+- Multi-source deep research synthesis with formal source verification ledger — coordinate via `deep-researcher` agent.
+- Complex multi-step web interaction flows, form submissions, or visual UI testing — coordinate via `browser-automation` agent.
 
-## EXECUTION HIERARCHY
+## DECISION TREE
+
+```text
+User asks to search, fetch, or research online:
+  │
+  ├─► [TASK IS URL EXTRACTION / READING A PAGE]
+  │     │
+  │     ├─► Step 1: Call native WebFetch(url, prompt)
+  │     │     │
+  │     │     ├─► Success: Extract markdown answer, quote facts with cited URL. Done.
+  │     │     │
+  │     │     └─► Fails (HTTP 403, Cloudflare, blank JS-only container, or login required):
+  │     │           ▼
+  │     ├─► Step 2: Escalate to Playwright MCP (mcp_playwright_browser_navigate)
+  │     │     │     Run mcp_playwright_browser_evaluate to extract main article text,
+  │     │     │     or mcp_playwright_browser_snapshot(depth=2). Done.
+  │     │     │
+  │     │     └─► If user requested in-app visible browsing or local HTTP testing:
+  │     │           ▼
+  │     └─► Step 3: Use In-App Browser Use (browser-use:control-browser via mcp_node_repl_js).
+  │
+  └─► [TASK IS SEARCHING / DISCOVERING INFORMATION]
+        │
+        ├─► Step 1: Try native WebSearch(query)
+        │     │
+        │     ├─► Success: Extract candidate URLs and summaries. Proceed to fetch.
+        │     │
+        │     └─► Fails (e.g. "openai-compatible does not encode provider-native WebSearch"):
+        │           ▼
+        ├─► Step 2: Escalate to Playwright MCP Headless Browser Search
+        │     │     Navigate to `https://www.bing.com/search?q=<query>`
+        │     │     (Bing avoids headless 429 sorry CAPTCHAs that Google triggers).
+        │     │     Evaluate structured results: title, url, snippet via document.querySelectorAll.
+        │     │     Proceed to fetch top candidates.
+        │     │
+        └─► Step 3: Portable CLI Fallback (when MCP is disconnected or in foreign shell)
+                    Execute `node tools/web_search.mjs "<query>"`
+                    (Auto-queries Web with Bing fallback, GitHub, npm, StackOverflow).
+```
+
+## THE 4-TIER SEARCH & FETCH HIERARCHY
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ 1. SEARCH: Discover URLs & Candidates                                       │
-│    node tools/web_search.mjs "<query>" [--type=web|github|npm|so] [--json]  │
+│ TIER 1: IN-APP BUILT-IN NATIVE TOOLS (Zero-overhead, Fast, Token-Isolated)  │
+│ • Reading URLs: WebFetch(url="...", prompt="...")                           │
+│   Converts page to markdown, synthesizes targeted answer, caches for 15m.   │
+│ • Searching: WebSearch(query="...")                                         │
+│   Native provider search. Note: if active provider is openai-compatible,     │
+│   WebSearch returns an encoding error; immediately escalate to Tier 2.      │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ 2. READ & GATHER INFORMATION (Strict Efficiency Rule):                      │
-│    • NATIVE WEBFETCH AVAILABLE (ZCode / Native Harness) -> MANDATORY DEFAULT│
-│      WebFetch(url="<url>", prompt="<what specific info to extract>")        │
-│      -> Keeps full HTML out of context window; utilizes 15-min cache.       │
-│                                                                             │
-│    • NO NATIVE TOOL AVAILABLE (Portable Fallback) -> tools/webfetch.mjs     │
-│      node tools/webfetch.mjs <url> [--max-chars=8000] [--focus=<term>]      │
-│      -> Zero-dependency Node fallback for headless/minimal environments.    │
+│ TIER 2: PLAYWRIGHT MCP (Full Headless Browser Engine, Anti-Bot Immune)      │
+│ • Searching: mcp_playwright_browser_navigate to Bing Search                 │
+│   https://www.bing.com/search?q=<query>                                     │
+│   Use mcp_playwright_browser_evaluate to parse clean titles, URLs, snippets.│
+│ • JS SPAs & Cloudflare Pages: mcp_playwright_browser_navigate to target URL │
+│   Executes real client-side JavaScript, renders React/Vue DOMs, handles     │
+│   redirects, extracts exact text via evaluate or snapshot(depth=2).         │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ 3. INTERACTIVE / JS-HEAVY / GOOGLE-SPECIFIC:                                │
-│    • Use browser-automation via Playwright MCP in background headless mode. │
+│ TIER 3: IN-APP BROWSER USE (ZCode Desktop In-App Browser `iab`)             │
+│ • Load skill `browser-use:control-browser` via mcp_node_repl_js             │
+│ • Drives ZCode's built-in webview tab for visible browsing, UI checks, and  │
+│   localhost HTTP targets (127.0.0.1, localhost).                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ TIER 4: PORTABLE CLI FALLBACKS (Headless Scripts for Foreign Environments)   │
+│ • Discover: node tools/web_search.mjs "<query>" [--type=web|github|npm|so]  │
+│ • Read: node tools/webfetch.mjs <url> [--max-chars=8000] [--focus=<term>]   │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## HOW TO EXECUTE
 
-### 1. Search with `tools/web_search.mjs`
+### 1. Searching the Web
 
-```bash
-node tools/web_search.mjs "<query>"              # deduped results with snippets across all sources
-node tools/web_search.mjs "<query>" --type=npm   # web | github | npm | so | auto (default)
-node tools/web_search.mjs "<query>" --json       # structured JSON output
-```
-
-Auto-routing inspects the query to include GitHub, NPM, or StackOverflow when technical keywords appear.
-
-### 2. Read and Extract Content
-
-#### A. Native Harness `WebFetch` (Mandatory First Choice)
-Whenever available, call `WebFetch` directly:
+#### A. In-App Built-In `WebSearch`
 ```json
 {
-  "url": "https://example.com/docs/api",
-  "prompt": "Extract the authentication requirements and curl examples."
+  "query": "playwright browser automation best practices"
 }
 ```
-**Why native `WebFetch` is prioritized:**
-- **Zero Token Bloat**: Raw HTML, stylesheets, and scripts are stripped and processed by a dedicated lightweight model; only the concise, relevant answer enters the conversation context.
-- **15-Minute Response Cache**: Repeated lookups within 15 minutes are instantaneous and zero-cost.
-- **Natural Language Extraction**: Directly extracts specific sections, function signatures, or parameters from the page.
+If this succeeds, use the top result URLs. If it returns `Provider API kind openai-compatible does not encode provider-native WebSearch`, immediately proceed to Playwright MCP.
 
-#### B. Portable Fallback `tools/webfetch.mjs`
-Used only when no native tool is present, or when piping raw stream output to a shell command:
-```bash
-node tools/webfetch.mjs <url>                    # readable text, 8000 chars default
-node tools/webfetch.mjs <url> --max-chars=3000   # token budget
-node tools/webfetch.mjs <url> --focus=install    # only matching lines, with context
-node tools/webfetch.mjs <url> --json             # {url,status,title,content,truncated} — for raw JSON APIs
-node tools/webfetch.mjs <url> --raw              # no HTML extraction / raw markup inspection
+#### B. Playwright MCP Headless Search (Standard Automated Fallback)
+Navigate to Bing search in headless mode:
+```json
+{
+  "url": "https://www.bing.com/search?q=playwright+browser+automation"
+}
+```
+Then extract clean results using `mcp_playwright_browser_evaluate`:
+```js
+() => {
+  const items = [];
+  document.querySelectorAll('li.b_algo').forEach(el => {
+    const a = el.querySelector('h2 a');
+    const p = el.querySelector('.b_caption p, .b_snippet, .b_lineclamp');
+    if (a && a.href) {
+      let url = a.href;
+      const uMatch = url.match(/[?&]u=a1([^&]+)/);
+      if (uMatch) {
+        try {
+          let b64 = uMatch[1].replace(/-/g, '+').replace(/_/g, '/');
+          while (b64.length % 4) b64 += '=';
+          url = atob(b64);
+        } catch (e) {}
+      }
+      items.push({
+        title: a.innerText.trim(),
+        url,
+        snippet: p ? p.innerText.trim() : ''
+      });
+    }
+  });
+  return items.slice(0, 5);
+}
 ```
 
-## PATTERNS & BEST PRACTICES
+#### C. Multi-Engine CLI Search (`tools/web_search.mjs`)
+When MCP is not connected or in shell pipelines:
+```bash
+node tools/web_search.mjs "<query>"              # Multi-engine search with snippets
+node tools/web_search.mjs "<query>" --type=npm   # Target npm registry
+node tools/web_search.mjs "<query>" --type=github# Target GitHub repositories
+node tools/web_search.mjs "<query>" --json       # Structured JSON output
+```
 
-- **Verify before citing.** A search snippet is only a lead: always fetch the URL via `WebFetch` (or `webfetch.mjs` when on a headless environment without native tools) to verify content before citing.
-- **Targeted prompts for WebFetch.** Formulate specific prompts (e.g. "What parameters does method X accept?") to get concise, high-signal results.
-- **API and Version checks.** Always verify library syntax against current live docs rather than relying on training memories (`source-driven-development`).
-- **Error diagnostics.** Search the exact error message with `--type=so`, then fetch the accepted answer.
+### 2. Reading Web Pages & Documentation
+
+#### A. In-App Built-In `WebFetch` (Mandatory First Choice)
+Always try native `WebFetch` first:
+```json
+{
+  "url": "https://playwright.dev/docs/intro",
+  "prompt": "Extract the installation commands and core browser setup steps."
+}
+```
+Benefits:
+- Eliminates context bloat: raw HTML is stripped and summarized by a dedicated sub-model.
+- 15-minute response cache across turns.
+
+#### B. Escalating to Playwright MCP for JS-Rendered Sites & SPAs
+If `WebFetch` returns an empty container, Cloudflare error, or "enable JavaScript":
+1. Call `mcp_playwright_browser_navigate`:
+```json
+{
+  "url": "https://example-spa-docs.com"
+}
+```
+2. Extract targeted article content with `mcp_playwright_browser_evaluate`:
+```js
+() => {
+  const main = document.querySelector('article, main, .content, #content') || document.body;
+  return main.innerText.slice(0, 8000);
+}
+```
+Or call `mcp_playwright_browser_snapshot(depth=2)` to inspect the accessibility structure.
+
+#### C. In-App Browser Use (`browser-use:control-browser`)
+For ZCode In-App Browser control:
+Invoke `mcp_node_repl_js` after loading the `browser-use:control-browser` skill bootstrap.
+
+## RESEARCH SYNTHESIS PROTOCOL (Deep Research)
+
+When a task requires comprehensive multi-source technical investigation:
+1. **Formulate targeted search queries**: Search API names, error signatures, or library versions.
+2. **Retrieve sources via the Search Ladder**: Use `WebSearch` -> Playwright MCP (Bing) -> `tools/web_search.mjs`.
+3. **Read top 3 authoritative sources**: Prefer official documentation, vendor release notes, or official GitHub issues.
+4. **Escalate on render failure**: If a docs site is an SPA, immediately switch to Playwright MCP rather than reporting failure.
+5. **Cross-validate**: Verify findings across at least 2 independent sources.
+6. **Cite exact URLs**: Every quoted finding must be attributed with its live Markdown link `[Source Title](https://...)`.
 
 ## FAILURE MODES & MITIGATIONS
 
-1. **Hallucinated URL.** *DETECT:* citing a link never fetched. *FIX:* fetch first; verify HTTP 200 before quoting.
-2. **Empty body / non-2xx.** *DETECT:* HTTP 403/404, bot walls, empty responses. *FIX:* report as a limitation; switch to Playwright MCP (`browser-automation`) if the content is vital.
-3. **JS-only SPA pages.** *DETECT:* `WebFetch` or static fetch returns an empty container. *FIX:* route to `browser-automation` subagent to execute client-side JavaScript headlessly.
-4. **Stale snippet.** *DETECT:* search snippet contradicts fetched documentation. *FIX:* the fetched document wins.
+1. **Provider WebSearch Unsupported.** *DETECT:* `Provider API kind openai-compatible does not encode provider-native WebSearch`. *FIX:* Immediately use Playwright MCP search (`https://www.bing.com/search?q=...`) without showing errors to the user.
+2. **Google Headless 429 Challenge.** *DETECT:* Navigating to Google in headless Playwright redirects to `https://www.google.com/sorry/index`. *FIX:* Default headless browser search to Bing (`https://www.bing.com/search?q=...`) which does not trigger 429 blocks in headless mode.
+3. **Blank SPA / JS-Only Page.** *DETECT:* `WebFetch` returns blank or "enable JavaScript". *FIX:* Escalate to Playwright MCP (`mcp_playwright_browser_navigate`) to execute client-side JS and evaluate the DOM.
+4. **Cloudflare / Bot Challenge.** *DETECT:* HTTP 403 or Cloudflare challenge in fetch. *FIX:* Use Playwright MCP with human-like navigation or in-app browser (`iab`).
+5. **Hallucinated Link / Quote.** *DETECT:* Citing a URL that was not retrieved in the active session. *FIX:* Only cite URLs fetched and verified in this session.
 
 ## QUANTITATIVE RULES
 
-- Search first, fetch at most the top 3 relevant results per query.
-- Make `WebFetch` prompts specific to extract only what is needed for the task.
-- If native `WebFetch` is available, never fall back to `webfetch.mjs` unless shell piping or raw JSON stream inspection is required.
-- Every cited URL must have been fetched during the active session.
+- Search first, fetch at most the top 3-4 most relevant candidate URLs per subtask.
+- Always include a specific `prompt` parameter in `WebFetch` calls to extract only relevant sections.
+- When evaluating search results in Playwright, cap extracted results to top 5 items.
+- Never output raw unprocessed HTML dumps into the main thread.
+- Always report cited findings with full markdown links: `[Title](https://...)`.
 
 ## VERIFICATION GATE
 
-- [ ] Results were fetched during this session (not hallucinated or recalled from memory).
-- [ ] On ZCode, native `WebFetch` was used as the primary tool to extract page information unless raw CLI processing was explicitly required.
-- [ ] Quotes trace directly to fetched content with valid URLs.
-- [ ] Failures (403, 404, JS-only) are reported as limitations with the path attempted.
+- [ ] Web search was performed using the resilient search ladder (WebSearch -> Playwright MCP -> tools/web_search.mjs).
+- [ ] Documentation and URLs were read using native WebFetch or Playwright MCP (never hallucinated).
+- [ ] Any client-side SPA or JS-heavy page was rendered via Playwright MCP rather than abandoned.
+- [ ] Every claim, version number, or code pattern is backed by an active-session citation.
+- [ ] Zero unhandled provider-native search errors leaked to user output.
+
+## REFERENCES
+
+- Playwright MCP Server Documentation
+- ZCode Desktop Browser Use Plugin (`browser-use:control-browser`)
+- Local Multi-Engine Search Utility (`tools/web_search.mjs`)
+- Local Portable Fetch Utility (`tools/webfetch.mjs`)

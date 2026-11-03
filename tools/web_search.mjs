@@ -61,8 +61,64 @@ function request(url, options = {}) {
   });
 }
 
+function decodeBingUrl(url) {
+  try {
+    const uMatch = url.match(/[?&]u=a1([^&]+)/);
+    if (uMatch) {
+      let b64 = uMatch[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      return Buffer.from(b64, 'base64').toString('utf8');
+    }
+  } catch (e) {}
+  return url;
+}
+
+export async function searchBingWeb(query, limit = 6) {
+  const url = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+  const res = await request(url);
+  if (!res.body || res.status !== 200) return [];
+
+  const results = [];
+  const blocks = res.body.split('<li class="b_algo"');
+  for (const b of blocks.slice(1, limit + 2)) {
+    if (results.length >= limit) break;
+    const titleMatch = b.match(/<h2><a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a><\/h2>/i);
+    const snippetMatch = b.match(/<p class="b_lineclamp[^"]*"[^>]*>([\s\S]*?)<\/p>/i) || b.match(/<div class="b_caption">[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/i);
+
+    if (titleMatch) {
+      let url = titleMatch[1].replace(/&amp;/g, '&');
+      url = decodeBingUrl(url);
+
+      const title = titleMatch[2]
+        .replace(/<[^>]+>/g, '')
+        .replace(/&#x27;|&#39;|&apos;/g, "'")
+        .replace(/&quot;/g, '"')
+        .replace(/&amp;/g, '&')
+        .replace(/&#183;/g, '·')
+        .trim();
+
+      const snippet = snippetMatch
+        ? snippetMatch[1]
+            .replace(/<[^>]+>/g, '')
+            .replace(/&#x27;|&#39;|&apos;/g, "'")
+            .replace(/&quot;/g, '"')
+            .replace(/&amp;/g, '&')
+            .trim()
+        : '';
+
+      results.push({
+        title,
+        url,
+        snippet,
+        source: 'web'
+      });
+    }
+  }
+  return results;
+}
+
 /**
- * High-reliability Web Search via DuckDuckGo POST
+ * High-reliability Web Search via DuckDuckGo POST with Bing fallback
  */
 export async function searchWeb(query, limit = 6) {
   const postData = 'q=' + encodeURIComponent(query) + '&b=';
@@ -76,7 +132,9 @@ export async function searchWeb(query, limit = 6) {
     }
   });
 
-  if (!res.body || res.status !== 200) return [];
+  if (!res.body || res.status !== 200) {
+    return await searchBingWeb(query, limit);
+  }
 
   const results = [];
   const blocks = res.body.split('<div class="result results_links');
@@ -119,6 +177,9 @@ export async function searchWeb(query, limit = 6) {
         source: 'web'
       });
     }
+  }
+  if (results.length === 0) {
+    return await searchBingWeb(query, limit);
   }
   return results;
 }

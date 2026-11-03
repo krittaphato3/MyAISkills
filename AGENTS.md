@@ -153,12 +153,13 @@ router, not a gate in front of it.
 | Security: audit, threat review, hardening | `threat-modeling` or `security-hardening-specialist` |
 | Roblox anything | matching `roblox-*` skill; execution -> `roblox-studio-mcp` |
 | Two or more domains in one task | `general-orchestrator` |
-| Research or external docs | `web-search` / `browser-automation` |
+| Web search, external docs, page reading | `web-search`; interactive/browser -> `browser-automation`; in-app desktop browser -> `browser-use:control-browser` |
+| Multi-source deep research, external facts, RFCs | `deep-researcher` (agent) + `web-search` |
+| Architecture mapping, codebase graph, dependency exploration | `graphify`, `codebase-navigation` |
 | Shipping anything | `ship-gate` |
 | Same correction twice | `correct` |
 | Unfamiliar technology, novel framework, or missing domain skill | `learner` |
 | Writing, docs, README, reports | `technical-writing`; long-form docs -> `readme-architect` |
-| Research, external facts, page reading | `web-search` / `browser-automation` |
 | Planning, specs, ambiguous scope | `deep-planner`, `spec-driven-development`, `requirements-elicitation` |
 | Learning or explaining a topic | `teach` |
 | Product and scope tradeoffs | `product-engineering`, `principle-experience-first` |
