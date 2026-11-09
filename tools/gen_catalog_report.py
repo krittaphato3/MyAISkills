@@ -273,9 +273,11 @@ def build() -> str:
 
     L += ["## Regenerating", "",
           "```bash",
-          "python tools/gen_routing.py            # docs/ROUTING.md",
-          "python tools/gen_catalog_report.py     # this file",
-          "python tools/lint_config.py --write-index",
+          "python tools/gen_routing.py             # docs/ROUTING.md",
+          "python tools/lint_config.py --write-index  # skills/INDEX.md",
+          "python tools/skill_lint.py --regen         # docs/skills/skills.json",
+          "python tools/sync_catalog.py --apply --prune",
+          "python tools/gen_catalog_report.py      # this file, after the sync",
           "```", ""]
     return "\n".join(L)
 

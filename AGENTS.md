@@ -309,12 +309,15 @@ All lines true and evidenced before reporting completion:
 
 ```bash
 python tools/gen_routing.py                 # regenerate docs/ROUTING.md (coverage index)
-python tools/gen_catalog_report.py          # regenerate docs/catalog-report.md (real numbers)
 python tools/lint_config.py --write-index   # validate + regenerate skills/INDEX.md
 python tools/skill_lint.py --regen          # second validator + docs/skills/skills.json
-python tools/sync_catalog.py                # report drift against the deployed copy
-python tools/sync_catalog.py --apply        # make the deployed copy match this repo
+python tools/sync_catalog.py --apply --prune # deploy; prune files absent from the source
+python tools/gen_catalog_report.py          # regenerate docs/catalog-report.md (real numbers)
+python tools/sync_catalog.py                # confirm: must print "in sync"
 ```
+
+The report goes **after** the sync: it records the deployed diff, so generating it first
+guarantees it goes stale the moment the sync copies anything.
 
 - Validate after any change to `skills/` or `agents/`. Regenerate the index after adding,
   removing, or renaming a skill. Regenerate `docs/ROUTING.md` and the report in the same pass.
@@ -322,7 +325,8 @@ python tools/sync_catalog.py --apply        # make the deployed copy match this 
   skill and agent; the linter fails if one is missing. `docs/catalog-report.md` carries the counts,
   the budget, and the conformance gaps — never hand-edit either.
 - This repo is the source of truth. The deployed catalog is a build artifact; `sync_catalog.py
-  --check` must report `in sync` before the config is considered shipped.
+  --check` must report `in sync` before the config is considered shipped. The deployed `AGENTS.md`
+  is a pointer to this file, not a copy; `sync_catalog.py` warns if it grows past 4 KB.
 - Changes to this file or the roster are `meta-architect` work and get a version bump.
 - A skill unexercised for 6 months, or overlapping a newer one, points at its replacement in its
   description; delete only after all references are gone.

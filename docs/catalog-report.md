@@ -151,27 +151,17 @@ No runner executes this fixture; `lint_config.py` validates its schema only.
 - source: `C:\Users\Oz\.zcode`
 - deployed: `C:\Users\Oz\.config\opencode`
 - files only in source: 0
-- files that differ: 12
+- files that differ: 0
 
-  - `skills\principles\references\build-the-lever.md`
-  - `skills\principles\references\minimize-reader-load.md`
-  - `skills\ozone-mode\playbooks\autopilot-full.md`
-  - `skills\ozone-mode\playbooks\autopilot-stack.md`
-  - `skills\ozone-mode\playbooks\bug-fix.md`
-  - `skills\ozone-mode\playbooks\feature.md`
-  - `skills\ozone-mode\playbooks\multi-phase-plan.md`
-  - `skills\ozone-mode\playbooks\orchestrate.md`
-  - `skills\ozone-mode\playbooks\refactoring.md`
-  - `skills\ozone-mode\playbooks\session-pickup.md`
-  - `skills\ozone-mode\playbooks\trace-forensics.md`
-  - `skills\ozone-mode\playbooks\worktree-cleanup.md`
 
 Run `python tools/sync_catalog.py --check` for the authoritative diff.
 
 ## Regenerating
 
 ```bash
-python tools/gen_routing.py            # docs/ROUTING.md
-python tools/gen_catalog_report.py     # this file
-python tools/lint_config.py --write-index
+python tools/gen_routing.py             # docs/ROUTING.md
+python tools/lint_config.py --write-index  # skills/INDEX.md
+python tools/skill_lint.py --regen         # docs/skills/skills.json
+python tools/sync_catalog.py --apply --prune
+python tools/gen_catalog_report.py      # this file, after the sync
 ```

@@ -419,7 +419,8 @@ ZCode respects clear boundaries between autonomous local actions and outward-fac
 To maintain zero-defect catalog integrity, ZCode includes strict automated linters:
 
 ```bash
-# Validate catalog configuration and regenerate skills/INDEX.md
+# Regenerate the routing index, then validate and regenerate skills/INDEX.md
+python tools/gen_routing.py
 python tools/lint_config.py --write-index
 
 # Strict validation (warnings treated as build failures)
@@ -427,6 +428,11 @@ python tools/lint_config.py --strict
 
 # Validate structural sections (Decision Tree, Gates, References) and regenerate skills.json
 python tools/skill_lint.py --regen
+
+# Deploy, then regenerate the report from the deployed state, then confirm
+python tools/sync_catalog.py --apply --prune
+python tools/gen_catalog_report.py
+python tools/sync_catalog.py
 ```
 
 ### Style & Typography Doctrine
