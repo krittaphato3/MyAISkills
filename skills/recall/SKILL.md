@@ -5,11 +5,11 @@ description: Reconstruct your recent working context from your own chat history,
   my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting
   or resuming work.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: meta-architect
 ---
 
@@ -22,7 +22,7 @@ Keep it tight and on-topic. Read only what the in-scope threads need, then stop.
 
 Your context lives in two records. Your own chat history holds what you did and decided. The shared record holds everything that happened around the same code under other names: the symptoms users keep reporting, the fixes that shipped and got reverted, the errors still firing in prod. That second record is what the **why** skill searches, across source control, the issue tracker, chat and issue channels, long-form docs, and error tracking. A feature with a long bug tail keeps most of its story there, so don't reconstruct it from your transcripts alone.
 
-Transcripts live at `~/.pi/agent/sessions/<dashed-repo-path>/<timestamp>_<uuid>.jsonl`, where `<dashed-repo-path>`, one directory per workspace: the repo path between two dashes with every `/` turned into `-` (so `/Users/you/proj` becomes `--Users-you-proj--`). Every line is one chat message.
+Transcripts live in a per-workspace session directory named by the harness (the system prompt names the `agent-transcripts/` path). Every line is one chat message. Read only the active workspace's directory.
 
 1. Classify, then route. One specific prior chat to resume is the `session-pickup` playbook, not this. Turning habits into a durable skill is `automate-me`. A human-readable summary of your work is a different task. Recall loads working context across recent chats before you act. If the user already gave you a full state capsule (paths, branch, the change), use it and skip the mining.
 2. Lock the scope before searching. Pin the window ("recent" is a real range, default the last 7 days), the topic if named, and the workspace (default the active one; never read another project's transcripts without being asked). State the scope back. Never quietly turn "all" into "recent N".
@@ -44,6 +44,22 @@ An adjacent feature or ticket stays out unless it blocks this one. When the caps
 
 **Reply:** the brief, to the contract above.
 
+## DECISION TREE
+
+- The user asks what they were doing -> reconstruct from transcripts, git state, and the shared record.
+- The user asks what happened in this session -> read the conversation, not the disk.
+- The question is "why was this built this way" -> `why`.
+- The question is "how does this work" -> `how`.
+- No transcript and no shared record exists -> say so; do not invent a history.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Reading another workspace's chats.** Mitigation: only the active workspace's transcript directory.
+- **Guesses presented as history.** Mitigation: every claim cites a transcript, commit, or file.
+- **Dumping the transcript.** Mitigation: return the current-state brief, not the raw log.
+- **Missing the uncommitted work.** Mitigation: check `git status` and the recent diff as part of recall.
+- **Recency mistaken for importance.** Mitigation: order by what blocks the next action.
+
 ## WHEN TO USE
 
 Resuming after a break, compaction, or handoff; "where were we" requests.
@@ -57,3 +73,9 @@ Design history is the question — `why`.
 
 Restated goal, decisions, current gate, and next action match the record.
 No history invented; unknowns marked as unknown.
+
+## REFERENCES
+
+- `session-continuity` - the durable handoff format.
+- `ketchup` - the delta since the last message.
+- `show-me-your-work` - the decision trail, when one exists.

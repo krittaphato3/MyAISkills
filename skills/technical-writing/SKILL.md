@@ -4,11 +4,11 @@ description: 'Layered technical-writing standard: Diátaxis structure, Google de
   STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing
   docs, RFCs, readmes, PR descriptions, or commit messages.'
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: documentation-engineer
 ---
 
@@ -138,6 +138,25 @@ Apply to any prose this skill covers. Item 1 applies only to document sets:
 7. Would a developer say these words out loud? Replace invented metaphors and fancy synonyms with the plain word or the real symbol name.
 8. Are all symbols, paths, and counts real at this commit, with the commands that regenerate the counts?
 
+## DECISION TREE
+
+- The reader needs to learn -> tutorial.
+- The reader needs to accomplish a task -> how-to.
+- The reader needs to look something up -> reference.
+- The reader needs to understand a decision -> explanation.
+- One document is serving two modes -> split it.
+- The audience is not native English -> apply Global English rules first.
+- The text is a procedure -> numbered imperative steps, one action each.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Mode mixing.** Mitigation: name the mode before drafting; move the other mode to its own file.
+- **Buried instruction.** Mitigation: the action is the first word of the step.
+- **Untranslatable idiom.** Mitigation: literal verbs and short sentences.
+- **Unchecked code sample.** Mitigation: run every command in the sample.
+- **A doc that restates the code.** Mitigation: document the contract and the why, not the syntax.
+- **Passive voice hiding the actor.** Mitigation: name the actor or use the imperative.
+
 ## WHEN TO USE
 
 Docs, RFCs, READMEs, PR descriptions, or commit messages.
@@ -150,3 +169,9 @@ API reference generated from code.
 ## VERIFICATION GATE
 
 Structure matches the Diátaxis mode; sentences pass the checklist; no line reads two ways.
+
+## REFERENCES
+
+- `readme-architect` - README structure and positioning.
+- `documentation-engineer` - the agent that writes the durable doc.
+- `unslop` - removing filler from finished prose.

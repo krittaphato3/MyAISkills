@@ -6,11 +6,11 @@ description: 'Builds and maintains an offline project architecture index (roblox
   sweeps with an instant local map. Use when opening or switching Roblox projects, mapping architecture,
   or looking up remotes and scripts.'
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: roblox
   grade: G3
   status: active
-  last-reviewed: '2026-10-26'
+  last-reviewed: '2026-11-09'
   authored-by: roblox-scripter
 ---
 
@@ -196,6 +196,27 @@ Generate `<project_root>/roblox_project_index.md` formatted for rapid agent retr
 
 ---
 
+## FAILURE MODES & MITIGATIONS
+
+- **One shared index across projects.** Mitigation: the per-project storage rule; the path carries the
+  place id or project slug.
+- **Index written from memory.** Mitigation: every entry comes from the generator's output.
+- **Stale after a rename.** Mitigation: regenerate after any remote, script, GUI, or tag change and
+  record the timestamp in the markdown header.
+- **Inventory without tags.** Mitigation: `CollectionService` tags are part of the index.
+- **Index shadowing the truth.** Mitigation: when the index and the live tree disagree, the tree wins;
+  regenerate.
+
+## QUANTITATIVE RULES
+
+| Dimension | Rule |
+|---|---|
+| Storage | one index per project, inside that project's own directory |
+| Refresh point | after any tree change that adds, renames, or removes a script, remote, GUI, or tag |
+| Script coverage | every script under `ServerScriptService`, `ReplicatedStorage`, `StarterPlayer`, `StarterGui` |
+| Remote coverage | every `RemoteEvent` and `RemoteFunction`, with its direction |
+| Outputs | JSON index and markdown index, generated from the same pass |
+
 ## VERIFICATION GATE
 
 Before relying on or declaring index generation complete:
@@ -205,3 +226,10 @@ Before relying on or declaring index generation complete:
 - [ ] Scripts, networking remotes, GUI surfaces, and `CollectionService` tags are comprehensively cataloged.
 - [ ] Full DataModel paths begin with `game.` and accurately represent instance hierarchy.
 - [ ] Subsequent code exploration tools consult the local index instead of executing heavy Studio sweeps.
+
+## REFERENCES
+
+- `roblox-scripting` - the systems that consume the index.
+- `roblox-studio-mcp` - the execution channel for the generator.
+- `roblox-game-director` - the milestone loop that refreshes it.
+- `codebase-navigation` - the code-only equivalent for non-Roblox repos.

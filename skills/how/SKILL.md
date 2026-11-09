@@ -5,11 +5,11 @@ description: Use for "how does X work", code walkthroughs before changing someth
   Explains subsystem architecture, runtime flow, onboarding mental models. Can critique architecture.
   Use why for motivation.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: codebase-cartographer
 ---
 
@@ -56,7 +56,7 @@ The right decomposition depends on the question. Use your judgment. Narrow quest
 Spawn all explorers in a single message:
 
 - `agent`: `general-purpose`
-- `model`: your configured how-explorer model (default `grok-4.6-fast-xhigh`)
+- `model`: your configured explorer model; a fast, cheap model is usually right
 - `readonly`: `true`
 
 Each explorer gets the same base prompt from `references/explorer-prompt.md` plus a specific exploration angle naming its slice. Each explorer should:
@@ -75,7 +75,7 @@ Then proceed to Step 3.
 Spawn a single subagent that explores and explains in one pass:
 
 - `agent`: `general-purpose`
-- `model`: your configured how-explainer model (default `claude-fable-5-thinking-max`)
+- `model`: your configured explainer model; the strongest model you have access to
 - `readonly`: `true`
 
 The agent does its own exploration (Glob, Grep, Read) and writes the explanation directly. Read `references/explainer-prompt.md` for the communication style and output format. Same structure, just no explorer findings as input.
@@ -87,7 +87,7 @@ Proceed to Step 4.
 Once all explorers return, spawn a single subagent to synthesize their findings into one coherent explanation:
 
 - `agent`: `general-purpose`
-- `model`: your configured how-explainer model (default `claude-fable-5-thinking-max`)
+- `model`: your configured explainer model; the strongest model you have access to
 - `readonly`: `true`
 
 The explainer gets all explorers' findings and writes the human-facing explanation (output format below). Read `references/explainer-prompt.md` for the full prompt template. The explainer reconciles overlapping findings, resolves contradictions, and weaves the slices into a unified picture.
@@ -120,11 +120,11 @@ Run the full explain flow above (Steps 1-4). You must understand the architectur
 
 ### Step 2. Spawn Critics
 
-After the explanation is complete, spawn one architectural critic per model in your configured how-critics list (defaults `claude-fable-5-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`), all in a single message.
+After the explanation is complete, spawn one architectural critic per model family your harness exposes, minimum two, all in a single message. With a single-model harness, spawn two critics with different lenses (boundaries and coupling versus operability and failure behavior).
 
 For each critic:
 - `agent`: `general-purpose`
-- `model`: one model from the configured how-critics list. These are minimum reasoning levels. The lead should escalate any model when the architecture warrants deeper analysis.
+- `model`: one model family each, at the highest reasoning level available. The lead should escalate when the architecture warrants deeper analysis.
 - `readonly`: `true`
 
 Read `references/critic-prompt.md` for the prompt template. Each critic gets:
@@ -144,6 +144,25 @@ Categorize findings:
 
 Present the explanation first (from Step 1), then the critique verdict below it. The explanation should stand on its own; someone who just wants to understand the system shouldn't wade through critique.
 
+## DECISION TREE
+
+- One file, one function, "what does this do" -> direct explain, no explorers.
+- A subsystem spanning several modules -> 2-4 explorers, then a synthesizer.
+- The user asks "is this wrong" or "what is missing" -> Critique Mode; explain first.
+- Grep returns the single fact that answers it -> answer it; do not spawn an explainer.
+- The code is not on this machine (external service) -> say so; a subagent cannot read it either.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Explaining file names, not behavior.** Mitigation: every claim names the mechanism and the
+  `file:line` that proves it.
+- **Explorer fan-out with no slice.** Mitigation: each explorer gets a named angle; overlapping slices
+  are wasted tokens.
+- **Synthesis that drops the contradiction.** Mitigation: state where explorers disagreed and which
+  reading the code supports.
+- **Critique before understanding.** Mitigation: Critique Mode runs the full explain flow first.
+- **Lecture instead of answer.** Mitigation: smallest complete answer first, layers on request.
+
 ## WHEN TO USE
 
 Explaining how a subsystem works, or where code should live, before changing anything.
@@ -160,3 +179,11 @@ A full written map for other agents is the deliverable — `codebase-cartographe
 Every claim cites file:line from code actually read.
 The placement answer names the convention it follows.
 No files were edited.
+
+## REFERENCES
+
+- `references/explorer-prompt.md` - the explorer brief.
+- `references/explainer-prompt.md` - output shape and voice.
+- `references/critic-prompt.md` and `references/critique-rubric.md` - Critique Mode.
+- `teach` - when the goal is understanding rather than an answer.
+- `why` - when the question is "why is it like this".

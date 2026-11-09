@@ -5,11 +5,11 @@ description: 'Keep a reviewable decision trail for long-running or unattended wo
   trail to trust the result. Use for /show-me-your-work, autonomous or multi-phase runs, or work a human
   reviews after stepping away.'
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: planner
 ---
 
@@ -63,7 +63,7 @@ Commit it only when the work is ambitious enough that a reviewer needs the trail
 
 ## Audit the log against the transcript
 
-At the end of the run, before handing back, check the log told the truth. Read this run's transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path). Don't glob across `~/~/.pi/agent/sessions/*/`; that reads unrelated private chats. Walk the log against what actually happened:
+At the end of the run, before handing back, check the log told the truth. Read this run's transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path). Don't reach into other workspaces' session directories; that reads unrelated private chats. Walk the log against what actually happened:
 
 - Every row maps to a real action. Cut invented or aspirational entries.
 - Each row's evidence resolves and shows what the row claims.
@@ -91,6 +91,23 @@ Read top to bottom, follow the evidence pointers, spot-check. GitHub renders a c
 
 Other skills route their audit trail here instead of inventing one. Reference it by name and let it own the format; don't restate the columns.
 
+## DECISION TREE
+
+- Multi-phase, unattended, or reviewed later -> keep the log.
+- A one-shot edit the user watches live -> skip it.
+- A reviewer must trust the result -> commit the log with the change.
+- A row would contain a secret or personal data -> redact before writing.
+- The run is still going -> append as you go; never reconstruct at the end.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Log written from memory.** Mitigation: one row per decision at decision time.
+- **Rows that restate the plan.** Mitigation: each row records what was decided, why, the evidence, and
+  the result.
+- **An empty evidence column.** Mitigation: a row without a command, path, or artifact is not a row.
+- **Log left uncommitted for a reviewer.** Mitigation: commit it with the change.
+- **Log contradicting the transcript.** Mitigation: audit the log against the transcript before handoff.
+
 ## WHEN TO USE
 
 Long, autonomous, or multi-phase work that needs a reviewable decision trail.
@@ -103,3 +120,9 @@ Anything whose log would contain secrets or personal data.
 ## VERIFICATION GATE
 
 One row per decision with evidence; the log audits clean against the transcript.
+
+## REFERENCES
+
+- `references/decision-log-template.tsv` - the row format.
+- `figure-it-out` - the multi-part workflow this log usually accompanies.
+- `session-continuity` - the handoff that consumes the log.

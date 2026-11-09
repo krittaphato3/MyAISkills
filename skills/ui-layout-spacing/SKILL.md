@@ -8,17 +8,27 @@ description: >-
   responsive CSS Grid / Roblox UIListLayout arrangements. Use when designing, arranging, spacing,
   or fixing gaps, padding, margins, visual clutter, cramped layouts, or misaligned interface elements.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G3
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: ui-ux-architect
 ---
 
 # UI Layout & Spacing Architecture
 
 A mathematically rigorous, perception-grounded spatial system for web and Roblox interfaces. White space is not empty canvas—it is visual grammar that establishes relationships, reading flow, and hierarchical grouping without artificial borders or dividers.
+
+## DECISION TREE
+
+- Elements feel cramped -> increase the gap before adding borders.
+- Elements feel unrelated -> reduce the gap inside the group before adding a container.
+- A card's inner spacing exceeds its outer spacing -> reverse the enclosure formula.
+- Nested corners look wrong -> recompute the radius from the parent radius minus padding.
+- A button label looks off-center -> apply squish padding, then check cap height.
+- Icons and text misalign -> align on optical center, not the bounding box.
+- The layout breaks at a narrow viewport -> switch the grid to intrinsic sizing.
 
 ## WHEN TO USE
 
@@ -284,6 +294,31 @@ Every UI layout review or authoring task must pass these checks:
 
 ---
 
+## FAILURE MODES & MITIGATIONS
+
+- **Arbitrary spacing values.** Mitigation: every value comes from the 4/8pt scale; an off-scale value
+  needs a stated reason.
+- **Inner padding larger than the outer margin.** Mitigation: the enclosure rule, outer >= inner.
+- **Equal gaps at every level.** Mitigation: the nesting law; gaps shrink inward.
+- **Uniform radius on nested corners.** Mitigation: concentric radius = parent radius minus padding.
+- **Symmetrical padding on buttons.** Mitigation: squish padding, wider than tall.
+- **Mathematically centered elements that look off.** Mitigation: optical adjustment for triangles,
+  circles, and capitals.
+- **Per-element Tailwind values.** Mitigation: one spacing scale mapped to tokens.
+
+## QUANTITATIVE RULES
+
+| Dimension | Rule |
+|---|---|
+| Base grid | 4pt increments; 8pt for layout rhythm |
+| Spacing scale | 4, 8, 12, 16, 24, 32, 48, 64 |
+| Enclosure | outer padding >= inner gap |
+| Nesting | child gap <= parent gap |
+| Concentric radius | inner radius = outer radius - padding |
+| Squish padding | horizontal approximately 2x vertical |
+| Line length | 45-75 characters for body text |
+| Target size | at least 44x44 px (WCAG 2.5.5) |
+
 ## VERIFICATION GATE
 
 - All layout spacing values strictly adhere to the 4pt/8pt scale token dictionary.
@@ -291,3 +326,10 @@ Every UI layout review or authoring task must pass these checks:
 - Concentric corner radii satisfy $R_{\text{outer}} = R_{\text{inner}} + \text{Padding}$.
 - Buttons and badges satisfy the squish ratio ($P_x \ge 1.5 P_y$).
 - The interface passes the Squint Test with distinct visual chunking.
+
+## REFERENCES
+
+- `refactoring-ui` - hierarchy, color, depth.
+- `impeccable` - the broader design pass.
+- `roblox-ui-ux` - Roblox-specific composition.
+- `accessibility-audit` - target size and focus visibility.

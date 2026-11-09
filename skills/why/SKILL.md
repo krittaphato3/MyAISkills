@@ -6,11 +6,11 @@ description: Use for 'why does X work this way', 'why we picked Y', design ratio
   analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for
   runtime behavior.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: codebase-cartographer
 ---
 
@@ -129,7 +129,7 @@ Launch all matching investigators in a single message so they run concurrently. 
 
 Subagent config (each):
 - `agent`: `general-purpose`
-- `model`: your configured why-investigators model (default `grok-4.6-fast-xhigh`)
+- `model`: your configured investigator model; breadth matters more than depth per agent
 - `readonly`: `false` (agent mode). **Do not use readonly/Ask mode.** It strips MCP access, which disables MCP-backed investigators entirely. The source control investigator would be safe in readonly, but keep modes uniform. Investigators still shouldn't write anything. That's a posture, not a sandbox.
 
 Each investigator gets:
@@ -175,7 +175,7 @@ If your scope assessment suggests a single-commit trivial target where the PR de
 Spawn one synthesizer subagent:
 
 - `agent`: `general-purpose`
-- `model`: your configured why-synthesizer model (default `claude-fable-5-thinking-max`)
+- `model`: your configured synthesizer model; the strongest you have access to
 - `readonly`: `false` (agent mode). The synthesizer's quality check spot-verifies citations, which can require MCP access. Readonly/Ask mode strips MCPs and defeats that.
 
 The synthesizer gets:
@@ -222,7 +222,7 @@ Example:
 
 After the Sources Consulted block, if the user's `why` question is a precursor to actually changing this code, convert the lineage findings into a Preserve / Change / Avoid / Risk constraint set suitable for planning the change.
 
-## Common Failure Modes to Avoid
+## FAILURE MODES & MITIGATIONS
 
 - **Confident storytelling**. A plausible narrative built from thin evidence. A bullet with no citation goes in "inferred" or "hypotheses," not "what we found."
 - **Citing the code as evidence for its own intent**. "Handles the null case because it checks for null" is mechanics, not motivation. Motivation comes from an external source (PR discussion, ticket, comment, conversation) or is labeled as inference.
@@ -232,13 +232,22 @@ After the Sources Consulted block, if the user's `why` question is a precursor t
 - **Skipping investigators by anticipation**. Deciding up front that "long-form docs probably don't have this" or "this isn't an error tracking thing" without searching. The default-to-all-seven posture prevents this. A null result is a data point; a skipped search is a blind spot.
 - **Collapsing investigators into one agent**. Each MCP has its own query vocabulary, result shape, and pitfalls; pooling them dilutes specialization and makes coverage harder to reason about. Always one investigator per category.
 
-## Reference Files
+## REFERENCES
 
 - `references/epistemics.md`. Confidence tiers and phrasing guide. The synthesizer must follow it.
 - `references/investigator-prompt.md`. Base prompt template for investigator subagents.
 - `references/source-playbook.md`. Index pointing at the category playbooks below.
 - `references/sources/*.md`. One self-contained example playbook per category, plus cross-cutting `incident-postmortem.md`. Give an investigator the single file that matches its category and adapt it to the available MCP.
 - `references/synthesizer-prompt.md`. Prompt template for the synthesizer subagent, including the output format.
+
+## DECISION TREE
+
+- One commit explains it -> answer from `git log -1`; do not fan out.
+- Several commits and one PR -> run the source-control investigator, then synthesize.
+- The reason lives in chat, tickets, or docs -> add those investigators.
+- The reason is "we never decided" -> say that; the absence of a decision is the finding.
+- The question is how it behaves -> `how`.
+- The question is what a person was doing -> `recall`.
 
 ## WHEN TO USE
 

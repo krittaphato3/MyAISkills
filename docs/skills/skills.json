@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-09",
-  "count": 128,
+  "count": 127,
   "skills": [
     {
       "name": "accessibility-audit",
@@ -25,11 +25,11 @@
     {
       "name": "agent-browser",
       "path": "skills\\agent-browser\\SKILL.md",
-      "version": "3.0.0",
+      "version": "3.1.0",
       "grade": "G2",
       "domain": "meta",
       "status": "active",
-      "last-reviewed": "2026-10-22",
+      "last-reviewed": "2026-11-09",
       "authored-by": "browser-automation"
     },
     {
@@ -85,31 +85,31 @@
     {
       "name": "architect",
       "path": "skills\\architect\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "architecture",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "solution-architect"
     },
     {
       "name": "arena",
       "path": "skills\\arena\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "debate-chair"
     },
     {
       "name": "automate-me",
       "path": "skills\\automate-me\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "meta",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "meta-architect"
     },
     {
@@ -145,11 +145,11 @@
     {
       "name": "bro",
       "path": "skills\\bro\\SKILL.md",
-      "version": "1.0.0",
-      "grade": "G1",
+      "version": "1.1.0",
+      "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "meta-architect"
     },
     {
@@ -225,11 +225,11 @@
     {
       "name": "create-verification-skill",
       "path": "skills\\create-verification-skill\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "test-engineer"
     },
     {
@@ -345,11 +345,11 @@
     {
       "name": "figure-it-out",
       "path": "skills\\figure-it-out\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "planner"
     },
     {
@@ -425,11 +425,11 @@
     {
       "name": "how",
       "path": "skills\\how\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "codebase-cartographer"
     },
     {
@@ -445,11 +445,11 @@
     {
       "name": "impeccable",
       "path": "skills\\impeccable\\SKILL.md",
-      "version": "4.8.0",
+      "version": "4.9.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "ui-ux-architect"
     },
     {
@@ -475,11 +475,11 @@
     {
       "name": "interrogate",
       "path": "skills\\interrogate\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "debate-chair"
     },
     {
@@ -545,11 +545,11 @@
     {
       "name": "maintain-verification-skill",
       "path": "skills\\maintain-verification-skill\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "test-engineer"
     },
     {
@@ -605,11 +605,11 @@
     {
       "name": "no-comments",
       "path": "skills\\no-comments\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "comment-sicko"
     },
     {
@@ -665,11 +665,11 @@
     {
       "name": "poteto-mode",
       "path": "skills\\poteto-mode\\SKILL.md",
-      "version": "2.0.0",
-      "grade": "G1",
+      "version": "2.1.0",
+      "grade": "G2",
       "domain": "doctrine",
       "status": "deprecated",
-      "last-reviewed": "2026-10-30",
+      "last-reviewed": "2026-11-09",
       "authored-by": "poteto-agent"
     },
     {
@@ -745,11 +745,11 @@
     {
       "name": "recall",
       "path": "skills\\recall\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "meta-architect"
     },
     {
@@ -765,21 +765,21 @@
     {
       "name": "refactoring-ui",
       "path": "skills\\refactoring-ui\\SKILL.md",
-      "version": "1.5.1",
+      "version": "1.6.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "ui-ux-architect"
     },
     {
       "name": "reflect",
       "path": "skills\\reflect\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "meta-architect"
     },
     {
@@ -825,11 +825,11 @@
     {
       "name": "roblox-asset-security",
       "path": "skills\\roblox-asset-security\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G3",
       "domain": "roblox",
       "status": "active",
-      "last-reviewed": "2026-10-24",
+      "last-reviewed": "2026-11-09",
       "authored-by": "roblox-security-engineer"
     },
     {
@@ -865,11 +865,11 @@
     {
       "name": "roblox-project-indexer",
       "path": "skills\\roblox-project-indexer\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G3",
       "domain": "roblox",
       "status": "active",
-      "last-reviewed": "2026-10-26",
+      "last-reviewed": "2026-11-09",
       "authored-by": "roblox-scripter"
     },
     {
@@ -915,21 +915,21 @@
     {
       "name": "roblox-toolchain",
       "path": "skills\\roblox-toolchain\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G3",
       "domain": "roblox",
       "status": "active",
-      "last-reviewed": "2026-10-24",
+      "last-reviewed": "2026-11-09",
       "authored-by": "roblox-scripter"
     },
     {
       "name": "roblox-ui-ux",
       "path": "skills\\roblox-ui-ux\\SKILL.md",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "grade": "G3",
       "domain": "roblox",
       "status": "active",
-      "last-reviewed": "2026-10-24",
+      "last-reviewed": "2026-11-09",
       "authored-by": "roblox-ui-designer"
     },
     {
@@ -983,16 +983,6 @@
       "authored-by": "meta-architect"
     },
     {
-      "name": "setup-pstack",
-      "path": "skills\\setup-pstack\\SKILL.md",
-      "version": "1.0.0",
-      "grade": "G2",
-      "domain": "meta",
-      "status": "active",
-      "last-reviewed": "2026-10-27",
-      "authored-by": "meta-architect"
-    },
-    {
       "name": "sharpen",
       "path": "skills\\sharpen\\SKILL.md",
       "version": "1.0.0",
@@ -1015,11 +1005,11 @@
     {
       "name": "show-me-your-work",
       "path": "skills\\show-me-your-work\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "planner"
     },
     {
@@ -1055,11 +1045,11 @@
     {
       "name": "swarm",
       "path": "skills\\swarm\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "ozone-agent"
     },
     {
@@ -1075,11 +1065,11 @@
     {
       "name": "system-instructions",
       "path": "skills\\system-instructions\\SKILL.md",
-      "version": "3.5.0",
+      "version": "3.6.0",
       "grade": "G3",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-24",
+      "last-reviewed": "2026-11-09",
       "authored-by": "meta-architect"
     },
     {
@@ -1105,31 +1095,31 @@
     {
       "name": "tdd",
       "path": "skills\\tdd\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "test-engineer"
     },
     {
       "name": "teach",
       "path": "skills\\teach\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "documentation-engineer"
     },
     {
       "name": "technical-writing",
       "path": "skills\\technical-writing\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "documentation-engineer"
     },
     {
@@ -1185,41 +1175,41 @@
     {
       "name": "typescript-best-practices",
       "path": "skills\\typescript-best-practices\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "languages",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "code-implementer"
     },
     {
       "name": "ui-layout-spacing",
       "path": "skills\\ui-layout-spacing\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G3",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "ui-ux-architect"
     },
     {
       "name": "unslop",
       "path": "skills\\unslop\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "comment-sicko"
     },
     {
       "name": "ux-review",
       "path": "skills\\ux-review\\SKILL.md",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-30",
+      "last-reviewed": "2026-11-09",
       "authored-by": "design-critic"
     },
     {
@@ -1275,11 +1265,11 @@
     {
       "name": "why",
       "path": "skills\\why\\SKILL.md",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "grade": "G2",
       "domain": "delivery",
       "status": "active",
-      "last-reviewed": "2026-10-27",
+      "last-reviewed": "2026-11-09",
       "authored-by": "codebase-cartographer"
     }
   ]

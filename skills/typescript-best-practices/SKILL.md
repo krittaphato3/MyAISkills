@@ -4,11 +4,11 @@ description: TypeScript-specific rules for types, unions, brands, and boundary p
   or editing any .ts or .tsx file, or when designing types or signatures in TypeScript. Other languages
   route to their own idiom skills; the general doctrine lives in principles.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: languages
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: code-implementer
 ---
 
@@ -37,6 +37,26 @@ Apply the **type-system-discipline** principle skill first; this skill grounds i
 
 Examples: `references/patterns.md`.
 
+## DECISION TREE
+
+- Data arrives from outside (HTTP, file, env) -> parse at the boundary into a typed value.
+- A primitive carries meaning (`userId`, cents, ISO date) -> brand it.
+- A boolean pair encodes one state -> replace with a discriminated union.
+- A type is asserted with `as` -> narrow or parse instead; `as` is a claim, not a check.
+- A union is switched on -> add the exhaustive `never` check.
+- The type exists as a schema -> derive the type from it; do not hand-write a parallel interface.
+- A value can be absent -> model absence as a union member, not `?:`.
+
+## FAILURE MODES & MITIGATIONS
+
+- **`any` at the boundary.** Mitigation: `unknown` plus a parser; `any` disables every downstream check.
+- **Optionality used for "maybe absent".** Mitigation: a union member makes the empty case explicit.
+- **Stringly-typed identifiers.** Mitigation: branded types with one constructor per source.
+- **Type lies in tests.** Mitigation: tests import the same parser the app uses.
+- **`Partial<T>` updates.** Mitigation: explicit patch types that cannot express "set to undefined" by
+  accident.
+- **Type-only correctness with no runtime check.** Mitigation: parse at the edge; types erase.
+
 ## WHEN TO USE
 
 Reading or editing any .ts or .tsx file; designing types or signatures in TypeScript.
@@ -50,3 +70,9 @@ General type doctrine lives in `principles`.
 
 Illegal states unrepresentable where practical; external data parsed at boundaries.
 No `any` leaking across a boundary; typecheck passes.
+
+## REFERENCES
+
+- `principles/type-system-discipline` - make illegal states unrepresentable.
+- `principles/boundary-discipline` - parsing only at the edge.
+- `source-driven-development` - verify the signature before relying on it.

@@ -9,11 +9,11 @@ description: >-
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 hidden: true
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: meta
   grade: G2
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-11-09'
   authored-by: browser-automation
 ---
 
@@ -62,3 +62,50 @@ Run `agent-browser skills list` to see everything available on the installed ver
 ## Observability Dashboard
 
 The dashboard runs independently of browser sessions on port 4848 and can also be opened through a proxied or forwarded URL such as `https://dashboard.agent-browser.localhost`. Agents should stay on the dashboard origin: session tabs, status, and stream traffic are proxied internally, so session ports do not need to be exposed.
+
+## WHEN TO USE
+
+Driving a real browser through the `agent-browser` CLI: navigation, clicks, typing, accessibility
+snapshots, screenshots, scraping, and exploratory QA, when the CLI is the intended path.
+
+## WHEN NOT TO USE
+
+The Playwright MCP is configured and reachable (`browser-automation`), the target is a normal web
+page that a plain HTTP fetch answers, or the task is API-level testing.
+
+## DECISION TREE
+
+- The task names `agent-browser` or `npx agent-browser`, or the CLI is the only driver available -> use this skill.
+- The Playwright MCP is configured and reachable -> `browser-automation`; two drivers on one profile deadlock.
+- The target is an Electron desktop app, Slack, or a cloud browser -> load the matching specialized skill first.
+- The question is exploratory QA or a bug hunt rather than a scripted flow -> `skills get dogfood`.
+- You need a repeatable API client against a site -> `skills get derive-client`.
+- No `agent-browser` binary and no permission to install one -> stop and report; do not hand-roll a CDP script.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Driving from memory of an older release.** Command surfaces change between versions. Mitigation:
+  run `agent-browser skills get core` before the first command of a session, and `skills list` when a
+  subcommand is missing.
+- **Stale element refs.** `@eN` refs belong to one snapshot. Mitigation: re-snapshot after any
+  navigation, DOM-changing click, or submit; never reuse a ref across a page change.
+- **Two drivers on one profile.** The Playwright MCP and this CLI compete for the user-data dir.
+  Mitigation: one driver per task, or a separate profile.
+- **Credential leakage into the report.** The auth vault and saved state can carry secrets.
+  Mitigation: never paste cookies, tokens, or storage state into output; report the observable result.
+- **A screenshot of an error page read as success.** Mitigation: assert on accessible text or a
+  selector, not on "an image came back".
+- **Handing out raw session ports.** Mitigation: stay on the dashboard origin; session tabs are
+  proxied internally.
+
+## VERIFICATION GATE
+
+The action was driven through the CLI, the result is asserted on accessible text or a selector, and
+the evidence is a snapshot or screenshot the gate can read. A generated image is not proof.
+
+## REFERENCES
+
+- `agent-browser skills get core --full` - full command reference and templates, version-matched.
+- `agent-browser skills list` - every specialized skill on the installed release.
+- `browser-automation` - the Playwright MCP path this skill defers to.
+- `webapp-qa` - the QA loop that consumes the browser evidence.

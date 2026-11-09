@@ -4,11 +4,11 @@ description: 'Cuts AI tells from any writing surface: replies, docs, PR bodies, 
   whenever prose is produced or reviewed, especially when wording reads generic or over-explained. Code
   comments route to no-comments; technical document structure routes to technical-writing.'
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: comment-sicko
 ---
 
@@ -35,7 +35,7 @@ Removing patterns is half the job. Sterile, voiceless writing is just as obvious
 - **Let some mess in.** Perfect structure looks machine-made.
 - **Be specific.** Not "this is concerning" but "there's something unsettling about agents churning away at 3am."
 
-## Patterns to detect and fix
+## FAILURE MODES & MITIGATIONS
 
 ### Content
 
@@ -89,6 +89,15 @@ Removing patterns is half the job. Sterile, voiceless writing is just as obvious
 30. **Cut adverbs, or use a stronger verb.** "runs quickly" becomes "is fast" or the number. "significantly improves" becomes the measured delta. An adverb propping up a weak verb means the verb is wrong.
 31. **Prefer the plain word.** "utilize" becomes "use", "leverage" becomes "use", "facilitate" becomes "help", "numerous" becomes "many", "in the event that" becomes "if". The fancier synonym is rarely clearer.
 
+## DECISION TREE
+
+- A chat reply -> strip filler, keep the claim.
+- A document -> apply `technical-writing` structure first, then unslop.
+- Code or comments -> `no-comments`.
+- A commit or PR body -> cut the narrative, keep the change and the evidence.
+- A sentence survives only because it sounds good -> delete it.
+- The text is a spec or contract -> precision wins over rhythm; do not trade meaning for cadence.
+
 ## WHEN TO USE
 
 Any prose surface — replies, docs, PR bodies, commit messages — when wording reads generic or over-explained.
@@ -101,3 +110,9 @@ Quoted specs and error strings, which must round-trip exactly.
 ## VERIFICATION GATE
 
 Meaning preserved; detection-list patterns addressed; tone matches the source.
+
+## REFERENCES
+
+- `technical-writing` - structure and sentence rules.
+- `no-comments` - code and comment surfaces.
+- `principles/minimize-reader-load` - the reader cost this skill reduces.

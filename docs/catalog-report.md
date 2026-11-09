@@ -3,7 +3,7 @@
 
 Generated 2026-11-09 from the files on disk.
 
-- skills: **128**
+- skills: **127**
 - agents: **51**
 - commands: **25**
 - playbooks: **23**
@@ -12,10 +12,10 @@ Generated 2026-11-09 from the files on disk.
 
 Two columns: reachable from the hand-written router tables in `AGENTS.md`, and reachable once the generated `docs/ROUTING.md` index is consulted.
 
-- from `AGENTS.md` alone: 36/128 skills, 7/51 agents
-- including `docs/ROUTING.md`: 128/128 skills, 51/51 agents
+- from `AGENTS.md` alone: 36/127 skills, 7/51 agents
+- including `docs/ROUTING.md`: 127/127 skills, 51/51 agents
 
-Skills not named in any `AGENTS.md` (92): `accessibility-audit`, `adr-engineering`, `agent-browser`, `agent-harness-design`, `algorithms-and-data-structures`, `animation-web-builder`, `api-design-architect`, `arena`, `automate-me`, `background-jobs-engineer`, `benchmark-checklist`, `cloud-cost-optimization`, `concurrency-engineer`, `container-optimizer`, `context-engineering`, `create-verification-skill`, `cybersecurity-specialist`, `data-pipeline-engineer`, `database-at-scale`, `debate-protocol`, `dependency-supply-chain-guardian`, `desktop-app-developer`, `devops-pipeline-engineer`, `distributed-systems-engineer`, `doubt-driven-development`, `email-notifications`, `figure-it-out`, `find-skills`, `formal-verification`, `game-developer`, `github-flow-master`, `i18n-localization`, `impeccable`, `in-your-own-words`, `incident-response-engineer`, `interrogate`, `java-jvm-expert`, `ketchup`, `legacy-modernization`, `llm-app-engineer`, `load-testing`, `maintain-verification-skill`, `mcp-builder`, `mobile-developer`, `monorepo-workspace-architect`, `mutation-testing`, `no-comments`, `observability-sre`, `payments-billing`, `performance-profiler`, `plugin-architecture`, `poteto-mode`, `privacy-compliance`, `query-performance-engineer`, `react-bits`, `realtime-engineer`, `recall`, `refactoring-intelligence`, `refactoring-ui`, `reflect`, `requesting-code-review`, `resilience-pattern-engineer`, `roblox-animation`, `roblox-asset-security`, `roblox-assets`, `roblox-game-production`, `roblox-lua-developer`, `roblox-project-indexer`, `roblox-scripting`, `roblox-security`, `roblox-testing`, `roblox-toolchain`, `roblox-ui-ux`, `roblox-vfx`, `roblox-world-building`, `search-relevance`, `session-continuity`, `setup-pstack`, `sharpen`, `show-me-your-work`, `source-driven-development`, `swarm`, `system-design-architect`, `system-instructions`, `systematic-debugging`, `systems-core-architect`, `testing-strategy`, `third-party-integration`, `token-economy`, `typescript-best-practices`, `web-performance`, `webnovel-author`
+Skills not named in any `AGENTS.md` (91): `accessibility-audit`, `adr-engineering`, `agent-browser`, `agent-harness-design`, `algorithms-and-data-structures`, `animation-web-builder`, `api-design-architect`, `arena`, `automate-me`, `background-jobs-engineer`, `benchmark-checklist`, `cloud-cost-optimization`, `concurrency-engineer`, `container-optimizer`, `context-engineering`, `create-verification-skill`, `cybersecurity-specialist`, `data-pipeline-engineer`, `database-at-scale`, `debate-protocol`, `dependency-supply-chain-guardian`, `desktop-app-developer`, `devops-pipeline-engineer`, `distributed-systems-engineer`, `doubt-driven-development`, `email-notifications`, `figure-it-out`, `find-skills`, `formal-verification`, `game-developer`, `github-flow-master`, `i18n-localization`, `impeccable`, `in-your-own-words`, `incident-response-engineer`, `interrogate`, `java-jvm-expert`, `ketchup`, `legacy-modernization`, `llm-app-engineer`, `load-testing`, `maintain-verification-skill`, `mcp-builder`, `mobile-developer`, `monorepo-workspace-architect`, `mutation-testing`, `no-comments`, `observability-sre`, `payments-billing`, `performance-profiler`, `plugin-architecture`, `poteto-mode`, `privacy-compliance`, `query-performance-engineer`, `react-bits`, `realtime-engineer`, `recall`, `refactoring-intelligence`, `refactoring-ui`, `reflect`, `requesting-code-review`, `resilience-pattern-engineer`, `roblox-animation`, `roblox-asset-security`, `roblox-assets`, `roblox-game-production`, `roblox-lua-developer`, `roblox-project-indexer`, `roblox-scripting`, `roblox-security`, `roblox-testing`, `roblox-toolchain`, `roblox-ui-ux`, `roblox-vfx`, `roblox-world-building`, `search-relevance`, `session-continuity`, `sharpen`, `show-me-your-work`, `source-driven-development`, `swarm`, `system-design-architect`, `system-instructions`, `systematic-debugging`, `systems-core-architect`, `testing-strategy`, `third-party-integration`, `token-economy`, `typescript-best-practices`, `web-performance`, `webnovel-author`
 
 Agents not named in any `AGENTS.md` (44): `accessibility-specialist`, `algorithm-specialist`, `api-architect`, `code-implementer`, `comment-sicko`, `compliance-engineer`, `cybersecurity-specialist`, `data-engineer`, `db-architect`, `debate-chair`, `dependency-guardian`, `design-critic`, `desktop-developer`, `devops-engineer`, `documentation-engineer`, `game-developer`, `general-purpose`, `independent-solver`, `integration-engineer`, `llm-engineer`, `mcp-agent`, `migration-engineer`, `ml-engineer`, `mobile-developer`, `ozone-agent`, `performance-engineer`, `poteto-agent`, `product-strategist`, `refactoring-specialist`, `requirement-auditor`, `roblox-animator`, `roblox-asset-artist`, `roblox-builder`, `roblox-game-director`, `roblox-qa-engineer`, `roblox-scripter`, `roblox-security-engineer`, `roblox-ui-designer`, `roblox-vfx-artist`, `security-auditor`, `solution-architect`, `test-engineer`, `test-oracle`, `ui-ux-architect`
 
@@ -25,9 +25,9 @@ Descriptions sit in every session's context before any work starts.
 
 | Component | Chars | Est. tokens |
 |---|---|---|
-| skill descriptions | 47994 | 11998 |
+| skill descriptions | 47776 | 11944 |
 | agent descriptions | 20424 | 5106 |
-| **total** | **68418** | **17104** |
+| **total** | **68200** | **17050** |
 
 Per `agent-config-maintenance`: each description is 120–1024 chars, average target 250–400. The total is `skills × average`, so growth is paid for by merging or retiring an equal amount.
 
@@ -35,64 +35,31 @@ Per `agent-config-maintenance`: each description is 120–1024 chars, average ta
 
 | Domain | Skills | G1 | G2 | G3 |
 |---|---|---|---|---|
-| doctrine | 26 | 2 | 9 | 15 |
+| doctrine | 26 | 0 | 11 | 15 |
 | architecture | 16 | 0 | 8 | 8 |
 | delivery | 35 | 0 | 28 | 7 |
 | production | 16 | 0 | 13 | 3 |
 | security | 4 | 0 | 3 | 1 |
 | languages | 4 | 0 | 3 | 1 |
 | roblox | 14 | 0 | 4 | 10 |
-| meta | 12 | 0 | 11 | 1 |
+| meta | 11 | 0 | 10 | 1 |
 | fundamentals | 1 | 0 | 1 | 0 |
-| **total** | **128** |  |  |  |
+| **total** | **127** |  |  |  |
 
 ## Grade conformance
 
 Each grade declares required body sections. Skills missing them are listed below.
 
-- conforming: 98/128
-- non-conforming: 30
-
-| Skill | Grade | Missing sections |
-|---|---|---|
-| `agent-browser` | G2 | WHEN TO USE, WHEN NOT TO USE, DECISION TREE, FAILURE MODES & MITIGATIONS, VERIFICATION GATE, REFERENCES |
-| `architect` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `arena` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `automate-me` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `create-verification-skill` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `figure-it-out` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `how` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `impeccable` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `interrogate` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `maintain-verification-skill` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `no-comments` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `recall` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `refactoring-ui` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `reflect` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `roblox-asset-security` | G3 | FAILURE MODES & MITIGATIONS |
-| `roblox-project-indexer` | G3 | FAILURE MODES & MITIGATIONS, QUANTITATIVE RULES, REFERENCES |
-| `roblox-toolchain` | G3 | FAILURE MODES & MITIGATIONS |
-| `roblox-ui-ux` | G3 | REFERENCES |
-| `setup-pstack` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `show-me-your-work` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `swarm` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `system-instructions` | G3 | QUANTITATIVE RULES |
-| `tdd` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `teach` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `technical-writing` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `typescript-best-practices` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `ui-layout-spacing` | G3 | DECISION TREE, FAILURE MODES & MITIGATIONS, QUANTITATIVE RULES, REFERENCES |
-| `unslop` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
-| `ux-review` | G2 | DECISION TREE |
-| `why` | G2 | DECISION TREE, FAILURE MODES & MITIGATIONS, REFERENCES |
+- conforming: 127/127
+- non-conforming: 0
 
 ## Hygiene
 
-Version families: `1.0.0` x58, `3.0.0` x53, `3.1.0` x5, `2.0.0` x3, `4.0.0` x3, `3.5.0` x2, `4.8.0` x1, `1.5.1` x1, `1.2.0` x1, `1.1.0` x1
+Version families: `3.0.0` x52, `1.0.0` x33, `1.1.0` x24, `3.1.0` x6, `4.0.0` x3, `2.0.0` x2, `3.5.0` x1, `4.9.0` x1, `2.1.0` x1, `1.6.0` x1, `1.3.0` x1, `3.6.0` x1, `1.2.0` x1
 
-Review stamps: `2026-10-22` x64, `2026-10-24` x6, `2026-10-26` x1, `2026-10-27` x29, `2026-10-30` x14, `2026-10-31` x2, `2026-11-03` x4, `2026-11-08` x8
+Review stamps: `2026-10-22` x63, `2026-10-24` x2, `2026-10-27` x5, `2026-10-30` x12, `2026-10-31` x2, `2026-11-03` x4, `2026-11-08` x8, `2026-11-09` x31
 
-Largest bodies (lines): `graphify` 667, `skill-creator` 385, `ui-layout-spacing` 277, `refactoring-ui` 260, `mcp-builder` 254
+Largest bodies (lines): `graphify` 667, `skill-creator` 385, `ui-layout-spacing` 319, `refactoring-ui` 269, `mcp-builder` 254
 
 Non-active status: `poteto-mode` (deprecated)
 
@@ -140,9 +107,9 @@ Commands referenced in docs but not on disk: none
 ## Routing eval coverage
 
 - cases: 57
-- distinct skills tested: 46/128
+- distinct skills tested: 46/127
 - negative cases (must match nothing): 3
-- skills never tested: 82
+- skills never tested: 81
 
 No runner executes this fixture; `lint_config.py` validates its schema only.
 

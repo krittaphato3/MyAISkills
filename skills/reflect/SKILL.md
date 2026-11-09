@@ -3,11 +3,11 @@ name: reflect
 description: Spawn three parallel review subagents over the active transcript, surface learnings, and
   route each to a concrete edit on an existing skill. Use when the user says reflect.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: meta-architect
 ---
 
@@ -46,15 +46,15 @@ One message, three `subagent` calls, `agent: "general-purpose"`, explicit `model
 
 | Lens | `model` | Prompt template |
 |---|---|---|
-| Judgment | your configured reflect-judgment model (default `claude-fable-5-thinking-max`) | `references/judgment-reviewer.md` |
-| Tooling | your configured reflect-tooling model (default `gpt-5.6-sol-max`) | `references/tooling-reviewer.md` |
-| Divergent | your configured reflect-judgment model (default `claude-fable-5-thinking-max`) | `references/divergent-reviewer.md` |
+| Judgment | your configured reflect-judgment model | `references/judgment-reviewer.md` |
+| Tooling | a different model family from Judgment | `references/tooling-reviewer.md` |
+| Divergent | your configured reflect-judgment model | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the subagent output.
 
 ### 3. Synthesize
 
-One `subagent` call, `agent: "general-purpose"`, using your configured reflect-judgment model (default `claude-fable-5-thinking-max`), agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access; readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
+One `subagent` call, `agent: "general-purpose"`, using your configured reflect-judgment model, agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access; readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
 
 ### 4. Structural enforcement check
 
@@ -84,6 +84,22 @@ Short list, no preamble:
 - Backlog filed to the devex tracker: `<issue title>` (`<tags>`). One line each.
 - Dropped: one line per rejected finding + reason from the synthesizer.
 
+## DECISION TREE
+
+- The session produced a repeated correction -> reflect.
+- The session was routine -> skip it; there is nothing structural to learn.
+- The learning is enforceable by a lint or check -> `correct` encodes it instead.
+- The learning belongs to one skill's content -> `skill-creator` edits that skill.
+- The user has not approved the edits -> present Accepted/Rejected/Backlog and wait.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Reflecting without evidence.** Mitigation: every finding cites a transcript line.
+- **Auto-applying edits.** Mitigation: step 5 requires explicit approval.
+- **Learnings that never land.** Mitigation: each accepted item names the file and section it changes.
+- **Prose where structure works.** Mitigation: the enforcement check moves rules to lint or metadata.
+- **Reviewers with the same blind spot.** Mitigation: three distinct lenses, not three copies.
+
 ## WHEN TO USE
 
 After a notable task or session, to turn lessons into concrete skill or config edits.
@@ -95,3 +111,11 @@ Nothing surprising happened — a routine task needs no reflection pass.
 ## VERIFICATION GATE
 
 Every lesson routes to a named file and edit, applied or explicitly listed.
+
+## REFERENCES
+
+- `references/judgment-reviewer.md` - the judgment lens.
+- `references/tooling-reviewer.md` - the tooling lens.
+- `references/divergent-reviewer.md` - the divergent lens.
+- `references/synthesizer.md` - the synthesis pass.
+- `correct` - structural enforcement of a repeated correction.

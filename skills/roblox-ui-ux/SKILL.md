@@ -7,11 +7,11 @@ description: 'Designs and builds Roblox interfaces with AAA visual polish: Scree
   crate/gacha showcase, or badge needing front-page quality. World lighting and geometry route to roblox-world-building;
   tweened character motion to roblox-animation.'
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   domain: roblox
   grade: G3
   status: active
-  last-reviewed: '2026-10-24'
+  last-reviewed: '2026-11-09'
   authored-by: roblox-ui-designer
 ---
 
@@ -254,3 +254,11 @@ Full detail: `references/patterns.md`.
 - [ ] Responsive layout validated across mobile (phone/tablet) and desktop viewports without clipping.
 - [ ] Gamepad navigation path explicit and tested; Back button closes topmost modal.
 - [ ] One-way state binding: server authoritative, client optimistic with rollback, no direct remote writes from UI.
+
+## REFERENCES
+
+- `roblox-assets` - icons, textures, and 9-slice assets these patterns consume.
+- `ui-layout-spacing` - the spacing, radius, and enclosure math.
+- `roblox-vfx-artist` - UI particles, sheen, and sound.
+- `roblox-world-building` - the lighting that glass and embossed surfaces are tuned for.
+- `accessibility-audit` - contrast targets adapted for game HUDs.

@@ -4,11 +4,11 @@ description: Removes narrating comments and encodes the constraints worth keepin
   before review or merge when a diff gained explanatory comments, or when comments restate code. Non-obvious
   why-comments forced by external systems stay.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: comment-sicko
 ---
 
@@ -32,6 +32,26 @@ Use the caller's files or diff. Otherwise use the current diff against the base 
 5. Constraint comments say `do not remove`, `do not change wording`, or `talk to X before changing`. Leave keeps about things we cannot change. Offer the cheapest in-scope type, runtime, test, or CI lint. Wait for interactive approval. Unattended and eval require caller pre-approval. If approved, encode then delete. Otherwise delete, report the constraint open, and sketch out-of-scope work.
 6. Report the deletion count, restored comments, reruns, architect sketch, fixes, encoding offers, encodings, unenforced constraints, and other open work.
 
+## DECISION TREE
+
+- The comment restates the next line -> delete it.
+- The comment explains a non-obvious *why* forced by an external system -> keep it, with a link or task
+  reference.
+- The constraint can be enforced by a type, assertion, or lint -> encode it and delete the comment.
+- A licence header or tooling directive -> keep.
+- The comment narrates the diff ("changed X to Y") -> delete; that belongs in the commit message.
+- A public API docstring -> keep; that is documentation, not narration.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Deleting the why-comment.** Mitigation: if a reader would ask "why on earth", the comment stays.
+- **Moving comments into variable names.** Mitigation: rename only when the name carries the meaning
+  without prose.
+- **Comment-dense code.** Mitigation: extract a named function instead of explaining a block.
+- **Stale comments surviving an edit.** Mitigation: grep for every symbol the comment names after a
+  rename.
+- **Docstrings stripped as noise.** Mitigation: public API documentation is not a narrating comment.
+
 ## WHEN TO USE
 
 Before review or merge, when a diff gained narrating comments.
@@ -45,3 +65,9 @@ Generated files.
 
 Accepted findings applied; rejected findings carry reasons.
 No behavior changed by comment removal.
+
+## REFERENCES
+
+- `principles/minimize-reader-load` - what a reader must hold in their head.
+- `technical-writing` - prose when prose is warranted.
+- `refactoring-intelligence` - structural fixes that remove the need to explain.

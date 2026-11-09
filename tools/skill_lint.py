@@ -7,7 +7,7 @@ Warnings (exit 2 with --ci): W1 stale last-reviewed, W2 unknown owner agent, W3 
 --json: machine-readable report. --regen: regenerate docs/skills/skills.json.
 --ci: treat warnings as failures (exit 2).
 """
-import argparse, json, re, sys
+import argparse, difflib, json, re, sys
 from datetime import date
 from pathlib import Path
 
@@ -38,7 +38,7 @@ W3_WHITELIST = {"SLI", "SLO", "SLA", "REST", "gRPC", "GraphQL",
                 "tracemalloc", "jstack",
                 "work-in-progress", "ready-for-review", "needs-revision",
                 "breaking-change", "research-helper", "research-helper-v2",
-                "stack-overflow"}
+                "stack-overflow", "browser-use", "refactor"}
 
 # Blanket auto-invoke language detection (E5) — enforces the trigger policy.
 E5_RE = re.compile(
@@ -47,6 +47,10 @@ E5_RE = re.compile(
 )
 
 _SKILL_SHAPE_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+# A back-ticked token that could be a skill reference: an explicit `skills/<name>`
+# path (with or without a trailing file), or a bare kebab-case name.
+_REF_RE = re.compile(r"`(skills/[a-z0-9-]+(?:/[A-Za-z0-9._-]+)?|[a-z0-9]+(?:-[a-z0-9]+)*)`")
 
 
 def parse_frontmatter(text):
@@ -66,18 +70,29 @@ def _bare(ref):
     return ref[len("skills/"):] if ref.startswith("skills/") else ref
 
 
-def is_potential_skill_name(tok):
-    """True when a back-ticked token looks like a catalog skill reference.
+def is_potential_skill_name(tok, catalog):
+    """True when a bare back-ticked token plausibly meant a catalog skill.
 
-    Heuristic: matches the kebab-case skill shape `^[a-z0-9]+(-[a-z0-9]+)*$` AND
-    is a *known* catalog name OR (length >= 12 and contains a hyphen). This keeps
-    real skill names (distributed-systems-engineer, requirements-elicitation) flaggable
-    when dangling, while code tokens (unsafe, select, pcall, errgroup, chan) never do.
+    Two signals only, because anything looser flags CSS classes, ARIA attributes,
+    ESLint rule names, frontmatter keys, and model slugs as "missing skills":
+
+    1. The token is a near-miss of a real skill name (difflib ratio >= 0.85), which
+       catches typos and stale renames.
+    2. The token is a prefix or suffix of a real skill name and long enough to be a
+       truncation rather than a common word.
+
+    Explicit `skills/<name>` paths are handled separately: those are a claim about
+    the tree, so an unknown one always warns.
     """
     bare = _bare(tok)
-    if not _SKILL_SHAPE_RE.fullmatch(bare):
+    if not _SKILL_SHAPE_RE.fullmatch(bare) or bare in catalog:
         return False
-    return '-' in bare and len(bare) >= 12
+    for name in catalog:
+        if difflib.SequenceMatcher(None, bare, name).ratio() >= 0.85:
+            return True
+        if len(bare) >= 8 and (name.startswith(bare) or bare.startswith(name)):
+            return True
+    return False
 
 
 def run_checks(skills_dir):
@@ -134,12 +149,17 @@ def run_checks(skills_dir):
     catalog = set(names)
     for name in names:
         text = (skills_dir / name / "SKILL.md").read_text(encoding="utf-8")
-        for m in re.finditer(r"`([a-z0-9-]+(?:/[a-z0-9-]+)?)`", text):
+        for m in _REF_RE.finditer(text):
             raw = m.group(1)
-            ref = _bare(raw)
-            if ref in catalog or ref in known_agents or raw in W3_WHITELIST:
+            if raw.startswith("skills/"):
+                ref = raw.split("/")[1]
+            else:
+                ref = _bare(raw)
+            if ref in catalog or ref in known_agents or raw in W3_WHITELIST or ref in W3_WHITELIST:
                 continue
-            if is_potential_skill_name(raw):
+            if raw.startswith("skills/"):
+                warnings.append(f"W3 {name}: path '{raw}' names no skill")
+            elif is_potential_skill_name(ref, catalog):
                 warnings.append(f"W3 {name}: reference to unknown skill '{raw}'")
     return errors, warnings
 

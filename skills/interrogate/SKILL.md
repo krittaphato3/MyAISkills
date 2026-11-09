@@ -4,11 +4,11 @@ description: Use for "interrogate", "adversarial review", "multi-model review", 
   test this code", "find blind spots", or "tear this apart". Multiple LLM reviewers challenge changes
   from independent angles.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: debate-chair
 ---
 
@@ -42,21 +42,21 @@ Write one clear paragraph. Reviewers challenge whether the work achieves the int
 
 ## Step 3, Spawn Reviewers
 
-Launch all reviewers in a single message using the subagent tool. Use the `interrogate reviewers` list from `~/.pi/agent/pstack-models.md` when present, one reviewer per entry, extending or shrinking the Reviewer A/B/C/D labels below to the configured entry count; otherwise use the table defaults.
+Launch all reviewers in a single message using the subagent tool, one reviewer per model family your harness exposes. With fewer families than labels, collapse the labels; with a single family, keep Reviewer A and Reviewer B and give them different lenses (correctness versus operability).
 
-| Subagent | Default model |
-|----------|---------------|
-| Reviewer A | `claude-fable-5-thinking-max` |
-| Reviewer B | `gpt-5.6-sol-max` |
-| Reviewer C | `grok-4.6-fast-xhigh` |
-| Reviewer D | `claude-opus-5-thinking-xhigh` |
+| Subagent | Model |
+|----------|-------|
+| Reviewer A | family 1, highest reasoning tier |
+| Reviewer B | family 2, highest reasoning tier |
+| Reviewer C | family 3, if available |
+| Reviewer D | family 4, if available |
 
 For each reviewer:
 - `agent`: `general-purpose`
-- `model`: the configured `interrogate reviewers` entry, or the table default with no configured line
+- `model`: the reviewer's assigned family; omit to inherit when the harness exposes one model
 - `readonly`: `true`
 
-If a model slug is rejected as unresolvable when you try to spawn the subagent, check the valid slugs in the subagent tool's error message, pick the closest equivalent (prefer the highest-reasoning tier of the same family), spawn with the valid slug, and open a separate PR to update the configured value or default table. Do not block the review on the slug issue. If the configured value is `inherit-parent` or `auto`, omit `model` instead; never treat those aliases as broken slugs or enter this fallback for them.
+If a model slug is rejected as unresolvable when you try to spawn the subagent, check the valid slugs in the subagent tool's error message and pick the closest equivalent (prefer the highest-reasoning tier of the same family). Do not block the review on the slug issue.
 
 Read `references/reviewer-prompt.md` and fill in the template with:
 1. The stated intent
@@ -121,6 +121,25 @@ Present the verdict in this structure:
 ### Agreement Map
 [Where did models agree, where did they diverge, and what does the pattern of agreement/disagreement tell us?]
 
+## DECISION TREE
+
+- The change is small and one reviewer suffices -> `requesting-code-review`.
+- The change is high-stakes, ambiguous, or author and reviewer disagree -> interrogate.
+- Two candidate implementations exist -> `arena` first, then interrogate the winner.
+- The claim is "done" and needs falsifying -> `red-team-qa`, or this skill with an adversarial lens.
+- There is no diff and no artifact -> stop; nothing to interrogate.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Reviewers reviewing the description, not the diff.** Mitigation: paste the diff or file contents
+  into every brief.
+- **Uniform reviewers.** Mitigation: distinct model families, or distinct lenses when only one family
+  exists.
+- **Findings without locations.** Mitigation: reject any finding that lacks `file:line` and a mechanism.
+- **Majority vote treated as truth.** Mitigation: the lead adjudicates against the code; agreement is
+  not evidence.
+- **Unverified findings shipped as blockers.** Mitigation: reproduce each accepted finding before acting.
+
 ## WHEN TO USE
 
 Before shipping a design or change whose blind spots matter.
@@ -133,3 +152,11 @@ A verdict is needed between two decided candidates — `debate-protocol`.
 ## VERIFICATION GATE
 
 Findings carry evidence; lead judgment is recorded; nothing auto-applied.
+
+## REFERENCES
+
+- `references/rubric.md` - the scoring rubric.
+- `references/reviewer-prompt.md` - the shared brief.
+- `references/code-quality-review.md` - the quality lens.
+- `references/lead-judgment.md` - how the lead reconciles the panel.
+- `debate-protocol` - formal adjudication when reviews conflict.

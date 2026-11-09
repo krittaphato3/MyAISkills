@@ -8,11 +8,11 @@ description: >-
   when a flow crosses several screens. Formal conformance audits route to accessibility-audit;
   visual craft (color, type, hierarchy) to refactoring-ui; spacing math to ui-layout-spacing.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-30'
+  last-reviewed: '2026-11-09'
   authored-by: design-critic
 ---
 
@@ -21,6 +21,17 @@ metadata:
 Screens pass tests and still fail people: the empty state says "no data", the error says "an error
 occurred", the primary action is a gray label, the spinner never resolves. This skill is the
 review pass that catches those — on the running interface, with evidence, before users do.
+
+## DECISION TREE
+
+- A flow crosses more than one screen -> review the flow, not a screen.
+- Visual craft is the issue -> `refactoring-ui`.
+- Keyboard or screen-reader failure -> `accessibility-audit`.
+- The screen loads data -> check loading, empty, error, permission, and long-content states before
+  judging the happy path.
+- The screen is static and complete -> judge hierarchy, affordance, and microcopy.
+- Motion is present -> check reduced-motion behavior before approving it.
+- The claim is "it works" -> drive it like a user and record the interaction.
 
 ## WHEN TO USE
 

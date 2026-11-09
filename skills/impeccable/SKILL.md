@@ -2,11 +2,11 @@
 name: impeccable
 description: "Use when the user wants to design, redesign, shape, critique, audit, polish, simplify, harden, animate, or otherwise improve a frontend interface: websites, landing pages, dashboards, product UI, components, forms, settings, onboarding, empty states, and native iOS or Android screens. Handles UX review, hierarchy, layout, typography, color, motion, UX copy, accessibility, responsive behavior, edge cases, and capturing or documenting design systems (DESIGN.md, tokens). Also for making bland UI bolder, loud UI quieter, or ambitious visual effects. Not for backend-only or non-UI tasks."
 metadata:
-  version: 4.8.0
+  version: 4.9.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: ui-ux-architect
 ---
 
@@ -90,6 +90,24 @@ After init writes PRODUCT.md, resume without rerunning `impeccable context`; ini
 
 **Never repair drift as a side effect of a design task.** A `CONTEXT_STALE` finding is reported, not acted on, unless the user asks. The one exception is a finding marked `auto`, which the next write to that file performs anyway.
 
+## DECISION TREE
+
+- One component needs styling -> apply the design rules directly.
+- A new surface (page, flow, app shell) -> run Setup, then design top-down.
+- The request is a critique of shipped UI -> `ux-review`; this skill designs and builds.
+- A formal WCAG claim is needed -> `accessibility-audit`; this skill is not evidence of conformance.
+- The work is motion -> `animation-web-builder`.
+- A detector flags something the brief explicitly asked for -> the brief wins; record the override.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Decoration before hierarchy.** Mitigation: box the layout first; color, depth, and texture last.
+- **Every element emphasized.** Mitigation: one primary action per view; demote the rest.
+- **Design system drift.** Mitigation: tokens or the existing component library, never one-off values.
+- **Polished at one viewport only.** Mitigation: check the narrowest supported viewport before done.
+- **Accessibility inferred from looks.** Mitigation: contrast and focus are measured, not eyeballed.
+- **Redesign that keeps the discarded look.** Mitigation: replacement means new DESIGN.md, not polish.
+
 ## WHEN TO USE
 - When designing, redesigning, shaping, critiquing, auditing, or polishing frontend interfaces (websites, dashboards, product UI, forms).
 - When establishing design systems, design tokens, or visual craftsmanship standards.
@@ -104,3 +122,12 @@ After init writes PRODUCT.md, resume without rerunning `impeccable context`; ini
 - Visual review of rendered result across target viewport widths.
 - Hierarchy reads cleanly in grayscale blur test.
 - Design tokens and component patterns match established standards.
+
+## REFERENCES
+
+- `reference/new-work.md` - choosing a replacement visual world.
+- `reference/craft-floor.md` - the quality floor and absolute bans.
+- `refactoring-ui` - hierarchy, spacing, color, depth.
+- `ui-layout-spacing` - the spacing and radius math.
+- `ux-review` - state coverage and interaction quality.
+- `accessibility-audit` - WCAG 2.2 AA conformance.

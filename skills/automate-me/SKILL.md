@@ -4,11 +4,11 @@ description: Use for "automate me", "create/update/refresh my -mode skill", "tur
   or working style into a skill", or wanting agents to follow how the user works. Drafts or revises a
   personal -mode skill via direct authoring + unslop, optionally pulling fresh evidence from recent transcripts.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: meta
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: meta-architect
 ---
 
@@ -35,7 +35,7 @@ Update mode changes the rest of the flow:
 
 ### 1. Mine their history
 
-Locate the active workspace's transcripts before fanning out. The system prompt names the workspace's `agent-transcripts/` directory. Use only that path. Don't glob across `~/~/.pi/agent/sessions/*/`. That crosses workspace boundaries and reads private chats from unrelated projects.
+Locate the active workspace's transcripts before fanning out. The system prompt names the workspace's `agent-transcripts/` directory. Use only that path. Don't reach into other workspaces' session directories. That crosses workspace boundaries and reads private chats from unrelated projects.
 
 Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 
@@ -111,11 +111,30 @@ Run a description-optimization loop only if the skill's trigger accuracy turns o
 - User wants a task-specific skill (not working conventions): direct skill authoring, no mining required.
 - User wants to capture one narrow workflow (e.g. "how I write commit messages"): that's a regular skill, not a mode skill.
 
-## Reference files
+## REFERENCES
 
 - The **poteto-mode** skill: example of the output shape.
 - The **unslop** skill: prose discipline for every line.
 - `skill-creator` skill: skill authoring process and writing guidelines.
+
+## DECISION TREE
+
+- The user asks for a one-off task -> do it; do not author a skill.
+- The same working preference shows up twice -> draft or revise the `-mode` skill.
+- An existing `-mode` skill covers it -> revise that skill; a second one splits the trigger.
+- Evidence is thin (one session, one correction) -> ask the user directly, then mark the skill `draft`.
+- The preference is enforceable by a lint, hook, or config -> encode it there instead of in prose.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Inventing preferences from one data point.** Mitigation: every rule cites a transcript line or an
+  explicit user answer.
+- **Duplicating an existing skill.** Mitigation: step 0 searches the catalog by trigger words before
+  drafting.
+- **Writing a personality essay.** Mitigation: each rule is observable behavior a reviewer could score.
+- **Untested prose.** Mitigation: run the new skill against a fresh prompt before landing; if it
+  changes nothing, it is decoration.
+- **A skill that never fires.** Mitigation: the description names the phrases the user actually says.
 
 ## WHEN TO USE
 

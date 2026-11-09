@@ -4,11 +4,11 @@ description: Spawn N parallel candidates at the same task, pick a base, graft th
   losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial
   artifact would lock in the wrong shape.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: debate-chair
 ---
 
@@ -34,7 +34,7 @@ The N candidates will receive the same prompt, so the prompt is the contract. Ge
 
 1. State the artifact each candidate is producing.
 2. Derive the rubric. State what success looks like for *this* task, then turn it into 3-6 concrete gradeable criteria. Concrete: `Adds a --dry-run flag that skips writes`. Vague: `code is correct`. The rubric is the picker's tool in Phase D; candidates only see the task.
-3. Pick the runners. Use `arena runners` from `~/.pi/agent/pstack-models.md` when present. Otherwise default to one each on `claude-fable-5-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`. Spawn more when the arena covers multiple design directions. Same model N times when the work is generation-bound rather than judgment-sensitive.
+3. Pick the runners. One subagent per model family your harness exposes, minimum two. With no model choice, run the candidates sequentially with identical briefs and rely on independent context for divergence. Spawn more when the arena covers multiple design directions. Same model N times when the work is generation-bound rather than judgment-sensitive.
 4. Assign output paths. Each candidate writes to its own location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`). N candidates writing to the same path is shared mutable state and fails the the **separate-before-serializing-shared-state** principle skill test.
 
 ## Phase B: Fan out
@@ -47,7 +47,7 @@ If a candidate fails to produce output, proceed with N-1 and note the dropout in
 
 ## Phase C: Cross-judge
 
-After all Phase B candidates complete, choose one model from the `arena cross-judge pool` in `~/.pi/agent/pstack-models.md` when present. Otherwise use `claude-fable-5-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`. Prefer a different model family from the parent's. Spawn one readonly judge subagent on that model. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with the parent's reading in Phase D, not with the candidates themselves. Spawning while candidates are still writing means the judge sees partial or empty outputs and reports them as dropouts.
+After all Phase B candidates complete, choose a judge model from a family different from the candidates' and from the parent's. With a single-model harness, use a fresh subagent that never saw the candidates' reasoning. Spawn one readonly judge subagent on that model. It sees the rubric and the candidates by path label, scores each criterion, and recommends a base with rationale. It runs in parallel with the parent's reading in Phase D, not with the candidates themselves. Spawning while candidates are still writing means the judge sees partial or empty outputs and reports them as dropouts.
 
 ## Phase D: Pick a base
 
@@ -79,6 +79,28 @@ If verification surfaces a problem the arena did not catch, either Phase A was w
 
 One synthesized artifact. One short synthesis note alongside, naming the base, the grafts (with source candidate), the rejections, the dropouts if any, and the verification result.
 
+## DECISION TREE
+
+- One right answer is already visible -> no arena; implement it.
+- The choice is taste with no checkable claim -> a reviewer, not an arena.
+- Two or more structurally valid shapes, each with a claim a judge can score -> run the arena.
+- Generation-bound work (many variants of one artifact) -> the same model N times, each arm with a distinct constraint.
+- Judgment-bound work (which design is better) -> different model families; the cross-judge must not share the parent's family.
+- Arms return near-identical output -> the brief is too prescriptive; loosen it or the arena proves nothing.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Every arm fails the same way.** That is one bug, not N results. Mitigation: run one arm with the
+  shared premise removed; if it succeeds, the premise is the defect.
+- **Judge grades its own family.** Mitigation: the cross-judge family differs from every candidate and
+  from the parent.
+- **Grafting into a chimera.** Mitigation: graft one component at a time, re-run the checks after each,
+  and keep the base green.
+- **Comparing summaries instead of artifacts.** Mitigation: read every arm at its diff, never at its
+  self-report.
+- **Arena used to delay a decision.** Mitigation: declare the pass/fail criterion before spawning; if
+  no arm can be scored, stop.
+
 ## WHEN TO USE
 
 Bakeoffs: competing implementations or designs where the best parts should be merged.
@@ -92,3 +114,10 @@ One approach is clearly correct — implement it.
 
 One rubric applied to every candidate; the base was chosen by evidence.
 Grafted parts were verified in the merged result.
+
+## REFERENCES
+
+- `architect` - the design-sketch variant of this skill.
+- `interrogate` - adversarial review when the question is "is this wrong", not "which is best".
+- `principles/exhaust-the-design-space` - when to fan out.
+- `principles/prove-it-works` - the check every graft must survive.

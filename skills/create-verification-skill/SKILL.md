@@ -4,11 +4,11 @@ description: Generate a project-local verification skill that drives your app th
   language, framework, or platform. Use for /create-verification-skill, "make a control skill for this
   repo", or when a project has no scripted way to prove UI/CLI/service behavior.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: test-engineer
 ---
 
@@ -52,6 +52,26 @@ Run its own instructions end to end once: launch, doctor, drive ONE mapped featu
 
 Point the user at `/maintain-verification-skill` for keeping the map honest as the app changes. Suggest a cadence only if they ask.
 
+## DECISION TREE
+
+- The repo has a UI or CLI a user drives -> this skill applies.
+- The deliverable is a library with no user-visible surface -> a test suite is the proof; skip this skill.
+- A harness already exists (`verify-*`, e2e suite, recorded fixture) -> extend it; do not add a second entry point.
+- The app cannot start headlessly (licence, hardware, credentials) -> write the skill with an explicit Human step and say so.
+- Success would require the model to grade its own output -> that is not a verification skill; do not generate it.
+
+## FAILURE MODES & MITIGATIONS
+
+- **The generated skill tests internals.** Mitigation: drive the same commands a user or CI runs, never
+  private modules.
+- **Green without evidence.** Mitigation: every step saves an artifact (screenshot, log, exit code) and
+  the gate reads the artifact.
+- **Unrunnable on a clean checkout.** Mitigation: run it once from a fresh clone; install steps belong
+  in the skill, not in your shell history.
+- **A feature map that rots immediately.** Mitigation: seed it from this pass and schedule
+  `maintain-verification-skill`.
+- **Promising more than the app does.** Mitigation: the map lists only surfaces proven in this pass.
+
 ## WHEN TO USE
 
 Authoring a project-local skill that drives the app the way a user does (web, CLI, API).
@@ -65,3 +85,10 @@ Test scope and type selection — `testing-strategy`.
 
 The generated skill runs green against the real surface.
 The feature map is seeded and the maintenance loop handed over.
+
+## REFERENCES
+
+- `maintain-verification-skill` - the periodic re-audit.
+- `webapp-qa` - the driving loop for web surfaces.
+- `roblox-testing` - the equivalent for Roblox places.
+- `verification-before-completion` - what counts as proof.

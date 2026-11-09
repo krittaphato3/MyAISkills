@@ -6,11 +6,11 @@ description: >-
   multi-step agentic work starts, when instructions conflict, or when deciding whether to delegate
   at all. The agent roster itself lives in AGENTS.md.
 metadata:
-  version: 3.5.0
+  version: 3.6.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-24'
+  last-reviewed: '2026-11-09'
   authored-by: meta-architect
 ---
 
@@ -194,6 +194,20 @@ If a field cannot be filled, the subtask is not ready.
   multi-domain, use `general-orchestrator`.
 - No match → proceed without a skill and record the gap (a repeated gap is a missing skill).
 - Never blanket-invoke the catalog. Every extra skill is context paid for by the task.
+
+## QUANTITATIVE RULES
+
+| Dimension | Rule |
+|---|---|
+| Concurrent subagents per wave | 5, hard cap 8 |
+| Subtasks per orchestration | 10 |
+| Repair attempts before the circuit breaker | 2 |
+| Debate rounds | 2 |
+| Retries on a flaky gate | 2 |
+| Brief fields | 6: goal, scope, context, constraints, evidence, no-fanout |
+| Independent verification | required for T2 and T3 |
+| Bulk output | stays in the subagent; only a summary returns to the main thread |
+| Skill load | one primary skill plus the safety-rail co-skills the work type names |
 
 ## VERIFICATION GATES
 

@@ -4,11 +4,11 @@ description: 'Periodic pass that keeps a project''s verification skill and featu
   source readers per feature, one live session driving every feature, at most one PR of proven corrections.
   Use for /maintain-verification-skill or "audit the verify skill".'
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: test-engineer
 ---
 
@@ -47,6 +47,22 @@ Only edit the verification skill's own directory (its SKILL.md, features/, and a
 
 Keep concise run notes (features covered, unreachable prerequisites, confirmed drift, outcome) in a scratch location; don't commit them.
 
+## DECISION TREE
+
+- The verify skill passes on a clean checkout -> run one live session across every mapped feature.
+- A feature no longer exists -> delete it from the map in the same pass.
+- A feature exists but the skill cannot drive it -> record the gap; do not invent a step.
+- The skill is green because an assertion was removed -> that is a defect; restore the assertion first.
+- More than one PR of corrections is needed -> split the pass; a reviewable diff is the limit.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Auditing the docs instead of the app.** Mitigation: one live session drives every mapped feature.
+- **Map drift.** Mitigation: regenerate the map from what the session proved, not from memory.
+- **Silent test weakening.** Mitigation: any removed or loosened assertion is called out explicitly.
+- **An unbounded pass.** Mitigation: cap at one PR of proven corrections per run.
+- **Green on the wrong branch.** Mitigation: run at the head the user will ship.
+
 ## WHEN TO USE
 
 A periodic pass to keep a project's verification skill and feature map honest.
@@ -58,3 +74,9 @@ First-time creation — `create-verification-skill`.
 ## VERIFICATION GATE
 
 Each feature re-verified against live behavior; drift fixed or listed.
+
+## REFERENCES
+
+- `create-verification-skill` - how the skill was generated.
+- `verification-before-completion` - the evidence standard.
+- `mutation-testing` - proving the assertions can fail.

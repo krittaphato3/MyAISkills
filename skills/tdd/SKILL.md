@@ -7,11 +7,11 @@ description: >-
   with that doctrine on description matching.
 disable-model-invocation: true
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: test-engineer
 ---
 
@@ -55,6 +55,23 @@ Report the evidence, not just the outcome:
 - Name the passing-after test run and any nearby validation performed.
 - If failing-before evidence could not be demonstrated, state why and describe the closest regression check used instead.
 
+## DECISION TREE
+
+- The bug has a reproducible input -> write the failing test first.
+- The behavior is new -> one RED test per behavior, then the smallest GREEN.
+- The code is untestable without a refactor -> refactor under existing tests first, or stop and say so.
+- No oracle exists (visual, timing, external system) -> define the observable proxy before coding.
+- The user asked for a fix, not a test suite -> the regression test is still required; scope it to the bug.
+
+## FAILURE MODES & MITIGATIONS
+
+- **A test that passes before the fix.** Mitigation: run it against the unfixed code and capture the RED
+  output.
+- **Testing the mock.** Mitigation: assert on behavior at the seam the user crosses.
+- **Fixing two things at once.** Mitigation: minimum diff per RED; extra fixes get their own test.
+- **Weakening an existing assertion.** Mitigation: any assertion change is an announced contract change.
+- **A green suite with the bug still present.** Mitigation: re-run the original repro after GREEN.
+
 ## WHEN TO USE
 
 The user asks for TDD, a failing test, or a regression test.
@@ -69,3 +86,10 @@ Exploration spikes and doc-only changes.
 
 The test failed first, for the expected reason.
 Green after the minimal change; the suite was rerun.
+
+## REFERENCES
+
+- `testing-strategy` - which layer each test belongs to.
+- `mutation-testing` - proving the new test can fail.
+- `systematic-debugging` - when the RED test cannot be made to fail.
+- `verification-before-completion` - the evidence standard.

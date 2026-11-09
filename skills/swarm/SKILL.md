@@ -3,11 +3,11 @@ name: swarm
 description: Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this',
   or parallel coverage, races, gauntlets, and exploration.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: ozone-agent
 ---
 
@@ -30,7 +30,7 @@ Open a todolist with one entry per phase before launching anything.
 1. State the done predicate and the artifact or report the swarm must return.
 2. Choose the shape. Partition into slices, race N workers on identical briefs, or mix both. For a race or mixed shape, declare `first pass`, `rank all`, or `best-of` before spawning.
 3. Set N from the user or derive it from the shape. N is total workers.
-4. Pick the worker model from the `swarm workers` line in `~/.pi/agent/pstack-models.md` when present. Otherwise use your default fast code model in place of `grok-4.6-fast-xhigh`. For a model race, set each arm's `model` field on its task entry.
+4. Pick the worker model: your default fast code model for the harness. For a model race, set each arm's `model` field on its task entry.
 5. Give each worker its own writable output when it writes. Use a worktree, branch, or `/tmp/swarm-<slug>/worker-<n>/`.
 
 ## Phase B: Fan out
@@ -53,6 +53,23 @@ Keep a compact result table, one-line evidenced issues, and explicit gaps or dro
 
 Return one consolidated in-chat report with the table, issue one-liners, gaps or dropouts, and the race rule when used.
 
+## DECISION TREE
+
+- One question, one owner -> spawn one worker, no swarm.
+- N independent units with the same brief -> swarm.
+- Units share a file or branch -> separate worktrees first, then swarm.
+- The goal is comparison between candidates -> `arena`, which judges; swarm only aggregates.
+- More than 5 concurrent workers -> split into waves; review stops scaling before compute does.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Workers colliding on one file.** Mitigation: one writer per worktree; shared state is serialized or
+  eliminated.
+- **Identical workers.** Mitigation: each unit gets a distinct slice or lens.
+- **Aggregation that trusts self-reports.** Mitigation: the parent reads each worker's artifact.
+- **Unbounded fan-out.** Mitigation: cap the wave at 5, subtasks at 10.
+- **A worker that recurses into the router.** Mitigation: every brief carries the no-fanout line.
+
 ## WHEN TO USE
 
 Parallel coverage, races, gauntlets, or exploration partitions with one report.
@@ -66,3 +83,9 @@ The work is one unit; parallelism adds cost without coverage.
 
 Every worker maps to a ledger row; no unreported or lost units.
 One aggregated report with per-unit evidence.
+
+## REFERENCES
+
+- `arena` - judged comparison rather than parallel coverage.
+- `principles/guard-the-context-window` - why bulk work moves off the main thread.
+- `principles/separate-before-serializing-shared-state` - the collision rule.

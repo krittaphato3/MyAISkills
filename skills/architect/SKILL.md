@@ -4,11 +4,11 @@ description: Sketch types, signatures, and module structure before code, then st
   fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to
   code would lock in the wrong shape.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: architecture
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
+  last-reviewed: '2026-11-09'
   authored-by: solution-architect
 ---
 
@@ -39,7 +39,7 @@ Skip Phase A only when the work is genuinely greenfield with no surrounding syst
 
 Run the **arena** skill with the design-sketch task and the Phase A grounding artifacts. Pass `references/runner-prompt.md` as each runner's prompt. Each candidate produces a design package shaped per `references/rationale-template.md`: the caller's usage written first, then the type sketch, function signatures, module map, and prose rationale derived from it.
 
-Use your configured architect runners (defaults `claude-fable-5-thinking-max`, `gpt-5.6-sol-max`, `grok-4.6-fast-xhigh`, `claude-opus-5-thinking-xhigh`).
+Use your configured architect runners: at least two models from different families. If the harness offers no model choice, run the candidates as separate subagents with the same brief and let divergence come from independent context rather than pretending a runner exists.
 
 Design it twice. Require at least two structurally distinct candidates before synthesis, even when the first looks sufficient. This is the **exhaust-the-design-space** principle skill made concrete. Whole-shape alternatives, not point fixes inside one shape.
 
@@ -91,6 +91,27 @@ When you scrap:
 
 The caller's usage is written first and the type sketch derived from it. One file with new types and signatures for small changes; module map plus type definitions for larger work. The rationale ships alongside, shaped per `references/rationale-template.md`, including the usage sketch and the synthesis decision.
 
+## DECISION TREE
+
+- The change fits one file and its shape is obvious -> skip this skill; implement it.
+- The work crosses a module boundary, adds an abstraction, or another team will code against it -> run Phases A and B, then implement against the sketch.
+- Several structurally different shapes are plausible -> run Phase B through the `arena` skill and graft in Phase E.
+- A sketch already exists and the question is only "is this the right shape" -> Phase A plus a critique of that sketch, not a full re-sketch.
+- The sketch survived contact with the code and is now wrong -> Phase E; scrap and re-sketch rather than patching the diagram.
+- No executable oracle exists for the design -> say so, and require an independent reviewer before implementation.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Sketched without reading callers.** The sketch encodes a guess about usage. Mitigation: Phase A
+  requires the caller list (`rg -w`) and one quoted call site per shape decision.
+- **One candidate dressed as two.** Renaming the same design is not design-it-twice. Mitigation: the
+  candidates must differ in the type or module boundary, not in naming.
+- **Sketch drifting into implementation.** Mitigation: the sketch stops at signatures and module map.
+- **The sketch outliving its premise.** Mitigation: Phase E names the assumption that would
+  invalidate the design, so a later change can trigger a re-sketch instead of a patch.
+- **Consensus read as proof.** Agreement is a coordination signal. Mitigation: no design ships
+  without a check against the real callers.
+
 ## WHEN TO USE
 
 Sketching types, signatures, and module structure before implementation.
@@ -105,3 +126,11 @@ Full system design routes to `system-design-architect`; the written rationale to
 
 The sketch is published before code and the implementation matches it.
 Workarounds appearing mid-build trigger a redesign, not a patch.
+
+## REFERENCES
+
+- `arena` - fan-out and cross-judge when the design space is open.
+- `adr-engineering` - turns the chosen sketch into a decision record.
+- `api-design-architect` - the contract layer once the module shape is fixed.
+- `principles/exhaust-the-design-space` - why two structurally distinct candidates are mandatory.
+- `references/rationale-template.md` - the shape of each design package.
