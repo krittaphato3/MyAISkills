@@ -12,7 +12,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-24'
-  owned-by-agent: roblox-ui-designer
+  authored-by: roblox-ui-designer
 ---
 
 
@@ -53,39 +53,7 @@ In Roblox games, the camera rotates across dynamic environments: blazing neon sk
 vibrant particle explosions, and specular terrain. UI elements that rely on plain flat colors instantly
 wash out or cause severe visual fatigue. Follow these non-negotiable optical rules:
 
-### 1. Optical Anti-Vibration (Ban Chromostereopsis)
-- **Never place pure saturated red on pure saturated green** (`#FF0000` on `#00FF00` or vice versa).
-- **Never place pure saturated blue on pure saturated red** (`#0000FF` on `#FF0000` or vice versa).
-- *Why:* Chromatic aberration in human eye lenses focuses red and blue light at different retinal depths,
-  causing severe optical vibration, depth distortion, and headache-inducing strain. Separate high-chroma
-  elements with neutral barriers or desaturate backing layers.
-
-### 2. Ban Isoluminant Pairings
-- **Never place yellow on white** (`#FFFF00` / `#FFFFFF`).
-- **Never place saturated blue on black or dark charcoal** (`#0000FF` / `#121212`).
-- **Never place light gray on white or dark gray on dark slate**.
-- *Why:* Human edge perception relies on luminance contrast (L*), not color hue difference. If two
-  different colors have identical luminance, text edges become invisible and completely unreadable.
-
-### 3. Dual-Boundary Isolation (Anti-Washout Stroke)
-- Every text label and floating icon rendered over the 3D scene **must** feature a contextual `UIStroke`:
-  - **Light text / elements**: Dark outer stroke (`Color3.fromRGB(12, 16, 24)`, thickness `1.5–2.5px`, `Transparency = 0.15–0.25`).
-  - **Dark text / elements**: Crisp light halo stroke (`Color3.fromRGB(240, 244, 250)`, thickness `1.5px`, `Transparency = 0.3`).
-- *Effect:* Regardless of whether a player looks at direct sunlight, glowing laser beams, or a pitch-black cave,
-  text and icons maintain constant, razor-sharp edge contrast.
-
-### 4. Protective Scrim Backing
-- Critical HUD elements (health bars, hotbars, minimaps, quest trackers) must sit on a protective scrim frame:
-  - Material tone: Slate or Deep Carbon (`Color3.fromRGB(16, 20, 28)` to `Color3.fromRGB(24, 28, 38)`).
-  - `BackgroundTransparency = 0.25 - 0.35` (retains game immersion while suppressing background noise).
-  - `UICorner` radius `6–10px`.
-
-### 5. Multi-Modal Cues (Colorblindness Defense)
-- **Never encode state by color alone.** Every status color must be accompanied by two redundant signals:
-  - *Icon/Shape*: Cross for health, lightning for stamina, shield for armor, skull for fatal/danger.
-  - *Numeric / Text Label*: Display "HP: 100/100" or status badges alongside the color fill.
-
----
+Full detail: `references/color-harmony-anti-cancellation-doctrine.md`.
 
 ## AAA BIG-GAME VISUAL POLISH & DESIGN SYSTEM ("HOW FRONT-PAGE GAMES DO IT")
 
@@ -155,46 +123,7 @@ Use modern, readable geometric sans-serif fonts (`BuilderSans`, `Gotham`, or `Mo
 
 Front-page Roblox titles (Pet Simulator, Blox Fruits, Sol's RNG, Deepwoken) achieve icons and item cards that look like cinematic 3D renders jumping off the screen. This "picture look" is an optical engineering pipeline combining five techniques:
 
-### Technique 1: Live Interactive 3D ViewportFrames
-Rather than flat 2D sprites, items (weapons, pets, artifacts, helmets) are rendered using a `ViewportFrame`:
-- **Narrow FOV Telephoto Camera**: Standard camera FOV (70°) creates wide-angle barrel distortion that flattens items into fish-eyes. Set `Camera.FieldOfView = 25–35°` (isometric sweet spot is ~30°) and position the camera further back along the look vector. This produces orthographic-like isometric compression where silhouettes appear monumental, heroic, and cinematic.
-- **Controlled Subject Positioning**: Calculate the model's bounding box using `:GetBoundingBox()`, center the model at `Vector3.zero`, and point `Camera.CFrame` toward `Vector3.zero` offset by `Vector3.new(0, heightOffset, distance)`.
-- **Lighting & Studio Shading**: `ViewportFrame.Ambient = Color3.fromRGB(160, 170, 190)`, `ViewportFrame.LightColor = Color3.fromRGB(255, 250, 240)`, and `LightDirection = Vector3.new(-1, -1.5, -1).Unit`. For high-end pop, place small bright `PointLight` instances or secondary illuminated neon parts inside the ViewportFrame to cast localized specular highlights.
-- **Dynamic Idle & Micro-Interactions**:
-  - *Idle Spin*: Connect to `RunService.RenderStepped` to rotate the primary model CFrame along the Y axis at a smooth rate (`dt * math.rad(30)`).
-  - *Mouse Tilt / Gyro Reaction*: On desktop hover, calculate mouse offset from the icon center `(mouseX - centerX) / cardWidth` and apply a subtle roll/pitch tilt (`math.clamp(offset * 0.15, -0.2, 0.2)` radians) toward the cursor, creating the tangible illusion of holding a physical collectible card in your hands.
-
-### Technique 2: "Burst-Out-of-Frame" Layering (`ClipsDescendants = false`)
-Flat icons look boxed in when clipped by rectangular card borders. Top games break the boundary:
-- **Disabling Container Clipping**: The card container sets `ClipsDescendants = false`. The card background (the rounded rectangle or shield with `UICorner` and `UIStroke`) remains clipped or sized normally, but the hero item layer sits at a higher `ZIndex`.
-- **Breaking the Boundary**: The `ViewportFrame` or hero icon is intentionally sized to `1.2x–1.4x` the parent card container (e.g. `UDim2.new(1.3, 0, 1.3, 0)`), with an AnchorPoint and Position that shifts the weapon's tip, dragon wings, or character's head past the top and side borders.
-- **Depth Occlusion Layering**:
-  1. *Backdrop Layer* (`ZIndex = 1`): Card background scrim, rarity gradient, drop shadow.
-  2. *Back VFX Layer* (`ZIndex = 2`): Rotating sunburst / halo effect.
-  3. *Hero Item Layer* (`ZIndex = 3`): ViewportFrame or hero silhouette breaking through borders (`ClipsDescendants = false`).
-  4. *Frame Rim Layer* (`ZIndex = 4`): Embossed frame border or bottom banner (e.g. rarity badge, level ribbon) that partially overlaps the base of the item, locking it in place as if anchored inside a real display case.
-  5. *Glass & Sheen Layer* (`ZIndex = 5`): Diagonal sweeping gloss sheen overlay.
-
-### Technique 3: Rotating Sunburst / Rayburst Backdrop
-Legendary and rare items project radiant energy with a circular rayburst behind the subject:
-- **Asset Structure**: A circular `ImageLabel` displaying a 12-to-24 ray starburst/sunburst pattern with transparent gaps between rays.
-- **Color & Transparency**: Tinted to the item's rarity accent color (e.g. Gold `#F59E0B` for Legendary, Purple `#8B5CF6` for Epic) with `ImageTransparency = 0.55–0.70` so it illuminates without overpowering the item silhouette.
-- **Continuous Ambient Rotation**: Driven via `RunService.RenderStepped` updating `rayburst.Rotation = (rayburst.Rotation + 30 * dt) % 360` (see Pattern 9).
-- **Pulsing Scale Breathing**: A subtle tweening loop oscillating `Size` between `1.0x` and `1.12x` over 2 seconds (`EasingStyle.Sine`, `EasingDirection.InOut`, repeat count -1, reverses true) adds a living heartbeat.
-
-### Technique 4: Diagonal Sweeping Sheen / Foil Gloss (`UIGradient` Shine)
-Collectibles and front-page loot have a dynamic holographic foil shine that sweeps diagonally across the surface:
-- **Overlay Setup**: An empty `Frame` placed above the card (`ZIndex = 5`) matching the card dimensions, with `BackgroundTransparency = 0`, `BackgroundColor3 = Color3.fromRGB(255, 255, 255)`, and matching `UICorner`.
-- **Diagonal `UIGradient` Configuration**: `Rotation = 45` with a 5-keypoint sequence creating a crisp central light band (edges transparency 1.0, central gleam at 0.50 with transparency 0.15; see Pattern 8).
-- **Offset Sweeping Tween**: Start at `Offset = Vector2.new(-1, -1)` (off-screen top-left) and tween to `Offset = Vector2.new(1, 1)` (past bottom-right) over 0.75–1.1s (`EasingStyle.Quad`). Sweep once on card reveal, then repeat every 3 to 5 seconds on rare/legendary items.
-
-### Technique 5: Multi-Point Studio Lighting in 2D
-To make subjects pop against dark backgrounds without muddying:
-- **Key Light (Top-Left)**: Strong directional light (`LightDirection = Vector3.new(-1, -1.2, -0.8).Unit`, bright warm white `Color3.fromRGB(255, 252, 245)`) that defines form and surface normals.
-- **Fill Light (Bottom-Right)**: Softer ambient fill (`Ambient = Color3.fromRGB(140, 150, 175)`) tinted slightly cool slate to simulate environmental bounce light and prevent pure black shadows under crevices.
-- **Rim / Back Light**: A high-intensity backlight or contrasting silhouette rim (`UIStroke` on 2D cutouts or neon rim geometry in 3D ViewportFrames) separating dark subject edges from dark card backings. This silhouette halo is what human vision interprets as crisp "studio isolation".
-
----
+Full detail: `references/hero-item-showcases-3d-pop-out-architecture-the-3d-picture-l.md`.
 
 ## DECISION TREE
 
@@ -240,7 +169,8 @@ To make subjects pop against dark backgrounds without muddying:
 
 ## PATTERNS
 
-### 1. AAA ScreenGui & Layer Hierarchy
+### 1.
+AAA ScreenGui & Layer Hierarchy
 ```text
 StarterGui.MainInterface (ScreenGui)
   ResetOnSpawn = false
@@ -263,175 +193,7 @@ StarterGui.MainInterface (ScreenGui)
       └─ DialogCard (Frame + UICorner + UIStroke with Emboss Gradient + DropShadow)
 ```
 
-	### 2. Tactile Button with Embossed Rim and Tween Interaction
-	```lua
-	local TweenService = game:GetService("TweenService")
-	local function SetupTactileButton(button: GuiButton, onClick: () -> ())
-	    local originalSize = button.Size
-	    local hoverInfo = TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-	    local pressInfo = TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	    local function setScale(m: number, info: TweenInfo)
-	        TweenService:Create(button, info, {
-	            Size = UDim2.new(originalSize.X.Scale * m, originalSize.X.Offset, originalSize.Y.Scale * m, originalSize.Y.Offset)
-	        }):Play()
-	    end
-	    button.MouseEnter:Connect(function() setScale(1.05, hoverInfo) end)
-	    button.MouseLeave:Connect(function() setScale(1.0, hoverInfo) end)
-	    button.MouseButton1Down:Connect(function() setScale(0.95, pressInfo) end)
-	    button.MouseButton1Up:Connect(function() setScale(1.05, hoverInfo) end)
-	    button.Activated:Connect(onClick)
-	end
-	```
-
-### 3. Embossed UIStroke Construction
-```lua
-local function ApplyEmbossedBorder(frame: GuiObject, baseColor: Color3, thickness: number)
-    local stroke = Instance.new("UIStroke")
-    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    stroke.Thickness = thickness or 2
-    stroke.Color = Color3.fromRGB(255, 255, 255)
-    stroke.Parent = frame
-
-    local gradient = Instance.new("UIGradient")
-    gradient.Rotation = 90 -- Top-to-bottom light incidence
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.0, Color3.fromRGB(255, 255, 255)),   -- Specular top rim
-        ColorSequenceKeypoint.new(0.4, baseColor),                       -- True border color
-        ColorSequenceKeypoint.new(1.0, Color3.fromRGB(20, 24, 30))       -- Shaded bottom rim
-    })
-    gradient.Parent = stroke
-    return stroke
-end
-```
-
-### 4. Dual-Boundary Text Isolation
-```lua
-local function FormatIsolatedText(label: TextLabel)
-    label.TextColor3 = Color3.fromRGB(250, 252, 255)
-    label.TextStrokeTransparency = 1 -- Disable deprecated legacy stroke
-    
-    local stroke = label:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
-    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
-    stroke.Thickness = 2
-    stroke.Color = Color3.fromRGB(12, 16, 24) -- Dark charcoal boundary
-    stroke.Transparency = 0.15
-    stroke.Parent = label
-end
-```
-
-### 5. Button Intent with Rollback (Anti-Desync)
-```lua
-buyButton.Activated:Connect(function()
-    buyButton.Active = false
-    -- Show brief loading indicator or spinner
-    local ok, message = Remotes.RequestPurchase:InvokeServer(itemId) -- Bounded, pcall'd
-    if not ok then
-        HUD:Toast(message or "Purchase failed")                      -- Server rejected
-        -- Roll back any local optimistic state
-    end
-    buyButton.Active = true
-end)
-```
-Never deduct coins or inventory counts locally before server confirmation.
-
-### 6. Console / 10-Foot Pass
-- Body text ≥24 px equivalent at 1080p, larger for critical combat and countdown labels.
-- Focus order must be explicit (`Selectable`, `NextSelection*`), with a distinct high-contrast selection cursor.
-- Never use hover tooltips as the only hint; display gamepad button icons (e.g. `(A) Select`, `(B) Back`) inline.
-- Maintain a modal selection group (`GuiService.SelectedObject`) so navigation cannot escape behind open dialogs.
-
-### 7. 3D ViewportFrame Hero Showcase with Telephoto Camera & Idle Spin
-```lua
-local RunService = game:GetService("RunService")
-local function SetupHero3DViewport(viewportFrame: ViewportFrame, itemModel: Model): () -> ()
-    viewportFrame.Ambient = Color3.fromRGB(160, 170, 190)
-    viewportFrame.LightColor = Color3.fromRGB(255, 250, 240)
-    viewportFrame.LightDirection = Vector3.new(-1, -1.5, -1).Unit
-
-    local camera = Instance.new("Camera")
-    camera.FieldOfView = 30 -- Telephoto isometric sweet spot: eliminates wide-angle distortion
-    camera.Parent = viewportFrame
-    viewportFrame.CurrentCamera = camera
-
-    local clone = itemModel:Clone()
-    local _, size = clone:GetBoundingBox()
-    local maxDim = math.max(size.X, size.Y, size.Z)
-    local distance = (maxDim / 2) / math.tan(math.rad(camera.FieldOfView / 2)) * 1.25
-    clone:PivotTo(CFrame.new(Vector3.zero))
-    clone.Parent = viewportFrame
-    camera.CFrame = CFrame.new(Vector3.new(0, size.Y * 0.15, distance), Vector3.zero)
-
-    local rotAngle = 0
-    local conn = RunService.RenderStepped:Connect(function(dt)
-        rotAngle = (rotAngle + dt * math.rad(30)) % (2 * math.pi)
-        clone:PivotTo(CFrame.Angles(0, rotAngle, 0))
-    end)
-    return function()
-        conn:Disconnect()
-        clone:Destroy()
-        camera:Destroy()
-    end
-end
-```
-
-### 8. Diagonal Sweeping Sheen / Foil Gloss (`UIGradient` Offset)
-```lua
-local TweenService = game:GetService("TweenService")
-local function AttachFoilSheen(cardFrame: GuiObject)
-    local sheen = Instance.new("Frame")
-    sheen.Name = "FoilSheen"
-    sheen.Size = UDim2.fromScale(1, 1)
-    sheen.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    sheen.ZIndex = 5
-    sheen.Parent = cardFrame
-    local corner = cardFrame:FindFirstChildOfClass("UICorner")
-    if corner then corner:Clone().Parent = sheen end
-
-    local gradient = Instance.new("UIGradient")
-    gradient.Rotation = 45
-    gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0.0, 1.0), NumberSequenceKeypoint.new(0.42, 1.0),
-        NumberSequenceKeypoint.new(0.50, 0.15), NumberSequenceKeypoint.new(0.58, 1.0),
-        NumberSequenceKeypoint.new(1.0, 1.0)
-    })
-    gradient.Offset = Vector2.new(-1, -1)
-    gradient.Parent = sheen
-
-    local tweenInfo = TweenInfo.new(0.85, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    return function()
-        gradient.Offset = Vector2.new(-1, -1)
-        TweenService:Create(gradient, tweenInfo, { Offset = Vector2.new(1, 1) }):Play()
-    end
-end
-```
-
-### 9. Rotating Sunburst / Rayburst Energy Backdrop
-```lua
-local RunService = game:GetService("RunService")
-local function SetupRayburstBackdrop(container: GuiObject, rarityColor: Color3): () -> ()
-    local rayburst = Instance.new("ImageLabel")
-    rayburst.Name = "Rayburst"
-    rayburst.AnchorPoint = Vector2.new(0.5, 0.5)
-    rayburst.Position = UDim2.fromScale(0.5, 0.5)
-    rayburst.Size = UDim2.fromScale(1.8, 1.8)
-    rayburst.BackgroundTransparency = 1
-    rayburst.Image = "rbxassetid://13847844005"
-    rayburst.ImageColor3 = rarityColor
-    rayburst.ImageTransparency = 0.65
-    rayburst.ZIndex = 2
-    rayburst.Parent = container
-
-    local conn = RunService.RenderStepped:Connect(function(dt)
-        rayburst.Rotation = (rayburst.Rotation + 25 * dt) % 360
-    end)
-    return function()
-        conn:Disconnect()
-        rayburst:Destroy()
-    end
-end
-```
-
----
+Full detail: `references/patterns.md`.
 
 ## FAILURE MODES & MITIGATIONS
 

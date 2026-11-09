@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: red-team-qa
+  authored-by: red-team-qa
 ---
 
 # DOUBT-DRIVEN DEVELOPMENT

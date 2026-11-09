@@ -13,7 +13,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-30'
-  owned-by-agent: design-critic
+  authored-by: design-critic
 ---
 
 # UX Review

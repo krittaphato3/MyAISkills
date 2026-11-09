@@ -9,6 +9,29 @@ contradicts the user's explicit instruction, the user wins, always.
 
 ---
 
+## 0. HOW THIS FILE IS USED
+
+Read in this order, and do not preload deeper:
+
+1. This file.
+2. The one skill whose description matches the current step.
+3. That skill's `references/`, only if the skill points there.
+
+Three layers, and they are not interchangeable:
+
+| Layer | Lives in | Reached via | Purpose |
+|---|---|---|---|
+| Skills | `skills/<name>/SKILL.md` | description match | the protocol: how to do the discipline |
+| Agents | `agents/<name>.md` | `task` tool | the worker: does the token-heavy work in its own context |
+| Gates | §8 plus `verification-before-completion` | checklist | proof that the step actually passed |
+
+A skill says how. An agent does it. A gate proves it. Never collapse them.
+
+`docs/ROUTING.md` is the front door: every skill, agent, and command with its trigger. When no
+row in §7 matches a request, read that file before improvising a workflow.
+
+---
+
 ## 1. PRECEDENCE
 
 1. The user's current instruction, including "stop", "explain only", "don't touch X".
@@ -94,6 +117,15 @@ request
 Skipping a playbook step is allowed only when the step stays in the todo list with
 `skip: <reason>`. Silent skipping is the failure mode this loop exists to prevent.
 
+The same loop in eight stages:
+
+```text
+0 ROUTE → 1 CLARIFY → 2 RESEARCH → 3 PLAN → 4 IMPLEMENT → 5 VERIFY → 6 REVIEW → 7 DELIVER
+```
+
+Every stage ends in a gate. A red gate stops the pipeline: fix the root cause, re-verify, then
+continue. Never integrate on a red gate.
+
 ---
 
 ## 5. WORK TIERS
@@ -162,8 +194,8 @@ router, not a gate in front of it.
 | Writing, docs, README, reports | `technical-writing`; long-form docs -> `readme-architect` |
 | Planning, specs, ambiguous scope | `deep-planner`, `spec-driven-development`, `requirements-elicitation` |
 | Learning or explaining a topic | `teach` |
-| Product and scope tradeoffs | `product-engineering`, `principle-experience-first` |
-| Data analysis, scripts, one-off computation | `ml-python-scientist`, `principle-build-the-lever` |
+| Product and scope tradeoffs | `product-engineering`, `principles` |
+| Data analysis, scripts, one-off computation | `ml-python-scientist`, `principles` |
 | Editing this configuration | `agent-config-maintenance`, `skill-creator` |
 
 Rules:
@@ -173,6 +205,62 @@ Rules:
 - Skip a skill when its `WHEN NOT TO USE` section covers the case. Loading everything is how
   token budgets die and how instructions start contradicting each other.
 - Adding or renaming a skill means updating `skills/INDEX.md` and running the linters in §10.
+
+### Trigger breadcrumbs
+
+These words should make you reach for the `skill` tool without being asked:
+
+| Signal | Words |
+|---|---|
+| Plan / vague / scope | "build", "add", "make it", "not sure", "design" |
+| Debug | "broken", "fails", "error", "flake", "regression", "why" |
+| Test | "test", "cover", "E2E", "reproduce", "TDD" |
+| Review | "review", "check", "safe to merge", "hole", "adversarial" |
+| Ship | "commit", "PR", "release", "deploy", "changelog" |
+| Perf | "slow", "latency", "memory", "profile", "optimize" |
+| Security | "auth", "token", "vulnerability", "secret", "injection" |
+| Docs | "README", "ADR", "document", "explain" |
+| AI | "LLM", "RAG", "embedding", "prompt", "chatbot" |
+| Money | "payment", "subscribe", "billing", "invoice" |
+| Async / live | "queue", "worker", "cron", "websocket", "realtime" |
+| Data | "ETL", "pipeline", "warehouse", "backfill", "CDC" |
+| Privacy | "GDPR", "PII", "consent", "retention", "delete my data" |
+| Desktop | "Electron", "Tauri", "installer", "auto-update" |
+| Motion | "scroll animation", "GSAP", "Lenis", "React Bits", "60fps" |
+| Cost | "cloud bill", "spend", "rightsize", "egress" |
+| i18n | "translate", "locale", "RTL", "hreflang" |
+
+Ambiguity rule: compare skill descriptions, take the most specific match. If a breadcrumb fires
+on a request that turns out to be trivial, drop the skill and stay in-thread.
+
+### Commands — one-word entry points
+
+`commands/*.md` inject live shell context. Four of them declare `agent:` and `subtask: true`, so
+they run in an isolated context and cannot edit the file they are reviewing:
+
+| Isolated command | Agent |
+|---|---|
+| `/doctor` | `meta-architect` |
+| `/review` | `red-team-qa` |
+| `/ship-check` | `red-team-qa` |
+| `/onboard` | `codebase-cartographer` |
+
+The rest run in the current thread. `/ship` deliberately does not isolate: it orchestrates
+verification, then a `git-master` commit, which needs the main thread.
+
+A command's template wins for that run; report a conflict back to `agent-config-maintenance`.
+
+| Group | Commands |
+|---|---|
+| Plan and route | `/route` `/plan` `/architect` `/product` `/parallel-dev` `/ozone-mode` |
+| Build | `/tdd` `/algorithms` `/roblox` |
+| Investigate | `/debug` `/map` `/graphify` `/search` `/fetch` `/blast-radius` |
+| Review and ship | `/review` `/verify` `/ship` `/ship-check` |
+| Explain and polish | `/ux-review` `/unslop` |
+| Session | `/onboard` `/handoff` `/resume` `/doctor` |
+
+The exhaustive index — every skill, agent, and command with its trigger — is `docs/ROUTING.md`.
+When no row above matches a request, read that file before improvising a workflow.
 
 ---
 
@@ -220,13 +308,22 @@ All lines true and evidenced before reporting completion:
 ## 10. MAINTENANCE
 
 ```bash
+python tools/gen_routing.py                 # regenerate docs/ROUTING.md (coverage index)
+python tools/gen_catalog_report.py          # regenerate docs/catalog-report.md (real numbers)
 python tools/lint_config.py --write-index   # validate + regenerate skills/INDEX.md
 python tools/skill_lint.py --regen          # second validator + docs/skills/skills.json
+python tools/sync_catalog.py                # report drift against the deployed copy
+python tools/sync_catalog.py --apply        # make the deployed copy match this repo
 ```
 
 - Validate after any change to `skills/` or `agents/`. Regenerate the index after adding,
-  removing, or renaming a skill.
+  removing, or renaming a skill. Regenerate `docs/ROUTING.md` and the report in the same pass.
+- `AGENTS.md` is the only hand-written router. `docs/ROUTING.md` is generated and must index every
+  skill and agent; the linter fails if one is missing. `docs/catalog-report.md` carries the counts,
+  the budget, and the conformance gaps — never hand-edit either.
+- This repo is the source of truth. The deployed catalog is a build artifact; `sync_catalog.py
+  --check` must report `in sync` before the config is considered shipped.
 - Changes to this file or the roster are `meta-architect` work and get a version bump.
 - A skill unexercised for 6 months, or overlapping a newer one, points at its replacement in its
   description; delete only after all references are gone.
-- Version: 4.1.0 · last reviewed 2026-10-30
+- Version: 4.2.0 · last reviewed 2026-11-08

@@ -12,7 +12,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: devops-engineer
+  authored-by: devops-engineer
 ---
 
 # incident-response-engineer

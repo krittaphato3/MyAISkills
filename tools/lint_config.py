@@ -22,11 +22,12 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 AGENTS = ROOT / "agents"
+COMMANDS = ROOT / "commands"
 INDEX = SKILLS / "INDEX.md"
 
 DOMAINS = ["doctrine", "architecture", "delivery", "production", "security",
            "languages", "roblox", "meta", "fundamentals"]
-REQUIRED_META = ["version", "domain", "grade", "status", "last-reviewed", "owned-by-agent"]
+REQUIRED_META = ["version", "domain", "grade", "status", "last-reviewed", "authored-by"]
 DESC_LIMIT = 1024
 DESC_MIN = 120
 # A routing description must say what it does, when to use it, and what routes elsewhere;
@@ -200,9 +201,9 @@ def main() -> int:
                 err(f"skills/{name}: metadata.{key} missing")
         if md.get("domain") and md["domain"] not in DOMAINS:
             err(f"skills/{name}: domain '{md['domain']}' not in {DOMAINS}")
-        owner = md.get("owned-by-agent")
+        owner = md.get("authored-by")
         if owner and owner not in agent_names:
-            err(f"skills/{name}: owned-by-agent '{owner}' has no agent file")
+            err(f"skills/{name}: authored-by '{owner}' has no agent file")
         if md.get("status") not in ("active", "deprecated", "experimental"):
             warn(f"skills/{name}: status '{md.get('status')}' unexpected")
         for pat in STALE_PATTERNS:
@@ -236,24 +237,51 @@ def main() -> int:
             "lines": lines,
         })
 
-    # cross-file: agent referenced in AGENTS.md must exist
+    # cross-file: AGENTS.md must not route to things that do not exist
     agents_md = ROOT / "AGENTS.md"
     if not agents_md.exists():
         err("AGENTS.md missing")
     else:
         text = agents_md.read_text(encoding="utf-8")
-        for ref in sorted(set(re.findall(r"`([a-z0-9]+(?:-[a-z0-9]+)+)`", text))):
-            if ref in {s["name"] for s in skills}:
+        skill_names = {s["name"] for s in skills}
+        command_names = {p.stem for p in COMMANDS.glob("*.md")}
+        playbook_names = {p.stem for p in (SKILLS / "ozone-mode" / "playbooks").glob("*.md")}
+        known = skill_names | agent_names | command_names | playbook_names
+
+        # Routing rows only: prose and field names are not routing claims.
+        for lineno, line in enumerate(text.splitlines(), 1):
+            if not line.lstrip().startswith("|"):
                 continue
-            if ref in agent_names:
-                continue
-            if ref in {"debate-protocol", "context-engineering"}:
-                continue
+            for ref in re.findall(r"`([a-z0-9]+(?:-[a-z0-9]+)+)`", line):
+                if ref not in known:
+                    err(f"AGENTS.md:{lineno}: routes to unknown entry '{ref}'")
+
+        # A documented slash command must exist as commands/<name>.md.
+        for name in sorted(set(re.findall(r"`/([a-z][a-z0-9-]+)(?:[ >][^`]*)?`", text))):
+            if name not in command_names:
+                err(f"AGENTS.md: documented command '/{name}' has no commands/{name}.md")
+
+        # The reverse is hygiene, not a hard failure: a command nobody documents is invisible.
+        for name in sorted(command_names):
+            if f"/{name}" not in text:
+                warn(f"AGENTS.md: commands/{name}.md is not mentioned in AGENTS.md")
+
         for ref in sorted(set(AGENT_REF_RE.findall(text))):
             if ref[1] not in agent_names:
                 err(f"AGENTS.md: dangling agent reference '{ref[1]}'")
         if "ASK EVERY TIME" not in text:
             err("AGENTS.md: permission matrix for commit/push missing")
+
+    # generated routing index must cover the whole catalog, or entries are unreachable
+    routing_md = ROOT / "docs" / "ROUTING.md"
+    if not routing_md.is_file():
+        warn("docs/ROUTING.md missing — run tools/gen_routing.py (entries rely on descriptions alone)")
+    else:
+        routing = routing_md.read_text(encoding="utf-8")
+        for name in sorted({s["name"] for s in skills} - set(re.findall(r"`([a-z0-9-]+)`", routing))):
+            err(f"docs/ROUTING.md: skill '{name}' not indexed")
+        for name in sorted(agent_names - set(re.findall(r"`([a-z0-9-]+)`", routing))):
+            err(f"docs/ROUTING.md: agent '{name}' not indexed")
 
     # ---- routing fixture ----
     cases_path = ROOT / "tools" / "routing_cases.json"

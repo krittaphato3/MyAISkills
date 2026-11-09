@@ -10,7 +10,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-31'
-  owned-by-agent: refactoring-specialist
+  authored-by: refactoring-specialist
 ---
 
 # Blast Radius

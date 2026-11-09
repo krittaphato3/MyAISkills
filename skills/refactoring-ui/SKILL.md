@@ -13,7 +13,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: ui-ux-architect
+  authored-by: ui-ux-architect
 ---
 
 

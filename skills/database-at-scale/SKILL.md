@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: db-architect
+  authored-by: db-architect
 ---
 
 # database-at-scale
@@ -104,27 +104,14 @@ Record: scale-up rejected because write ceiling and cost; replicas chosen for re
 
 Each entry: detection, then fix. Validate at least 8 before claiming a scaled database is safe.
 
-1. **Replication lag (staleness).** *Detect:* write returns but a replica read returns an older value; lag metric climbs in `pg_stat_replication` or `SHOW REPLICA STATUS`; a write-then-read test fails. *Fix:* route reads needing current data to the primary for a staleness budget; set an async-lag target and alert on breach; use sync/quorum on the critical path.
-2. **Split brain in failover.** Two nodes both believe primary and accept writes. *Detect:* two active writable roles; fencing token epoch mismatch across the failed-over pair. *Fix:* a monotonic epoch with a majority gate: a node becomes primary only with the latest epoch; the old primary is fenced dead and refuses writes after any failure.
-3. **Migration corruption (silent drift).** A backfill wrote wrong or missing rows; checksum or count diverges between the source and the destination. *Detect:* row-count or checksum mismatch in the migration verify gate; dual-write never exercised a concurrent-write path. *Fix:* run backfill with built-in verify (count + sampled checksum), re-run on mismatch, and never switch reads until the verify gate passes.
-4. **Hot shard / hot key.** One key or two shards absorb a disproportionate share. *Detect:* latency skew across shards; a dominant key; a shard saturated while peers idle. *Fix:* pick a better key (higher cardinality), fan the hot key out to sub-shards or caches, and rebalance proactively before the load threshold, not after.
-5. **Deadlock storms.** Two+ transactions interlock and keep retrying, eating connections and time. *Detect:* lock-wait graphs, timeout logs, rising retry counts, a cluster of failed transactions. *Fix:* keep transactions short, obtain locks in fixed order, add targeted indexes to shrink lock scope, enforce deadlock timeouts, and surface deadlock % in metrics.
-6. **Vacuum / compaction stalls.** Postgres autovacuum falls behind or MySQL reorg stalls; bloat starves the table, scan cost and bloat ratio climb. *Detect:* bloat metrics, oversized index/table, autovacuum behind thresholds, `OPTIMIZE TABLE`/`REINDEX` no-op. *Fix:* configure autovacuum/analyze thresholds, schedule `VACUUM` or `OPTIMIZE TABLE` or `pg_repack`, and keep fill factor sane.
-7. **Backup restore failure.** The restore path has never run, so it corrupts or exceeds the RTO budget when needed. *Detect:* a restore script that has never executed; a restore that is only partial or slow; a backup missing the tail. *Fix:* periodic restore drills, test full backup→restore within RTO, validate base + WAL/binlog completeness. See VERIFICATION GATE.
-8. **Connection pool exhaustion.** All pools max out and clients starve. *Detect:* pool saturation, connection acquisition time, DB refusal of new connections. *Fix:* size pools by the connection math, add timeouts and detect leaks, and backoff on acquisition.
-9. **Cross-shard fan-out meltdown.** A query without the shard key hits all shards at N×. *Detect:* scatter-query latency and aggregate load; a single-shard query becomes N queries. *Fix:* require a shard key at routing, cache the fan-out result, alert on per-query fan-out > 1.
-10. **Stale reads from a mismatch.** Reads reach a replica not current with respect to the writer. *Detect:* same as lag but systemic across an app path. *Fix:* session-affinity to the writer, monotonic read routing, read-your-writes on the write path.
+Full detail: `references/failure-modes-mitigations.md`.
 
 ## COMMON ANTI-PATTERNS
 
-- **Sharding to fix a bad index or a plan.** Exhaust query-performance-engineer first; a shard cannot outrun a bombed query plan.
-- **Async replication promising read-your-writes.** Async reorders the reads; the promise breaks. Route to the writer or monotonic read routing, or eat the stale read.
-- **A failover of only preference.** Without epoch/fencing, the old primary writes again (split brain).
-- **Over-indexing during a migration:** adding many indexes to speed the backfill, then never dropping them, raising write amplification for the migration's dual-write.
-- **A testing gap on the migration copy:** a migration never rehearsed on a copy is an un-met VERIFICATION GATE.
-- **A pool sized to max_connections rather than concurrency × latency** — this guarantees a storm at high load, not a stable ceiling.
-- **A migration that backfills while the source still writes but misses the concurrent-write tail** — the last rows are never dual-written and drift forever.
-- **Sharding by a mutable key** (user email changes) that forces a rebalance on every key change.
+- **Sharding to fix a bad index or a plan.** Exhaust query-performance-engineer first; a shard cannot outrun a bombed query plan. - **Async replication promising read-your-writes.** Async reorders the reads; the promise breaks.
+Route to the writer or monotonic read routing, or eat the stale read. - **A failover of only preference.** Without epoch/fencing, the old primary writes again (split brain).
+
+Full detail: `references/common-anti-patterns.md`.
 
 ## REBALANCE AND DR CADENCE
 
@@ -142,35 +129,7 @@ A scale-out decision is only complete when it carries a rollback path: the rebal
 
 Numbers are budgets for a scaling plan; each must be measured on the real cluster before you commit.
 
-### Replica lag budgets
-- read-your-writes means P95 replica lag ≤ 50 ms by routing to the writer or a quorum.
-- Cross-region async lag is commonly seconds: expect 0.5-2 s, alert if lag exceeds target for > 10 s continuously, fail the test at 2× the target.
-- The read-your-writes window is (P95 write) + (max acceptable staleness). Keep it explicit.
-- Worked: app write path P95 25 ms, accept 100 ms staleness → a read-your-writes reader after a write routes to the writer for 125 ms, then may read a replica. Anything that must be fresh routes to the writer for the full window or uses monotonic reads.
-
-### Replication wavelength in DR
-When you add a replica for DR, state its target lag in seconds (e.g., ≤ 30 s cross-region) and its RPO (e.g. ≤ 1 min) as separate numbers. A replica that meets lag but not RPO, or vice versa, is a different network contract. Alert on both at once.
-
-### Connection math
-max_connections on PG/MySQL is typically 100-300. The sum of all app pools must stay at 60-80% or under so admin, vacuum/compaction, and maintenance workers have ceiling.
-
-Worked: Postgres `max_connections = 300`; 24 app instances each hold 40 pooled connections = 960 needed, which exceeds the ceiling by 3.2× and forces refusal + latency. A safe basis: each instance pool_size ≈ 80% × max_connections ÷ instances. With 200 max and 10 instances: pool_size ≈ (0.8×200)/10 = 16 per instance is the upper bound. Start lower (10-12) and raise only under a load gate that proves no connection refusal.
-
-If avg query time is q ms and you need requests/sec r per instance, then active connections ≈ r×q/1000; a pool must be ≥ that plus headroom, and ≤ the ceiling, or sockets churn. Never size a pool by max_connections alone — size by concurrency × per-query latency.
-
-### Shard size limits
-- Keep the working set for a hot shard below available RAM and keep each shard under ~100-300 GB for OLTP (range-heavy less); trigger a split when a shard exceeds the mean by ~20% or the absolute cap for the node.
-
-### Worked shard sizing
-Given 4 nodes of 64 GB RAM each and a 1.6 TB dataset. To keep each hot working set under one node's RAM you can hold at most ~50 GB hot per node, so sharding by a flat split of 4 (400 GB each) leaves hot data over memory. Prefer more, smaller shards: split to 8-16 so the hot shard's working set fits ~48-60 GB of RAM. Choose the number N where N × working_set_per_shard ≤ 0.8 × node RAM; a rebalance is then a split, not a global reshard.
-
-### Migration batch sizing
-- Size a batch so it does not starve the cluster and P99 production latency stays in budget. A starting formula: target rows_per_second = (production write budget, e.g., 500 rows/s) − 20% margin. For a 10 M row table that is 500 − 100 = 400 rows/s ≈ 10 h of backfill plus verify.
-- Set per-batch rows at what fits a comfortable fraction of shared working memory and reduce if the latency budget regresses.
-- Each batch must be restartable and idempotent; if a batch fails, re-run only that batch, then continue. The verify runs per-batch and an aggregate rowcount+checksum at the end.
-
-### Worked migration budget
-Given: 10 M rows, ~500 B/row → ~5 GB new column, batch of 50,000 rows. Sample P99 write-latency during dual-write is 120 ms; load gate 2×peak demand is unresolved. Start at 200 rows/s; on a copy ramp to 400 rows/s in 100 rows/s steps, watching replication lag and write P99. If P99 stays ≤ 200 ms and lag stays ≤ 5 s, accept 400 rows/s → the backfill completes in about 7 h. Otherwise keep the migration pace lower, or extend the window, and record the achieved number.
+Full detail: `references/quantitative-rules.md`.
 
 ## VERIFICATION GATE
 

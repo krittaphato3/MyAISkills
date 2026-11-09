@@ -14,9 +14,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = ROOT / "skills"
 MANIFEST_DIR = ROOT / "docs" / "skills"
-REQUIRED = ["name", "version", "grade", "domain", "status", "last-reviewed", "owned-by-agent"]
+REQUIRED = ["name", "version", "grade", "domain", "status", "last-reviewed", "authored-by"]
 GRADES = {"G1", "G2", "G3"}
-STATUSES = {"active", "draft", "EE"}
+STATUSES = {"active", "draft", "deprecated", "experimental", "EE"}
 FAMILIES = {"doctrine", "architecture", "production", "security", "languages", "delivery", "roblox", "meta", "fundamentals"}
 SECTIONS = {
     "G2": ["## WHEN TO USE", "## WHEN NOT TO USE", "## DECISION TREE", "## FAILURE MODES & MITIGATIONS",
@@ -107,8 +107,8 @@ def run_checks(skills_dir):
             errors.append(f"E1 {d.name}: invalid domain '{fm.get('domain')}'")
         if E5_RE.search(fm.get("description") or ""):
             errors.append(f"E5 {d.name}: description contains blanket auto-invoke language")
-        if fm.get("owned-by-agent") not in known_agents:
-            warnings.append(f"W2 {d.name}: unknown owner '{fm.get('owned-by-agent')}'")
+        if fm.get("authored-by") not in known_agents:
+            warnings.append(f"W2 {d.name}: unknown owner '{fm.get('authored-by')}'")
         if fm.get("last-reviewed"):
             try:
                 age = (date.today() - date.fromisoformat(fm["last-reviewed"])).days
@@ -154,7 +154,7 @@ def write_manifest(skills_dir, out_path):
         entries.append({"name": fm.get("name", d.name), "path": str(f).replace(str(ROOT) + "\\", "").replace("/", "/"),
                         "version": fm.get("version"), "grade": fm.get("grade"), "domain": fm.get("domain"),
                         "status": fm.get("status"), "last-reviewed": fm.get("last-reviewed"),
-                        "owned-by-agent": fm.get("owned-by-agent")})
+                        "authored-by": fm.get("authored-by")})
     out_path.write_text(json.dumps({"generated": date.today().isoformat(), "count": len(entries), "skills": entries},
                                    indent=2), encoding="utf-8")
 

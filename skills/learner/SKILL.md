@@ -11,7 +11,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-31'
-  owned-by-agent: deep-researcher
+  authored-by: deep-researcher
 ---
 
 # Learner

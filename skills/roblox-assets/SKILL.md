@@ -12,7 +12,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-asset-artist
+  authored-by: roblox-asset-artist
 ---
 
 # Roblox Assets

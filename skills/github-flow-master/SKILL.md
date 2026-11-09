@@ -11,7 +11,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: git-master
+  authored-by: git-master
 ---
 
 # GITHUB FLOW MASTER

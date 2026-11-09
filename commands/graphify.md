@@ -26,10 +26,7 @@ $ARGUMENTS
      ```
 
 2. **Build or Update Knowledge Graph**:
-   - Full build on target path or URL (default is current directory):
-     ```bash
-     graphify $ARGUMENTS
-     ```
+   - Follow the `graphify` skill runbook for deterministic AST and document extraction (free, instant, runs in seconds).
    - Incremental update (re-extracts only modified files):
      ```bash
      graphify update

@@ -11,7 +11,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-30'
-  owned-by-agent: planner
+  authored-by: planner
 ---
 
 # In Your Own Words
@@ -108,5 +108,5 @@ Proceeding with B because it preserves access; say so in the report.
 
 - `sharpen` — the same discipline applied to a written brief
 - `requirements-elicitation` — when the answer really is in the user's head
-- `principle-laziness-protocol` — smallest change, deletion first
+- `principles` — smallest change, deletion first
 - `ozone-mode` — routes the playbook after the restatement

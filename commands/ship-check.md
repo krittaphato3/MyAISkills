@@ -1,6 +1,8 @@
 ---
 description: Run the pre-ship gate on the current change
 argument-hint: [optional scope hint]
+agent: red-team-qa
+subtask: true
 ---
 
 # Ship Check

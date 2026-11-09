@@ -13,7 +13,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-11-03'
-  owned-by-agent: browser-automation
+  authored-by: browser-automation
   mcp: playwright
   caps: vision
 ---

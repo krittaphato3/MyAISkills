@@ -15,7 +15,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-30'
-  owned-by-agent: ozone-agent
+  authored-by: ozone-agent
 ---
 
 # Ozone Mode
@@ -57,41 +57,41 @@ One line each. Read the leaf skill only for the principles this task actually to
 
 **Core**
 
-- `principle-laziness-protocol` — refactoring or sizing a diff: delete first, smallest change.
-- `principle-foundational-thinking` — before logic: core types, data structures, sequencing.
-- `principle-redesign-from-first-principles` — a new requirement landing in an old design.
-- `principle-subtract-before-you-add` — sequencing an addition or rewrite: remove dead weight.
-- `principle-minimize-reader-load` — hard-to-trace code: collapse layers, shrink mutable scope.
-- `principle-outcome-oriented-execution` — phased rewrites: converge, do not preserve scaffolding.
-- `principle-experience-first` — product and UX tradeoffs: the user's experience decides.
-- `principle-exhaust-the-design-space` — novel interaction or architecture: 2-3 prototypes.
-- `principle-build-the-lever` — repeated or bulk work: build the script that does or proves it.
-- `principle-attack-the-premise` — a second fix failed: write the shared premise down and test it.
+- `principles` — refactoring or sizing a diff: delete first, smallest change.
+- `principles` — before logic: core types, data structures, sequencing.
+- `principles` — a new requirement landing in an old design.
+- `principles` — sequencing an addition or rewrite: remove dead weight.
+- `principles` — hard-to-trace code: collapse layers, shrink mutable scope.
+- `principles` — phased rewrites: converge, do not preserve scaffolding.
+- `principles` — product and UX tradeoffs: the user's experience decides.
+- `principles` — novel interaction or architecture: 2-3 prototypes.
+- `principles` — repeated or bulk work: build the script that does or proves it.
+- `principles` — a second fix failed: write the shared premise down and test it.
 
 **Architecture**
 
-- `principle-model-the-domain` — stateful or branchy logic: encode the domain in a structure.
-- `principle-boundary-discipline` — validation and adapters: guard at boundaries, trust internals.
-- `principle-type-system-discipline` — designing types: make illegal states unrepresentable.
-- `principle-make-operations-idempotent` — commands and retries: converge to the same end state.
-- `principle-migrate-callers-then-delete-legacy-apis` — new internal API: migrate and delete in one wave.
-- `principle-separate-before-serializing-shared-state` — concurrent writers: remove the sharing.
+- `principles` — stateful or branchy logic: encode the domain in a structure.
+- `principles` — validation and adapters: guard at boundaries, trust internals.
+- `principles` — designing types: make illegal states unrepresentable.
+- `principles` — commands and retries: converge to the same end state.
+- `principles` — new internal API: migrate and delete in one wave.
+- `principles` — concurrent writers: remove the sharing.
 
 **Verification**
 
-- `principle-prove-it-works` — before done: verify the artifact, not a proxy.
-- `principle-fix-root-causes` — debugging: reproduce, ask why until the mechanism is named.
-- `principle-sequence-verifiable-units` — multi-step work: every unit ends in a check.
-- `principle-explain-the-number` — before trusting or reporting a measurement: explain its limiter.
+- `principles` — before done: verify the artifact, not a proxy.
+- `principles` — debugging: reproduce, ask why until the mechanism is named.
+- `principles` — multi-step work: every unit ends in a check.
+- `principles` — before trusting or reporting a measurement: explain its limiter.
 
 **Delegation**
 
-- `principle-guard-the-context-window` — context filling: route bulk to subagents.
-- `principle-never-block-on-the-human` — reversible work: proceed, present, let them correct.
+- `principles` — context filling: route bulk to subagents.
+- `principles` — reversible work: proceed, present, let them correct.
 
 **Meta**
 
-- `principle-encode-lessons-in-structure` — the same correction twice: encode it as a sensor.
+- `principles` — the same correction twice: encode it as a sensor.
 
 ## Playbooks
 
@@ -187,7 +187,7 @@ was not verified and why. No emojis, no filler, no restating the request.
 1. **Ceremony without proof** — long plan, no artifact. *FIX:* every gate names a command and its output.
 2. **Playbook drift** — steps read then replaced by a bespoke plan. *FIX:* copy steps verbatim; skips need reasons.
 3. **Self-certification** — implementer's own "tests pass" accepted. *FIX:* independent re-run on the exact head.
-4. **Premise lock** — three fixes, one wrong assumption. *FIX:* `principle-attack-the-premise`.
+4. **Premise lock** — three fixes, one wrong assumption. *FIX:* `principles`.
 5. **Scope creep** — unrequested refactor inside a bugfix. *FIX:* claim-to-diff audit at ship gate.
 6. **Token blowout** — a swarm for a one-line change. *FIX:* tier first, then dispatch.
 7. **Stale green** — evidence predates the last edit. *FIX:* re-run affected checks after the final change.
@@ -225,5 +225,5 @@ Typos, single-line docs fixes, and factual questions with a cited answer. Casual
 - `playbooks/` — one step list per task class
 - `verification-before-completion` — what counts as proof
 - `ship-gate` — the pre-ship audit
-- `principle-prove-it-works` — the verification doctrine
+- `principles` — the verification doctrine
 - `AGENTS.md` §5 and §8 — tiers and definition of done

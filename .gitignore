@@ -21,6 +21,7 @@ node_modules/
 .freebuff/
 .video_agent/
 backup*/
+graphify-out/
 
 # OS & Editor artifacts
 .DS_Store

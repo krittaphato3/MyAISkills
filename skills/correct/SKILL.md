@@ -11,7 +11,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-30'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 # Correct
@@ -77,7 +77,7 @@ is not an apology and a fix. It is a change to the system that made the mistake 
 
 ## REFERENCES
 
-- `principle-encode-lessons-in-structure` — the underlying doctrine
+- `principles` — the underlying doctrine
 - `agent-config-maintenance` — where rules and skills live in this config
 - `skill-creator` — turning a lesson into a reusable skill
 - `verification-before-completion` — proving the enforcement works

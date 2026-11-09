@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: devops-engineer
+  authored-by: devops-engineer
 ---
 
 # observability-sre
@@ -94,45 +94,16 @@ Prefer the least-complex SLI: count successful versus total. Do not hand off "av
 
 ## PATTERNS
 
-- **Three pillars — metrics, logs, traces.** Metrics for signaling and SLO (cheap, cardinality-bounded); logs for detail of events; traces for request flow across services. They complement, they do not substitute. No single one answers the full golden-signal question.
-- **RED method (for services):** Rate, Errors, Duration per request — the request-oriented view. **USE method (for resources):** Utilization, Saturation, Errors — the resource-oriented view. Mix them: RED for the boundary, USE for the capacity.
-- **Distributed tracing with sampling.** Record a head (root) sample and a tail sample; a 1% baseline plus a fixed 100% allocation for errors/CPU-hot traffic keeps trace utility high at bounded cost. Sample the decision at the collector, not at the app, to avoid bias.
-- **Structured logging standards.** Emit logs as JSON with stable keys (severity, service, trace_id, span_id, host, a stable hierarchy of context fields), never free-form prose. Centralize with the same span/trace correlation.
-  - Example:
-    ```json
-    {"ts": 2026, "severity": "error", "service": "checkout",
-     "trace_id": "ab12", "span_id": "cd34", "err": 504, "status": 504}
-    ```
-  - Stable keys and a shared trace id let an availability burn join to a log line and a span. A log with no trace id cannot be attached to the request that consumed the budget.
-- **Alert-on-symptoms.** Alerts are keys on an SLO-signal symptom (latency breaching the budget, error rate against budget) not on the "cause" you guessed (e.g., don't alert on "the DB is slow" — alert on request latency against budget and correlate with DB). The symptom is what the user sees; a cause-alert fires when the real symptom is fine and misses it when not.
+- **Three pillars — metrics, logs, traces.** Metrics for signaling and SLO (cheap, cardinality-bounded); logs for detail of events; traces for request flow across services. They complement, they do not substitute.
+No single one answers the full golden-signal question. - **RED method (for services):** Rate, Errors, Duration per request — the request-oriented view. **USE method (for resources):** Utilization, Saturation, Errors — the resource-oriented view.
 
-### Three-pillar consistency
-Make each pillar answer one question. Metrics answer "is it in budget?" Logs answer "what happened?" Traces answer "which path was slow?" A request must carry the same trace_id across all three, or you cannot reason from a metric burn to a log line to a trace span.
-
-### Alert rule — sampled for burn, keyed on symptom
-```
-# fast burn page: 1 h lookback, budget 0.001 for 99.9% SLO
-sum(rate(http_5xx_total[1h])) / sum(rate(http_requests_total[1h]))
-  > on () 0.001 * 14.4         # ~14.4x monthly burn, instant page
-```
-A symptom-keyed rule divides by a request SLI and a burn vector; it alerts when the SLO moves, not when a cause the engineer guessed is high.
+Full detail: `references/patterns.md`.
 
 ## FAILURE MODES & MITIGATIONS
 
 At least 8, detection then fix.
 
-1. **Alert fatigue.** *Detection:* high pages-per-shift; alerts rarely actionable flags; operators start ignoring or flipping all alerts off. *Fix:* reduce count, increase threshold to SLO burn, dedupe pages into one incident, require a symptom-SLI on every page, and a working runbook gate. If it doesn't map to an SLO burn and a runbook, it is not an alert.
-2. **Alerting on causes not symptoms.** *Detection:* alerts = "Check disk usage" or "This metric is high" with no user impact; a check dips but the user SLO is fine. *Fix:* alert on symptoms (latency/error/SLO), keep cause-checks as dashboards or secondary signals, and correlate cause via trace/log only when the symptom fire.
-3. **Dashboards without actions.** *Detection:* pages of charts nobody interprets; each panel has no decision; no runbook step attached. *Fix:* every dashboard panel names a decision and pull-to-action; review for "what do I do next" and cut panels that don't pass.
-4. **Log spam.** *Detection:* log volume dominated by debug/verbose, SysExcessive rate, no structured filtering; logs cost exceeds the value. *Fix:* cap per-source rate, promote structured logging, set log-level policy, sample low-value logs, and drop logs that are not actionable.
-5. **Missing golden signals.** *Detection:* a service has latency but no error rate, or error rate without a latency; an outage causes an empty page. *Fix:* for each service list all four golden signals and confirm each is instrumented; cover at minimum availability + latency for any user-facing service.
-6. **Sampling bias.** *Detection:* traces sampled by samples favour the fast path; structural data skewed; a correlation of sampled path disagrees with ground truth. *Fix:* sample at the collector with head and tail, include all errors, and check a 1% baseline against 100% on error rate.
-7. **Time/season bias in the budget.** *Detection:* a 1-day budget exhausted by a busy business hour flips to "OK" twice a day and pages weirdly. *Fix:* pick the window that matches the business cycle (30-day rolling), don't gate on a 1-day reset, and aggregate the burn over the full window.
-8. **Cardinality blowup.** *Detection:* a label {method, uri} or unbounded {request_id} cardinality turns a metric into high-turnover series and the query timeline or the metric fail. *Fix:* bound label sets to a cardinality limit (see QUANTITATIVE RULES), keep high-cardinality to traces/logs, not metrics.
-9. **An SLO with no error budget.** *Detection:* alert thresholds hand-tuned, no residual budget math, a painful dry-out of on-call. *Fix:* compute a budget from target and window, run a burn rule, and surface remaining budget on the dashboard.
-10. **Runbook-less page.** *Detection:* a pager that fires, and no runbook or checklist is available to the on-call. *Fix:* every alert has an owner, an "am I in budget" step, and a gate; drill it (see VERIFICATION GATE).
-11. **Distributed tracing that misses the path.** *Detection:* traces show only the sampled healthy path; the high-error path has no spans; the sampling excludes it. *Fix:* add explicit sampling for errors and unusual paths; verify trace coverage in the VERIFICATION GATE.
-12. **Dashboard drift.** *Detection:* a dashboard that no longer references the current SLO target or the real endpoints; panels stale after a rename. *Fix:* tie dashboard SLO lines to a source of truth, review on a cadence, and remove panels that diverge.
+Full detail: `references/failure-modes-mitigations.md`.
 
 ## COMMON ANTI-PATTERNS
 
@@ -146,26 +117,7 @@ At least 8, detection then fix.
 
 Numbers are budgets, measured, not absolutes.
 
-- **SLO/budget math.** Budget = 1 − SLO. For SLO 0.99 → budget 0.01 (1% of time). For 30-day window (43,200 min): budget = 0.01 × 43,200 = 432 min ≈ 7.2 h. For 0.999 → 0.1%, ~43 min/month. For 0.9999 → 0.01%, ~4.3 min/month.
-- **Burn rate.** Burn = (actual failures / total) ÷ (budgeted failure / total). When you are at or above 1× you are spending exactly the budget over the window; fast-burn uses multiple of it. **14.4×** is the quoted fast-burn multiplier (e.g., a multi-duration window such as 1 h at 14.4× ≈ zeroing the monthly budget in 1/14.4 of the window) — used for immediate page.
-- **Burn rule set.** Two layers: a fast rule to page immediately (window = ~14.4× burn for a short duration) and a slow rule to page within ~6 h (e.g., 1× monthly across the month with a long lookback) so both instant and slow-burn failures page, and no budget is silently flushed.
-- **Example burn budget with numbers.** SLO 99.9%, window 30 days → budget ~0.1% ≈ 43 min. If the service burns 0.4% of requests for 2 h, the burn is > 4× its 30-day allowance reported as margin — it drains the budget down and flushes it; alert triggers on reaching ~2× the daily figure across the window.
-- **Worked burn calculation.** Given actual failure fraction 0.012 (1.2%) and SLO budget fraction 0.001 (0.1%), burn = 0.012 / 0.001 = 12×. At 12× for a month window, the budget is exhausted in 30 d / 12 ≈ 2.5 days. So a sustained 12× burn means the SLO is broken within days, and a 14.4× equivalent for an hour means the budget for that month is gone.
-- **Counting errors exactly.** Decide what counts as an error (HTTP >= 500, timeouts, a downstream failure). Never count the same failure twice (a 5xx response and a latency alarm on the same request) or the budget double-spends.
-- **Budget allocation per major flows.** If one workflow (e.g., checkout) is far more critical than the rest, give it its own SLO and budget; do not let a busy but non-critical endpoint consume the whole budget. A shared budget hides which flow is failing.
-- **Cardinality limit for metrics.** Keep total unique prometheus-ish metric series per service under ~10,000 to 20,000 and per-array < ~1,000 unique; put unbounded keys {url, request_id, trace-id} into traces/logs, never a metric label.
-- **Sampling caps.** Baseline samples at 1%; drop to 100% only for error/needle-hot traffic, bounded by a total (e.g., ≤ 10% of spans) so the trace cost stays linear to O(total) and metadata stays correct.
-- **Saturation as a number** — report utilization %, the bottleneck resource as gage percentiles, and a trigger when crossing ~80% sustained on the bottleneck for more than 30 min.
-
-### Worked cardinality walk
-A metric labeled with {service fixed, method = 8, path = 200} yields 8 × 200 = 1,600 series per service — already noise at the 1k per-array ceiling. Adding an unbounded label like {request_id} multiplies the series by the number of concurrent in-flight requests, exploding cardinality and making alerting queries slow or the storage fall over; such data belongs in traces/logs, not a metric label. Bound the label set so each metric stays countable and reportable.
-
-### A dashboard that drives action
-- Panel 1: availability SLI vs the 99.9% line. Decision: in or out of budget.
-- Panel 2: P99 latency vs the 300 ms line. Decision: meet or miss.
-- Panel 3: top error-budget burners by endpoint. Decision: where to look first.
-- Panel 4: remaining error budget as a percent. Decision: is it safe to ship today?
-Each of these answers one question with one number. A panel that cannot phrase its question gets removed from the dashboard.
+Full detail: `references/quantitative-rules.md`.
 
 ## VERIFICATION GATE
 

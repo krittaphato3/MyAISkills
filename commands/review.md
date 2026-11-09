@@ -1,6 +1,8 @@
 ---
 description: Adversarial review of the current diff against code-health criteria, severity-ranked
 argument-hint: [diff, branch, PR, or file paths]
+agent: red-team-qa
+subtask: true
 ---
 
 Run the review protocol (`requesting-code-review` + `red-team-qa`):

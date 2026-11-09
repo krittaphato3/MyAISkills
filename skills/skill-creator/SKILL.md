@@ -12,7 +12,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 # Skill Creator

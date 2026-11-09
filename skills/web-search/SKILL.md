@@ -14,7 +14,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-11-03'
-  owned-by-agent: browser-automation
+  authored-by: browser-automation
 ---
 
 # Web Search, Fetch, and Online Research Ladder
@@ -59,21 +59,21 @@ User asks to search, fetch, or research online:
   │
   └─► [TASK IS SEARCHING / DISCOVERING INFORMATION]
         │
-        ├─► Step 1: Try native WebSearch(query)
+        ├─► Step 1: If native WebSearch tool is declared in your harness, call it.
         │     │
-        │     ├─► Success: Extract candidate URLs and summaries. Proceed to fetch.
+        │     ├─► Success: Extract candidate URLs and summaries. Proceed to WebFetch.
         │     │
-        │     └─► Fails (e.g. "openai-compatible does not encode provider-native WebSearch"):
+        │     └─► Tool unavailable or provider unsupported:
         │           ▼
-        ├─► Step 2: Escalate to Playwright MCP Headless Browser Search
-        │     │     Navigate to `https://www.bing.com/search?q=<query>`
-        │     │     (Bing avoids headless 429 sorry CAPTCHAs that Google triggers).
-        │     │     Evaluate structured results: title, url, snippet via document.querySelectorAll.
-        │     │     Proceed to fetch top candidates.
+        ├─► Step 2: Use the primary workspace search engine CLI:
+        │     │     `node tools/web_search.mjs "<query>"`
+        │     │     Outputs clean, anti-bot-immune URLs and snippets.
+        │     │     (Never run manual curl or ad-hoc node -e scripts in the terminal).
         │     │
-        └─► Step 3: Portable CLI Fallback (when MCP is disconnected or in foreign shell)
-                    Execute `node tools/web_search.mjs "<query>"`
-                    (Auto-queries Web with Bing fallback, GitHub, npm, StackOverflow).
+        │     └─► If complex interaction or CAPTCHA bypass is needed:
+        │           ▼
+        └─► Step 3: Escalate to Playwright MCP (mcp_playwright_browser_navigate)
+                    Proceed to fetch top candidates via WebFetch.
 ```
 
 ## THE 4-TIER SEARCH & FETCH HIERARCHY

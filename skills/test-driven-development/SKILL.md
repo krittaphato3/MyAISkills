@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-30'
-  owned-by-agent: test-engineer
+  authored-by: test-engineer
 ---
 
 # Test-Driven Development

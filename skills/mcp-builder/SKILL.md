@@ -12,7 +12,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: mcp-agent
+  authored-by: mcp-agent
 ---
 
 # MCP Server Development Guide

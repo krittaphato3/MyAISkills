@@ -4,14 +4,14 @@ description: >-
   Runs the pre-report checklist on a measurement: the exact command, environment, run count, noise
   band, denominator, and the alternative explanation that could produce the same number. Use when
   a benchmark, latency, coverage, or cost figure is about to be quoted in a report or PR. The
-  reasoning behind it routes to principle-explain-the-number.
+  reasoning behind it routes to principles.
 metadata:
   version: 1.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-30'
-  owned-by-agent: performance-engineer
+  authored-by: performance-engineer
 ---
 
 # Benchmark Checklist
@@ -81,7 +81,7 @@ This is the gate between "I measured something" and "I am reporting this as a re
 
 ## REFERENCES
 
-- `principle-explain-the-number` — why an unexplained number is a rumor
+- `principles` — why an unexplained number is a rumor
 - `performance-profiler` — building the harness
 - `web-performance` — browser-side measurement
 - `ship-gate` — where the claim is audited

@@ -13,7 +13,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: test-engineer
+  authored-by: test-engineer
 ---
 
 # Testing Strategy

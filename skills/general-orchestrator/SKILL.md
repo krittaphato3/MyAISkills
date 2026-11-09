@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-24'
-  owned-by-agent: code-implementer
+  authored-by: code-implementer
 ---
 
 # General Orchestrator
@@ -81,71 +81,22 @@ Worked example: a service deliverable decomposes into a schema change (A), an AP
 ## PATTERNS
 
 ### 1. Subagent routing via AGENTS.md roster
-Route each subtask by its trigger family, not by habit. AGENTS.md §6 (roster) and §7 (routing map) map every skill to its owning agent; the owner is the default dispatch target for that subtask's trigger family. Read the roster before wave 1 and let it drive the skill inventory from DECISION TREE step 1. When skills or instructions conflict, apply the precedence chain: user instruction > task-specific skill > family skill > AGENTS.md > system-instructions > harness defaults.
+Route each subtask by its trigger family, not by habit. AGENTS.md §6 (roster) and §7 (routing map) map every skill to its owning agent; the owner is the default dispatch target for that subtask's trigger family.
+Read the roster before wave 1 and let it drive the skill inventory from DECISION TREE step 1.
 
-### 2. Gate-driven execution
-Every subtask ends in a proof-based gate whose pass criterion was written into the brief before dispatch. A failed gate stops the pipeline at that subtask — apply the systematic-debugging sequence (reproduce, isolate, root cause, fix, regression test), re-run the gate, and continue only on green. Gates are never skipped silently: a gate failure returns the work to the step that failed.
-
-### 3. Checkpoint cadence
-Checkpoint at (a) every subtask gate that passes, (b) before dispatching the next parallel wave, and (c) before integration. At each checkpoint record: subtasks done, gates green, gates red, evidence artifacts. The checkpoint log is the dispatch ledger: it prevents duplicate dispatch (FAILURE MODES item 7), detects orphaned subtasks (item 3), and makes final-report assembly trivial. A run that skips checkpoints for five or more subtasks is running un-gated and must be re-planned (QUANTITATIVE RULES).
-
-### 4. Verification per subtask
-A subagent result is accepted only with attached evidence: test output, lint JSON, benchmark tables, or diff evidence (see verification-before-completion). Never accept looks-done sign-offs; screenshots are supporting material only, never the sole proof. If evidence cannot be produced, the subtask is not done — re-scope or escalate rather than wave it through. The gate checks the thing the brief required, not a convenient proxy.
-
-### 5. Rollback on failed gate
-When a gate fails and the fix exceeds the retry budget (QUANTITATIVE RULES), roll that subtask back to its last known-good state before re-dispatching, so the integration layer never sees a half-fixed subtask. Rollback is local to the failed subtask; it does not block the rest of the wave unless the dependency graph forces it. Record the rollback and its reason in the ledger — a rollback without a ledger entry is a silent failure (FAILURE MODES item 6).
-
-### 6. Smart routing — no blanket-invoke
-Match the skill and the agent to the subtask; do not blanket-invoke every available skill or agent. Blanket invocation wastes tokens, dilutes ownership, and erases the skill inventory that gates depend on. One skill plus one agent per subtask, chosen by trigger family (see AGENTS.md §6-7).
-
-### 7. Brief template — the contract that makes gates checkable
-A brief is a file, never pasted into a dispatch call. It carries everything the passer needs to accept or reject the result without re-deriving intent. Use this shape:
-
-```text
-BRIEF — {subtask id}
-Skill: {skill from AGENTS.md roster}   Agent: {agent}
-Dependency: {parent subtask ids, or none}
-Pass criterion (checkable): {one measurable assertion}
-Evidence artifact to produce: {file path for test/lint/diff}
-Ledger entry to fill: {gate row id}
-Scope: {deliverables; nothing outside this list}
-Out of scope: {explicit exclusions, to prevent drift}
-```
-
-Writing the pass criterion and the evidence artifact at brief time is the difference between a gate and a hope. If you cannot fill every field, the subtask is not decomposed well enough to dispatch (DECISION TREE step 1).
-
-### 8. Ledger discipline — the memory of the run
-Keep one running ledger shared across checkpoints, one row per subtask: id, skill, agent, pass criterion, status, evidence artifact, rollback action. Every dispatch writes its row before the subset spawns; every gate writes its status and artifact when the subagent returns. The ledger is what makes duplicate dispatch, orphaned subtasks, and integration-without-gates detectable (FAILURE MODES items 3, 6, 7, 9). The final report in VERIFICATION GATE is a projection of the ledger — if the ledger is sound, the report writes itself.
+Full detail: `references/patterns.md`.
 
 ## FAILURE MODES & MITIGATIONS
 
 Each entry is DETECT → FIX. All that apply must be checked at every checkpoint.
 
-1. **Agent drift** — a subagent returns work that does not match its brief. *DETECT:* the result fails the brief's pass criterion, or produces artifacts the brief did not ask for. *FIX:* write explicit briefs with expected outputs before dispatch (DECISION TREE step 4); verify every result against its brief at the gate; re-dispatch with corrections. A drifted result is never accepted.
-2. **Context overflow** — the main thread accumulates file reads and pasted results until it can no longer orchestrate. *DETECT:* main-thread reads happen while subagents run; prompt length grows with every subtask; WAITING PROTOCOL is violated. *FIX:* follow system-instructions WAITING PROTOCOL — no main-thread file reads while subagents run; briefs and reports are files, not pasted text; subagent contexts stay isolated.
-3. **Orphaned subtasks** — a subtask is dispatched and never gated, or a subagent completes work nobody verifies. *DETECT:* the checkpoint log shows a subtask with no gate status; a ledger entry has no return. *FIX:* one ledger entry per dispatch; a gate is mandatory and recorded before the next wave; a subtask with no gate is treated as incomplete.
-4. **Verification theater** — the gate checks the wrong thing: a build passes when the requirement was behavior, or a screenshot stands in for a measurable assertion. *DETECT:* the pass criterion names an artifact the brief did not require, or the gate has no artifact at all. *FIX:* write the pass criterion into the brief before dispatch; the gate must match that criterion exactly; per verification-before-completion a claim without an attached artifact is not verified.
-5. **Parallel dependency violations** — two subtasks dispatched in the same wave where one writes state the other reads. *DETECT:* integration fails with ordering-dependent errors; flakiness that disappears when subtasks run sequentially. *FIX:* build the dependency graph before wave 1 (DECISION TREE step 2); never parallelize an edge; serialize subtasks that share mutable state.
-6. **Silent partial failures** — a subtask completes while part of its scope is missing. *DETECT:* the subtask's own evidence covers one slice; the integration smoke test fails later on an unrelated-looking piece. *FIX:* gate every subtask against a completeness checklist — the full brief, not a subset — and check each result for all deliverables before proceeding.
-7. **Duplicate subagent dispatch** — the same subtask dispatched twice, burning tokens and risking divergent results. *DETECT:* the checkpoint log shows the same brief dispatched more than once; two returns for one ledger entry. *FIX:* consult the ledger before every dispatch; spawn each subtask exactly once (system-instructions failure-mode table); a green-gate subtask is never re-dispatched.
-8. **Blanket-invoke routing** — the orchestrator dispatches all skills or agents instead of the matching ones. *DETECT:* subagent count far exceeds subtask count; multiple owners overlap the same subtask; the ledger has no skill column. *FIX:* smart routing (PATTERNS section 6): one skill plus one agent per subtask, chosen by trigger family from the AGENTS.md roster.
-9. **Integration without gates** — subtasks are assembled while some gates are still red. *DETECT:* the integration smoke test runs with a gate log that is not fully green. *FIX:* integration is gated on the full ledger — zero red gates before recombination (VERIFICATION GATE); verification-before-completion review gates are never skipped silently.
+Full detail: `references/failure-modes-mitigations.md`.
 
 ## QUANTITATIVE RULES
 
 Budgets for a single orchestration run. They exist to protect the orchestration context and keep gates reviewable.
 
-- **Fan-out & Concurrent Execution**: dispatch at most 5 subagents per parallel wave (hard cap 8). When dispatching a parallel wave, **all subagents in that wave MUST be emitted concurrently in a single message with multiple `Agent` tool calls** so the harness executes them in parallel. Beyond 5, per-subtask verification stops being reviewable and the ledger grows past one context checkpoint; re-sequence into more waves or merge related subtasks. Fewer, complete subtasks beat many narrow ones.
-- **Checkpoint interval**: checkpoint at every gate pass, before each new wave, and before integration — effectively every 1-3 completed subtasks. A run with a checkpoint every 5 or more subtasks is running un-gated and must be re-planned.
-- **Retry budget**: a flaky verification gate may be retried at most 2 times within one gate evaluation (for example an integration test that intermittently times out). After 2 retries the gate is FAILED: fix the flake or roll back — never retry in a loop. Non-flaky failures are never retried; they go straight to stop-and-fix.
-- **Evidence per gate**: each green gate requires at least one attached artifact (test output, lint JSON, benchmark table, or diff evidence). A gate with zero artifacts is not green.
-- **Dispatch cost**: briefs are files, never pasted; one report per subtask; ledger writes batched. If a wave costs more tokens than its gate evidence can justify, the decomposition is too fine — merge subtasks.
-- **Decomposition granularity**: more than ~10 subtasks in one run means the decomposition is too granular for a single orchestration context; group them or route through a deep-planner plan first.
-- **Confidence floor**: do not dispatch any subagent below confidence 80 per system-instructions; between 70 and 79, research more or ask the user.
-- **Red-gate budget**: at most 1 subtask may be rolled back and re-dispatched per wave without re-planning the whole run. More than one rollback in a wave is a signal the decomposition or dependency graph is wrong — stop and re-decompose (DECISION TREE step 1) rather than patch the run.
-- **Token-smart fan-out**: a subtask whose gate evidence would cost more than the subtask itself should be merged or handled inline per system-instructions delegation protocol (trivial edits <= 5 lines and doc-only corrections need no subagent). Parallel waves exist to isolate contexts, not to maximize agent count. When two subtasks share the same skill and agent and touch the same files, they are one subtask.
-- **Fan-out cap rationale**: keeping the wave at or below 5 keeps the ledger reviewable, the checkpoint interval at 1-3 subtasks, and the context under a single checkpoint. Exceed 5 only when (a) the subtasks share no mutable state and (b) each has an independent skill inventory row; otherwise split into smaller waves.
-- **Scalability rule of thumb**: n parallel subtasks cost roughly n times the dispatch context but add O(n) gate rows, not O(n squared) — so an unbounded fan-out is a linear-context tax with superlinear verification debt. Stay under the cap and merge aggressively.
+Full detail: `references/quantitative-rules.md`.
 
 ## VERIFICATION GATE
 

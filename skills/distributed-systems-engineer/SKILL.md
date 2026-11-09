@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: solution-architect
+  authored-by: solution-architect
 ---
 
 # distributed-systems-engineer
@@ -103,55 +103,19 @@ For each branch, write down in the design record: the choice, the rejected alter
 
 Each pattern states the guard you must not omit.
 
-- **Idempotency keys.** The client sends an immutable per-logical-operation key; the server detects a replay and returns the stored first result instead of applying twice. Persist the key and its result, ideally in the same store and transaction that records the effect, so a retry after a crash is recognized. Never rely on in-memory state alone for idempotency: the retry may land on a different process after a restart.
-  - Usage: generate the key once per logical operation (UUID), send it in the header/body on every attempt of that operation, and store the key together with the response in a unique-indexed table. On a conflict, return the stored response, do not re-run.
-  - Guard: expire the key table only after the client's retry window (at least one order of magnitude longer than the max backoff), or duplicate effects return.
-- **Transactional outbox.** In a single local transaction, update the business state and insert an event into an outbox table. A relay reads the outbox in order and forwards to the broker or materialized view. This makes the state change and the event commit atomically; delivery is at-least-once, so consumers must deduplicate with an idempotency key. The outbox removes the cross-node coordinator of 2PC.
-  - Usage: the business write and the outbox insert share one database transaction; the relay polls the outbox table in primary-key order and publishes in batches; on success the relay deletes or marks the row processed.
-  - Guard: a relay that crashes mid-publish must be able to resume; never commit the outbox insert in a different transaction than the state change, or the atomicity guarantee is gone.
-- **Distributed locking with lease and fencing token.** A lock grant carries a lease (expiry) and a monotonically increasing fencing token. Only a holder whose token exceeds the last-observed token may act, and the resource owner must validate the token on every write. Without the token, a lease alone is not sufficient: a crashed and restarted past holder can still act on a stale lease. The token checked by the resource owner is what actually blocks the stale critical section.
-  - Usage: acquire via a leader-election or lock service that returns (lease, token); carry the token into every write and have the resource compare it against the stored max token before applying.
-  - Guard: set the lease shorter than the critical-section worst case plus network reordering, and make the fencing check part of the storage write itself, not an advisory pre-check.
-- **Quorum read/write (W+R > N).** Write to W nodes, read from R; any two quorums overlap, so a read returns the latest write. Apply W+R > N and W > N/2 at minimum, where N is the number of nodes eligible in the round. This is the core guarantee of leaderless and consensus systems.
-  - Usage: pick W and R from the worked table in QUANTITATIVE RULES; route every write to W nodes and every read to R nodes; let a version number arbitrate concurrent writes at read time.
-  - Guard: if a read and a write happen concurrently, only the W+R>N overlap makes the read see the write; breaking the overlap for speed breaks the guarantee.
-- **Gossip for membership.** Every node periodically exchanges membership tables and piggybacked heartbeats; convergence is O(log n) rounds, needs no leader, and tolerates partitions. Used in Raft, etcd, and Cassandra. Guards: bound per-node fan-out, keep gossip cost low, and remember a heartbeat reaches distant nodes only through intermediate gossip hops.
-  - Usage: each node keeps a membership table with status and a timestamp, sends a random subset of its table each interval, and marks a node failed only after several missed heartbeats, not one.
-  - Guard: converge on membership changes before acting on them, or a flapping node will flip partitions and evictions.
+Full detail: `references/patterns.md`.
 
 ## FAILURE MODES & MITIGATIONS
 
 Each entry lists *detection* first, then *fix*. Validate at least the following 8 before claiming a distributed system is correct.
 
-1. **Split brain — two groups both believe they are primary and accept writes.** *Detection:* two concurrent leaders or two sets of fencing-token values, each side with a majority, leadership mismatched in the logs. *Fix:* fencing tokens with a monotonic epoch; require a quorum greater than N/2 before a leader is accepted; the losing group must refuse all writes and step down. Never grant primacy to a group that did not win the epoch race.
-2. **Clock skew causing misordered leases or fencing.** *Detection:* a stale node appears live, or lease expiry disagrees with the logical order of events. *Fix:* monotonic clocks for local compare-and-set, hybrid logical clocks (HLC) that layer logical order over physical time, and NTP discipline. Order operations by HLC or vector time, never by wall clock alone.
-3. **Thundering herd.** *Detection:* all retries race toward the new primary after a failover, producing a burst of reconnects and a connection storm. *Fix:* exponential backoff with full jitter, a retry budget, a cap on concurrent reconnect attempts, and staggered reconnect windows across clients.
-4. **Cascade failure.** *Detection:* one node's timeout triggers retries that overload that node and its neighbors until latency balloons cluster-wide. *Fix:* circuit breakers and backpressure, per-hop timeouts, bounded retries with halting backoff, fast-fail, and load shedding at the source. Reserve headroom so the cluster cannot saturate on an injected outage.
-5. **Replication lag — read-your-writes violation.** *Detection:* after a successful write, a read routed to a lagging replica returns a stale value. *Fix:* read-your-writes by reading from the local leader or a quorum that includes the write, plus monotonic read routing. Set a lag SLO and alert when it is breached.
-6. **Lost update.** *Detection:* two clients read the same base version and both write; one update is silently overwritten by last-writer-wins. *Fix:* compare-and-set or a version check inside a single atomic transaction. Apply LWW only when the loss is explicitly acceptable and documented.
-7. **Partial failure of 2PC.** *Detection:* a participant voted prepare but never received commit or abort, or the coordinator died mid-protocol. *Fix:* a coordinator that has decided is committed; it must drive the final decision from a durable decision record, or fall back to an outbox. Never let a participant decide on its own, as that would create a split. Block and alert if a participant cannot resolve; do not resolve randomly.
-8. **Network partition.** *Detection:* heartbeat staleness, no quorum on one side, cluster API flapping, or epoch/term skipping. *Fix:* the minority must not serve writes (quorum-gated); on heal, the losing side resyncs to the highest epoch and replays queued writes. A node that lost the epoch cannot become primary again without a new election.
-
-### Common anti-patterns to reject on sight
-
-- **Unbounded retries with no backoff:** retries at line speed convert a 1-node blip into a cluster-wide cascade; apply the retry budget formula before shipping.
-- **Trusting wall-clock for ordering across nodes:** expires a lease on one node while the other still considers it valid; use monotonic clocks and HLC for cross-node ordering.
-- **A "leader" that is only a preference:** a failover that does not enforce the epoch/fencing contract is a split-brain incubator; enforce fencing in the storage layer.
-- **LWW without acknowledging the loss:** silent last-writer-wins overwrites a concurrent update; choose compare-and-set or accept the loss in writing.
-- **Async replication with a read-your-writes promise:** routing reads to replicas after a write, without a quorum or session pin, breaks the promise; read from the leader or quorum.
-- **Testing only happy-path and failover:** a system that never ran a partition or clock-pause test is unverified; run the full fault-injection matrix before claiming distributed correctness.
+Full detail: `references/failure-modes-mitigations.md`.
 
 ## QUANTITATIVE RULES
 
 Numbers are budgets, not absolutes; take them into a measurement harness on the real cluster before committing.
 
-- **Quorum math:** with N nodes choose W and R so that W+R > N and W > N/2. Any read and write quorum then intersect, so a read returns the latest acknowledged write. If fewer than W nodes are reachable, the write must fail fast rather than proceed. A read from a single node is not linearizable unless it overlaps the write quorum.
-- **Worked quorum values (N, W, R) with the failure model they tolerate:** for a 3-node set use W=R=2 (tolerates 1 unreachable node for writes); for 5 nodes W=R=3 (tolerates 2); for 7 nodes W=R=4 (tolerates 3, but write cost rises). Choose W=R=floor(N/2)+1 for symmetric read/write; if reads dominate, raise R and lower W as long as W+R>N and W>N/2 holds.
-- **Latency budget decomposition:** split target latency into components: client and proxy RTT, leader write, quorum ack, and read. Representative one-way network round-trip: same-region datacenter 0.2-1 ms; same continent 10-30 ms; cross-ocean 60-160 ms; intercontinental 60-200 ms. A client-triggered action must fit its SLO, for example P95 at or under 300 ms, after the largest network span is consumed, leaving headroom for in-node work and retries.
-- **Replication-lag SLO targets:** for read-your-writes, target P95 lag at or under 50 ms by routing to the leader or a quorum. Cross-region async lag is typically seconds: plan for 0.5-2 s and alert if a lag target is exceeded for more than 10 s continuously. Fail the tolerance test if observed P95 lag exceeds 2x the target.
-- **Retry budget:** model total outbound retries as request rate times failure rate times retry count. Keep failure rate times count below about 1 and total retry demand at or under 10% of nominal load. Use exponential backoff (base times 2 to the i with full jitter) and cap attempts at 4-5 per operation; never retry forever.
-- **Worked retry budget:** at 1000 requests/s with a 2% failure rate and 4 attempts each, retry demand is 1000 x 0.02 x 4 = 80 retries/s, which is 8% of nominal load and passes the 10% gate. At 20% failure rate the same numbers yield 800 retries/s (80% of load) and the gate fails: reduce attempts to 2, add backoff, or accept the degraded SLO rather than retry into the outage.
-- **Node-count limits:** quorum systems degrade past roughly 10-15 nodes because quorum sizes and network overhead grow. Above that, prefer fewer and larger nodes, or introduce a hierarchical membership layer.
+Full detail: `references/quantitative-rules.md`.
 
 ## VERIFICATION GATE
 

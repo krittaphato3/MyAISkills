@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-24'
-  owned-by-agent: roblox-security-engineer
+  authored-by: roblox-security-engineer
 ---
 
 

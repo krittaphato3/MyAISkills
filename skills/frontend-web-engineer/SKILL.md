@@ -12,7 +12,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-24'
-  owned-by-agent: ui-ux-architect
+  authored-by: ui-ux-architect
 ---
 
 # Frontend Web Engineer

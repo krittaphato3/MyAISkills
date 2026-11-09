@@ -11,54 +11,39 @@
 import https from 'node:https';
 import zlib from 'node:zlib';
 
-function request(url, options = {}) {
-  return new Promise((resolve) => {
-    try {
-      const u = new URL(url);
-      const isPost = options.method === 'POST';
-      const postBody = options.body || '';
+async function request(url, options = {}) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
 
-      const req = https.request({
-        hostname: u.hostname,
-        port: u.port || 443,
-        path: u.pathname + u.search,
-        method: options.method || 'GET',
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Accept-Encoding': 'gzip, deflate',
-          ...options.headers
-        }
-      }, (res) => {
-        let stream = res;
-        const encoding = res.headers['content-encoding'];
-        if (encoding === 'gzip') {
-          stream = res.pipe(zlib.createGunzip());
-        } else if (encoding === 'deflate') {
-          stream = res.pipe(zlib.createInflate());
-        }
+    const res = await fetch(url, {
+      method: options.method || 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'DNT': '1',
+        'Upgrade-Insecure-Requests': '1',
+        ...options.headers
+      },
+      body: options.body,
+      signal: controller.signal
+    });
 
-        let body = '';
-        stream.on('data', chunk => body += chunk);
-        stream.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body }));
-        stream.on('error', err => resolve({ error: err.message, status: 500 }));
-      });
-
-      req.on('error', err => resolve({ error: err.message, status: 500 }));
-      req.setTimeout(10000, () => {
-        req.destroy();
-        resolve({ error: 'timeout', status: 408 });
-      });
-
-      if (isPost && postBody) {
-        req.write(postBody);
-      }
-      req.end();
-    } catch (e) {
-      resolve({ error: e.message, status: 500 });
-    }
-  });
+    clearTimeout(timeout);
+    const body = await res.text();
+    return {
+      status: res.status,
+      headers: Object.fromEntries(res.headers.entries()),
+      body
+    };
+  } catch (err) {
+    return {
+      error: err.message,
+      status: err.name === 'AbortError' ? 408 : 500,
+      body: ''
+    };
+  }
 }
 
 function decodeBingUrl(url) {
@@ -118,17 +103,18 @@ export async function searchBingWeb(query, limit = 6) {
 }
 
 /**
- * High-reliability Web Search via DuckDuckGo POST with Bing fallback
+ * High-reliability Web Search via DuckDuckGo HTML GET with fallback
  */
 export async function searchWeb(query, limit = 6) {
-  const postData = 'q=' + encodeURIComponent(query) + '&b=';
-  const res = await request('https://html.duckduckgo.com/html/', {
-    method: 'POST',
-    body: postData,
+  const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+  const res = await request(url, {
+    method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(postData),
-      'Referer': 'https://html.duckduckgo.com/'
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'DNT': '1',
+      'Upgrade-Insecure-Requests': '1'
     }
   });
 

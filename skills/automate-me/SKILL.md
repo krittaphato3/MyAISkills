@@ -9,7 +9,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 
@@ -124,7 +124,7 @@ Capturing a repeated preference or working style into a `-mode` skill.
 ## WHEN NOT TO USE
 
 A one-off instruction.
-A rule that belongs in lint or CI — `principle-encode-lessons-in-structure`.
+A rule that belongs in lint or CI — `principles`.
 
 ## VERIFICATION GATE
 

@@ -14,7 +14,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: code-implementer
+  authored-by: code-implementer
 ---
 
 # Algorithms and Data Structures
@@ -38,7 +38,7 @@ a day micro-optimizing a loop while the real cost is one extra database round tr
   theater is its own defect.
 - A slowdown is measured in production — `performance-profiler` (numbers before theory).
 - A specific SQL query or endpoint is slow — `query-performance-engineer`.
-- The question is really about modeling state — `principle-model-the-domain`.
+- The question is really about modeling state — `principles`.
 
 ## DECISION TREE
 
@@ -126,6 +126,6 @@ a day micro-optimizing a loop while the real cost is one extra database round tr
 
 - `performance-profiler` — measured, non-database slowdowns
 - `query-performance-engineer` — query-level costs (N+1, missing indexes)
-- `principle-foundational-thinking` — data structures before logic
-- `principle-model-the-domain` — when the shape, not the cost, is wrong
+- `principles` — data structures before logic
+- `principles` — when the shape, not the cost, is wrong
 - `testing-strategy` — property tests for invariants

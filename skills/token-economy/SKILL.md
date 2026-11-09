@@ -13,7 +13,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 # Token Economy

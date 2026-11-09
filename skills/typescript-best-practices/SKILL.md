@@ -2,14 +2,14 @@
 name: typescript-best-practices
 description: TypeScript-specific rules for types, unions, brands, and boundary parsing. Use when reading
   or editing any .ts or .tsx file, or when designing types or signatures in TypeScript. Other languages
-  route to their own idiom skills; the general doctrine lives in principle-type-system-discipline.
+  route to their own idiom skills; the general doctrine lives in principles.
 metadata:
   version: 1.0.0
   domain: languages
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: code-implementer
+  authored-by: code-implementer
 ---
 
 
@@ -44,7 +44,7 @@ Reading or editing any .ts or .tsx file; designing types or signatures in TypeSc
 ## WHEN NOT TO USE
 
 Other languages have their own idiom skills.
-General type doctrine lives in `principle-type-system-discipline`.
+General type doctrine lives in `principles`.
 
 ## VERIFICATION GATE
 

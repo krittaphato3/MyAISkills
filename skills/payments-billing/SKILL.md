@@ -11,7 +11,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: integration-engineer
+  authored-by: integration-engineer
 ---
 
 # Payments & Billing

@@ -2,17 +2,18 @@
 name: animation-web-builder
 description: >-
   Builds scroll-driven, motion-rich web experiences: image-sequence canvas animation, GSAP
-  ScrollTrigger, parallax, section transitions, and performance-budgeted motion. Use when
-  a landing or marketing page needs immersive scroll storytelling or a 60fps animation
-  budget. Routine UI transitions, layout, and component work route to
+  timelines and ScrollTrigger, Lenis smooth scrolling, parallax, section transitions, and
+  performance-budgeted motion. Use when a landing or marketing page needs immersive scroll
+  storytelling, a smooth-scroll feel, or a 60fps animation budget. Ready-made React Bits
+  components route to react-bits; routine UI transitions, layout, and component work route to
   frontend-web-engineer.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: ui-ux-architect
+  authored-by: ui-ux-architect
 ---
 
 # Animation Web Builder
@@ -146,7 +147,10 @@ Never start with a heavy canvas until you've confirmed the asset and performance
 - **red-team-qa review**: check for memory blowup, skipped frames, and missing reduced-motion support.
 
 ## REFERENCES
+- `references/gsap.md` — timelines, ScrollTrigger options, batching, cleanup, performance rules.
+- `references/lenis.md` — smooth scroll setup, GSAP ticker integration, nested scroll, failure modes.
 - GSAP documentation — ScrollTrigger, scrub, pinning.
+- Lenis documentation — `lenis` options and the React binding.
 - MDN — Canvas API, `requestAnimationFrame`, and performance patterns.
 - web.dev page lifecycle / animation performance guidance.
 - Prefers reduced-motion — MDN accessibility for motion.

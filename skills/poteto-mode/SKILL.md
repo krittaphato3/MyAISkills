@@ -13,9 +13,9 @@ metadata:
   version: 2.0.0
   domain: doctrine
   grade: G1
-  status: active
+  status: deprecated
   last-reviewed: '2026-10-30'
-  owned-by-agent: poteto-agent
+  authored-by: poteto-agent
 ---
 
 # Poteto Mode — retired

@@ -12,7 +12,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-game-director
+  authored-by: roblox-game-director
 ---
 
 # Roblox Game Production
@@ -166,6 +166,7 @@ no known economy exploit · VFX/particles within budget · every remote validate
 
 ## REFERENCES
 
+- `references/anti-slop-production-pipeline.md` — end-to-end multi-agent autonomous game generation standards
 - `roblox-studio-mcp` — how work is executed and verified in Studio
 - `roblox-scripting` · `roblox-world-building` · `roblox-ui-ux` · `roblox-animation` ·
   `roblox-vfx` · `roblox-assets` · `roblox-security` · `roblox-testing`
