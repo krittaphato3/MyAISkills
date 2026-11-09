@@ -6,7 +6,7 @@
 
 ## Executive Overview
 
-The **ZCode Autonomous Engineering System** is a disciplined, multi-agent operating configuration designed to orchestrate complex software engineering workflows at Staff+ quality. Rather than relying on monolithic, single-prompt LLM execution ("vibe coding"), ZCode enforces a layered, adversarial multi-agent hierarchy governed by a compact operating contract (`AGENTS.md`), 141 modular domain and doctrine skills, 23 deterministic playbooks, and 51 specialized autonomous subagents.
+The **ZCode Autonomous Engineering System** is a disciplined, multi-agent operating configuration designed to orchestrate complex software engineering workflows at Staff+ quality. Rather than relying on monolithic, single-prompt LLM execution ("vibe coding"), ZCode enforces a layered, adversarial multi-agent hierarchy governed by a compact operating contract (`AGENTS.md`), 128 modular domain and doctrine skills, 23 deterministic playbooks, and 51 specialized autonomous subagents.
 
 Key engineering capabilities include:
 - **Disciplined Token Economics**: Slashes always-loaded per-request context by ~60% (from 32.5 KB to 12.9 KB in `AGENTS.md`), preserving context window capacity for actual code and reasoning.
@@ -29,7 +29,7 @@ Key engineering capabilities include:
   - [Layer 1: Commands & User Entry Points](#layer-1-commands--user-entry-points)
   - [Layer 2: Mode Router (`ozone-mode`)](#layer-2-mode-router-ozone-mode)
   - [Layer 3: Workflow Playbooks](#layer-3-workflow-playbooks)
-  - [Layer 4: Modular Skills Ecosystem (141 Skills)](#layer-4-modular-skills-ecosystem-141-skills)
+  - [Layer 4: Modular Skills Ecosystem (128 Skills)](#layer-4-modular-skills-ecosystem-128-skills)
   - [Layer 5: Autonomous Subagent Swarm (51 Agents)](#layer-5-autonomous-subagent-swarm-51-agents)
   - [Layer 6: Verification & Quality Assurance Gates](#layer-6-verification--quality-assurance-gates)
 - [Work Tiers (T0–T3) & Cost Discipline](#work-tiers-t0t3--cost-discipline)
@@ -85,7 +85,7 @@ The following diagram illustrates the interaction between the primary orchestrat
 |                                                                                                   |
 |   +------------------------------------+                 +------------------------------------+   |
 |   |         CATALOG SKILLS             |                 |       LEARNER PROTOCOL             |   |
-|   |   (141 verified domain skills)     |                 |   (skills/learner/SKILL.md)        |   |
+|   |   (128 verified domain skills)     |                 |   (skills/learner/SKILL.md)        |   |
 |   | - test-driven-development          |                 | - Identifies unfamiliar APIs/SDKs  |   |
 |   | - blast-radius, mutation-testing   |                 | - Grounds via WebFetch & .d.ts     |   |
 |   | - architecture, security, roblox   |                 | - Runs isolated probe spike        |   |
@@ -304,20 +304,22 @@ The single operational spine governing all sessions:
 - `perf-issue.md`: Baseline trace -> single-metric hypothesis -> before/after benchmark verification.
 - `autonomous-run.md`, `autopilot-full.md`: Long-running and multi-phase execution management.
 
-### Layer 4: Modular Skills Ecosystem (141 Skills)
-141 modular domain and doctrine skills categorized across 9 core domains:
+### Layer 4: Modular Skills Ecosystem (128 Skills)
+128 modular domain and doctrine skills categorized across 9 core domains:
 
 | Domain | Skill Count | Primary Focus |
 |---|---|---|
-| **doctrine** | 48 | Engineering principles: TDD, mutation testing, anti-premise, model-the-domain. |
-| **delivery** | 32 | Verification & QA: ship-gate, webapp-qa, benchmark-checklist, ketchup. |
-| **production** | 14 | Deployment, release engineering, and GitHub flow management. |
+| **doctrine** | 26 | Engineering principles, the router, and one indexed `principles` skill. |
+| **delivery** | 35 | Verification, QA, frontend, motion: ship-gate, webapp-qa, react-bits, i18n. |
+| **production** | 16 | Deployment, reliability, cost: observability, load testing, incident response. |
 | **roblox** | 14 | Roblox Studio MCP integration, Luau scripting, UI/UX, and physics. |
-| **architecture** | 12 | Systems design, API contracts, blast radius analysis, monorepos. |
+| **architecture** | 16 | Systems design, API contracts, search relevance, plugin contracts. |
 | **meta** | 12 | System maintenance: learner, correct, skill-creator, agent-config. |
 | **security** | 4 | Threat modeling, security hardening, vulnerability audits. |
 | **languages** | 4 | Deep language expertise: TypeScript, Python, JVM, Luau. |
 | **fundamentals**| 1 | Foundational computer science and data structures. |
+
+The authoritative per-skill breakdown is generated in `docs/catalog-report.md`.
 
 ### Layer 5: Autonomous Subagent Swarm (51 Agents)
 Specialized subagents tailored for specific operational roles:
@@ -351,7 +353,7 @@ on routine edits:
 
 ### Cost Discipline Invariants
 - **Zero-Token Local Defense**: Run compilers (`tsc --noEmit`), linters (`eslint`, `ruff`), and local test suites first. Never pay model tokens for syntax errors that local tooling prints instantly.
-- **Lazy Loading**: Unmatched skills cost only their one-line description in memory (~30 tokens). Detailed references and playbooks are loaded strictly on demand.
+- **Lazy Loading**: An unmatched skill costs only its description (average ~375 chars, ~95 tokens); the whole 128-skill catalog is ~48k chars, ~12k tokens, measured in `docs/catalog-report.md`. Bodies and references load strictly on demand.
 - **Stop Rules**: Maximum 2 retries on a flaky gate; maximum 2 debate rounds; maximum 2 repair attempts before triggering the circuit breaker. A round yielding no new evidence halts execution.
 
 ---
@@ -383,7 +385,7 @@ ZCode respects clear boundaries between autonomous local actions and outward-fac
 ├── README.md                         Comprehensive system architecture and guide
 ├── commands/                         User-facing slash commands (ozone-mode, ship-check, etc.)
 ├── agents/                           51 specialized autonomous subagent profiles
-├── skills/                           141 modular domain & doctrine skills
+├── skills/                           128 modular domain & doctrine skills
 │   ├── INDEX.md                      Auto-generated catalog index
 │   ├── ozone-mode/                   Unified engineering router
 │   │   ├── playbooks/                23 deterministic task workflows
@@ -396,9 +398,16 @@ ZCode respects clear boundaries between autonomous local actions and outward-fac
 ├── tools/
 │   ├── lint_config.py                Catalog validator and index generator
 │   ├── skill_lint.py                 Deep skill schema and grade validator
+│   ├── gen_routing.py                Generates docs/ROUTING.md (every skill, agent, command)
+│   ├── gen_catalog_report.py         Generates docs/catalog-report.md (real numbers)
+│   ├── sync_catalog.py               Deploys the catalog, prunes drift, checks the pointer
 │   ├── routing_cases.json            Router regression test fixtures
-│   └── repo_map.py                   Zero-token AST repository mapping utility
+│   ├── repo_map.py                   Zero-token AST repository mapping utility
+│   ├── webfetch.mjs                  URL fetch with readability extraction
+│   └── web_search.mjs                Multi-tier search fallback
 └── docs/
+    ├── ROUTING.md                    Generated front door: every trigger, one table
+    ├── catalog-report.md             Generated counts, budget, conformance, drift
     ├── RESEARCH-2026-10-30.md        Engineering research foundation and citations
     └── skills/skills.json            Machine-readable skill catalog manifest
 ```
