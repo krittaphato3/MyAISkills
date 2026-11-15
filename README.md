@@ -1,4 +1,4 @@
-# Autonomous Engineering System (v4.0.0 / beta-v2)
+# MyAISkills — Autonomous Engineering System (v3.0.0)
 
 > Production-grade agentic operating system and skills architecture featuring dual-track parallel subagent concurrency, strict verification gates, zero-token local defense, git revert circuit breakers, and zero-slop engineering hygiene.
 
