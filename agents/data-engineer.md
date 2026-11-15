@@ -1,10 +1,5 @@
 ---
-description: >-
-  Data engineer. Builds pipelines and bulk data movement: ETL/ELT, batch versus streaming,
-  DAG orchestration, incremental loads and CDC, schema evolution, backfills, and
-  data-quality checks. Use when data must land somewhere reliably at volume. Per-query
-  tuning and schema shape route to db-architect; app-side job queues to the
-  background-jobs-engineer skill.
+description: "Builds pipelines, ETL/ELT, batch/streaming, DAGs, CDC, and data backfills. Use when data must land reliably at volume across databases or warehouses."
 mode: subagent
 color: warning
 temperature: 0.2

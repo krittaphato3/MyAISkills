@@ -3,14 +3,13 @@ name: teach
 description: Explain a body of work plainly so a person actually understands it. Runs the `how` and `why`
   skills and weaves what they find into one clear explanation. Use for 'teach me this', 'help me really
   understand X', 'explain this change or subsystem to me'.
-disable-model-invocation: true
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: documentation-engineer
+  last-reviewed: '2026-11-09'
+  authored-by: documentation-engineer
 ---
 
 
@@ -30,6 +29,24 @@ Write every response through the **unslop** skill, in plain spoken English, the 
 
 **Reply:** the explanation itself, never a report about what you did or delivered. Lead with the main point, then the plain account of what it is, how it works, and why, and the threads worth chasing with `how` or `why`.
 
+## DECISION TREE
+
+- The person is about to change or review this code -> depth on the parts they will touch.
+- The person is new to the codebase -> start from what the subsystem is for, then the flow.
+- The person is debugging it -> lead with the failing path and where state lives.
+- The question is one fact -> answer it; do not run the full teaching flow.
+- The person asks to go deeper -> add a layer; never pre-load every layer.
+- No code is readable here -> say so instead of teaching from memory.
+
+## FAILURE MODES & MITIGATIONS
+
+- **A wall of text.** Mitigation: smallest complete answer first, then layers on request.
+- **Listing symbols instead of behavior.** Mitigation: explain the mechanism and what triggers it.
+- **Redoing `how` and `why` by hand.** Mitigation: invoke them and blend their findings.
+- **Rewriting `why`'s confidence.** Mitigation: its hedges are findings; keep them.
+- **One crowded diagram.** Mitigation: a short series where each step adds one part.
+- **Pacing theater and quizzes.** Mitigation: say the thing and stop.
+
 ## WHEN TO USE
 
 "Teach me this", "help me understand X", or onboarding onto a subsystem or change.
@@ -42,3 +59,9 @@ Changing code.
 ## VERIFICATION GATE
 
 The explanation matches what `how` and `why` found; depth matches the person; no files changed.
+
+## REFERENCES
+
+- `how` - how the system works.
+- `why` - why it is built that way.
+- `unslop` - the prose pass every response goes through.

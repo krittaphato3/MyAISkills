@@ -1,17 +1,13 @@
 ---
 name: payments-billing
-description: >-
-  Integrates payments and billing: checkout, one-time and subscription charges, plans and
-  proration, invoices, refunds, disputes, and signed webhooks, with idempotency and
-  PCI-scope avoidance. Use when money moves through the product. General provider wiring
-  routes to third-party-integration; pricing and refund policy are product decisions.
+description: "Implements payment processing, billing subscriptions, invoices, refunds, and signed webhooks. Use when processing payments, subscriptions, or Stripe integrations."
 metadata:
   version: 3.0.0
   domain: production
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: integration-engineer
+  authored-by: integration-engineer
 ---
 
 # Payments & Billing

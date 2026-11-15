@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox security engineer (read-only). Audits exploit surfaces — remotes, prompts, tools, economy,
-  data writes, admin paths, secrets — and proves each defense with a reproducible attack test.
-  Use before publishing, when adding any remote/reward/purchase, or after a cheat or duplication
-  report. Defensive implementation routes to roblox-scripter; non-Roblox app security to
-  security-hardening-specialist.
+description: "Audits Roblox exploit surfaces: remote event spoofing, prompt injection, and economy vulnerabilities. Use when auditing Roblox network security and rewards."
 mode: subagent
 color: error
 temperature: 0.1

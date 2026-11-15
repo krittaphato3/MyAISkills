@@ -1,9 +1,5 @@
 ---
-description: >-
-  Database engineer. Designs schemas, indexes, constraints, and idempotent migrations, and
-  diagnoses query plans and pooling. Use when schema shape, migration safety, or a
-  specific slow query is the question. Service topology (replicas, shards, failover)
-  routes to solution-architect; pipeline work to data-engineer.
+description: "Designs schemas, indexes, constraints, and idempotent migrations, diagnosing query plans. Use when schema shape, migration safety, or slow queries arise."
 mode: subagent
 color: success
 temperature: 0.2

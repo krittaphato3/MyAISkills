@@ -1,10 +1,5 @@
 ---
-description: >-
-  Dependency and supply-chain guardian (read-only). Triages CVEs, audits licenses,
-  generates SBOMs, checks typosquat and provenance risk, and plans safe upgrades with
-  lockfile hygiene. Use when adding or upgrading a package, responding to a security
-  advisory, or preparing a release review. Fixing a vulnerability in your own code routes
-  to security-auditor.
+description: "Dependency and supply-chain guardian (read-only). Use when adding or upgrading a package, responding to a security advisory, or preparing a release review."
 mode: subagent
 color: warning
 temperature: 0.1

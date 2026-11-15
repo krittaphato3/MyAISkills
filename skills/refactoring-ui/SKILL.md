@@ -1,19 +1,15 @@
 ---
 name: refactoring-ui
-description: 'Audits and fixes visual hierarchy, spacing, color, and depth in web UIs: grayscale-first
-  workflow, constrained scales, shadows, component styling. Use when the user says "my UI looks off" (or
-  amateur), "fix the design", "Tailwind styling", "color palette", "visual hierarchy", "design system",
-  "spacing scale", or when building design tokens, dark mode themes, or polishing before launch. Usability
-  review routes to ux-review; spacing math to ui-layout-spacing; typeface selection is out of scope.'
+description: "Audits and improves visual hierarchy, spacing scales, depth, shadows, and Tailwind styling in web UIs. Use when fixing amateur layouts, refining design tokens, or polishing UI design."
 license: MIT
 metadata:
   author: wondelai
-  version: 1.5.1
+  version: 1.6.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: ui-ux-architect
+  last-reviewed: '2026-11-09'
+  authored-by: ui-ux-architect
 ---
 
 
@@ -219,7 +215,7 @@ See [references/animation-microinteractions.md](references/animation-microintera
 
 See [references/data-visualization.md](references/data-visualization.md) when laying out charts, tables, or dashboards — chart-type selection, color use in charts, table density, and dashboard composition.
 
-## Common Mistakes
+## FAILURE MODES & MITIGATIONS
 
 | Mistake | Why It Fails | Fix |
 |---------|-------------|------|
@@ -247,6 +243,15 @@ Audit any UI design:
 | Do colors have sufficient contrast? | Accessibility failure | WCAG-check; use gray-700+ on white |
 | Are shadows appropriate for elevation? | Elements float at wrong level | Match shadow scale to element purpose |
 
+## DECISION TREE
+
+- Hierarchy is unclear at a glance -> fix size and weight first, then color.
+- Everything looks cramped or floating -> fix spacing on the scale before adding borders.
+- Text is hard to scan -> fix line length, line height, and one type scale.
+- Color feels muddy or competing -> reduce saturation and give one accent the job.
+- The UI feels flat -> add depth through layered shadows, not borders everywhere.
+- One component looks off while the page reads fine -> check the spacing and radius math in `ui-layout-spacing`.
+
 ## WHEN TO USE
 - When auditing or improving visual hierarchy, layout depth, or component styling in web interfaces.
 - When fixing amateur-looking UIs, establishing constrained design scales, or applying Tailwind design systems.
@@ -262,7 +267,7 @@ Audit any UI design:
 - Layout passes grayscale blur test without hierarchy loss.
 - Spacing and type strictly follow constrained scales without arbitrary pixel offsets.
 
-## Further Reading
+## REFERENCES
 
 For the complete system with visual before/after examples:
 

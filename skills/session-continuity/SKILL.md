@@ -1,17 +1,13 @@
 ---
 name: session-continuity
-description: >-
-  Compresses working state into a durable handoff: goal, decisions and rationale, changed
-  files, evidence, open questions, and the exact next action. Use when a session is long,
-  context is about to compact, work is being resumed, or another agent takes over. Durable
-  project conventions belong in AGENTS.md and context-engineering.
+description: "Summarizes session context: decisions, file diffs, evidence, and next steps for handoffs. Use when handing off sessions, resuming work, or compacting context."
 metadata:
   version: 3.0.0
   domain: doctrine
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 # Session Continuity

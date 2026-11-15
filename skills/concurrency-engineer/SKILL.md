@@ -1,18 +1,13 @@
 ---
 name: concurrency-engineer
-description: >-
-  Designs and debugs concurrency and parallelism: threads, goroutines, async/await,
-  actors, channels and CSP, locks, lock-free structures, cancellation, and data-race or
-  deadlock safety. Use when correctness depends on interleaving, shared state, or
-  backpressure. Multi-node consistency routes to distributed-systems-engineer; queued work
-  to background-jobs-engineer.
+description: "Designs concurrency and parallelism: async/await, goroutines, threads, locks, and race safety. Use when correctness depends on shared state interleaving."
 metadata:
   version: 3.0.0
   domain: architecture
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: code-implementer
+  authored-by: code-implementer
 ---
 
 # concurrency-engineer

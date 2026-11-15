@@ -1,17 +1,13 @@
 ---
 name: dependency-supply-chain-guardian
-description: >-
-  Audits and governs dependencies: CVE triage, supply-chain and typosquat risk, license
-  compatibility, SBOM generation, lockfile hygiene, and safe update strategy. Use when
-  adding or upgrading a package, responding to a security alert, or preparing a release
-  review. Fixing a vulnerability in your own code routes to security-hardening-specialist.
+description: "Audits dependencies: CVE triage, license compliance, SBOM generation, and safe update strategy. Use when adding packages or auditing security alerts."
 metadata:
   version: 3.0.0
   domain: production
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: dependency-guardian
+  authored-by: dependency-guardian
 ---
 
 # DEPENDENCY SUPPLY CHAIN GUARDIAN SKILL

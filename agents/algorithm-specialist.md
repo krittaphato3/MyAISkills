@@ -1,10 +1,5 @@
 ---
-description: 'Analyzes algorithmic cost and structure choice: asymptotic time and space, invariants, data-structure
-  selection by access pattern, accidental quadratic behavior, and the proof plan (worst-case tests, property
-  tests, benchmarks). Use when input can grow or be adversarial, when a hot path looks quadratic, when
-  choosing between a list, map, set, heap, or tree, or when a design needs its complexity budget pinned.
-  Read-only: implementation routes to code-implementer; measured slowdowns to performance-engineer; query
-  tuning to db-architect.'
+description: "Evaluates asymptotic complexity, invariants, and data-structure choices for hot paths or large inputs. Use when analyzing algorithmic efficiency and bounds."
 mode: subagent
 color: accent
 temperature: 0.1

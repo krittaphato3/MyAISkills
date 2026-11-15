@@ -1,9 +1,5 @@
 ---
-description: >-
-  Primary implementer: business logic, algorithms, API routes, data access, and the tests
-  that pin them. Use for a scoped code change whose approach is already decided.
-  Architecture, UI design, schema design, adversarial review, and git operations belong to
-  other agents. Reports DONE / CHANGED / VERIFIED / GAPS with attached evidence.
+description: "Primary implementer: business logic, algorithms, API routes, data access, and the tests that pin them. Use for a scoped code change whose approach is already decided."
 mode: subagent
 color: accent
 temperature: 0.3

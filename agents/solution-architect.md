@@ -1,10 +1,5 @@
 ---
-description: >-
-  Owns system shape and capacity math: component selection, boundaries, data flow,
-  caching, load balancing, back-of-envelope sizing, trade-off analysis, and ADRs. Use when
-  choosing or defending an architecture. Consistency and replication behavior route to
-  distributed-systems-engineer; database topology to db-architect; the API contract itself
-  to api-architect; implementation to code-implementer.
+description: "Architects system boundaries, data flows, capacity calculations, and architectural decision records. Use when making structural system design choices or trade-offs."
 mode: subagent
 color: primary
 temperature: 0.2

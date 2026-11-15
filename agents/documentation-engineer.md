@@ -1,9 +1,5 @@
 ---
-description: >-
-  Writes and maintains project documentation: READMEs, API references, guides, changelogs,
-  and inline docs, in a consistent voice. Use when a deliverable needs durable explanation
-  for users or contributors. README structure and positioning route to readme-architect;
-  decision records to solution-architect.
+description: "Writes and maintains project documentation: READMEs, API references, guides, changelogs, and inline docs, in a consistent voice. Use when a deliverable needs durable explanation for users or contributors."
 mode: subagent
 color: secondary
 temperature: 0.2

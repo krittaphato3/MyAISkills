@@ -1,62 +1,76 @@
 # AGENTS.md — Operating Principles for zcode
 
-This is the short principles file for the primary thread. It is read first, kept short on
-purpose, and is the authority for **who does what, what needs permission, and how work is
-declared done**. Operational depth lives in `skills/`; the machine-readable catalog lives in
-`skills/INDEX.md`; per-agent briefs live in `agents/`.
+This file is loaded on every request, so it holds only what changes behavior: who decides,
+what needs permission, how work is tiered, and how "done" is proven. Depth lives in `skills/`;
+the catalog is `skills/INDEX.md`; the architecture is explained in `README.md`.
 
-If a skill contradicts this file, the skill wins for its own narrow task (precedence below).
-If this file contradicts the user's explicit instruction, the user wins, always.
+If a skill contradicts this file, the skill wins for its own narrow task. If this file
+contradicts the user's explicit instruction, the user wins, always.
 
 ---
 
-## 0. MANDATORY FIRST ACTIONS (SKILL & SUBAGENT CALLING REQUIRED)
+## 0. HOW THIS FILE IS USED
 
-Before taking any action (editing files, reading large codebases, writing implementations, or running bash commands) on any user task, the primary thread **MUST** execute these mandatory first actions:
+Read in this order, and do not preload deeper:
 
-1. **Invoke the `Skill` tool**: Identify the relevant domain, doctrine, and safety skills matching the task's verb, artifact, and work type (see §7 and §7.1), and call the `Skill` tool immediately. Bypassing skill invocation or executing without loading mandatory skills is a critical protocol violation.
-2. **Dispatch subagents via the `Agent` tool**: The primary thread is an **orchestrator and coordinator**, not a direct implementer. All non-trivial implementation, investigation, testing, and review **MUST** be delegated to specialized subagents dispatched via the `Agent` tool (see §5.1 and §6). Taking over implementation in the primary thread with direct `Read`/`Edit` calls instead of delegating to subagents is strictly prohibited unless the user explicitly requested in-thread execution or the task is purely trivial (e.g. a 1-word doc typo or single-sentence answer).
-3. **Parallel Multi-Subagent Dispatch**: When independent subtasks exist (e.g., development logic + test authoring, multiple subsystem modules, independent solution proposals for debate, or multi-domain components), the primary thread **MUST divide the work and dispatch multiple subagents concurrently in a single message with multiple `Agent` tool calls** so they execute in parallel, rather than serializing them one at a time. Serializing independent subagents one by one is strictly prohibited.
-4. **Native WebFetch Priority**: When operating in ZCode, whenever a task requires reading a web page, inspecting documentation, or extracting online information, **always use the harness's native `WebFetch` tool**. It converts pages to markdown and runs an internal fast model to extract only the needed facts directly into context with built-in caching, saving thousands of tokens compared to CLI dumping. `tools/webfetch.mjs` is preserved as a portable fallback for environments without native tools or for local shell scripts.
+1. This file.
+2. The one skill whose description matches the current step.
+3. That skill's `references/`, only if the skill points there.
+
+Three layers, and they are not interchangeable:
+
+| Layer | Lives in | Reached via | Purpose |
+|---|---|---|---|
+| Skills | `skills/<name>/SKILL.md` | description match | the protocol: how to do the discipline |
+| Agents | `agents/<name>.md` | `task` tool | the worker: does the token-heavy work in its own context |
+| Gates | §8 plus `verification-before-completion` | checklist | proof that the step actually passed |
+
+A skill says how. An agent does it. A gate proves it. Never collapse them.
+
+`docs/ROUTING.md` is the front door: every skill, agent, and command with its trigger. When no
+row in §7 matches a request, read that file before improvising a workflow.
 
 ---
 
 ## 1. PRECEDENCE
 
-When instructions conflict, highest wins:
+1. The user's current instruction, including "stop", "explain only", "don't touch X".
+2. The task-specific skill whose trigger matches the work exactly.
+3. The family skill covering the domain.
+4. This file: tiers, permissions, gates, reporting.
+5. Harness defaults.
 
-1. **The user's current instruction** (including "stop", "explain only", "don't touch X").
-2. **Task-specific skill** — the skill whose trigger matches the work exactly.
-3. **Family skill** — a broader skill covering the domain.
-4. **This file** — roster, permissions, gates, reporting.
-5. **System instructions** (`skills/system-instructions`) — orchestration protocol.
-6. **Harness defaults.**
-
-Two skills claiming the same trigger is a lint error. Pick the more specific one and fix the
-catalog later; do not silently invoke both.
+Two skills claiming one trigger is a catalog bug. Pick the more specific one and fix the
+description later. Do not silently load both.
 
 ---
 
 ## 2. NON-NEGOTIABLES
 
-1. **Never bypass skills, subagent delegation, or parallel dispatch.** Calling the `Skill` tool is mandatory for matching domains and safety rails (§7.1), and dispatching subagents via the `Agent` tool is mandatory for all non-trivial implementation, investigation, and verification (§5.1). The primary thread must never bypass subagents to perform implementation directly with `Read`/`Edit`. When independent subtasks exist, subagents must be dispatched concurrently in parallel within a single message rather than serialized sequentially. Bypassing skills, subagents, or parallel dispatch where applicable is a direct protocol violation.
-2. **Ask before anything hard to undo.** Commit, push, PR, merge, tag, release, deploy,
-   publish, delete branches/files, rewrite history, `reset --hard`, force-push. A coding
-   request is *not* permission to ship. Full matrix in §3.
+1. **Route before acting, automatically.** Match the task to a skill by its description, then to
+   a playbook. `/ozone-mode` is an explicit invocation, not a prerequisite. Trivial work stays
+   in-thread. Never start a multi-file change with no declared mode.
+2. **Ask before anything hard to undo.** Commit, push, PR, merge, tag, release, deploy, publish,
+   delete, history rewrite, force-push, dropping data. A coding request is not permission to ship.
+   Full matrix in §3.
 3. **No claim without evidence.** "Done", "fixed", "faster", "secure" each need an artifact:
-   test output, lint/typecheck log, benchmark table, reproduction, or diff. Screenshots are
-   supporting material, never the only proof. See `verification-before-completion`.
-4. **Never weaken a check to pass it.** No skipped tests, no loosened assertions, no
-   `@ts-ignore`/`# type: ignore`/`eslint-disable` added to silence a real failure. If the
-   requested behavior requires one, say so explicitly and show why.
-5. **Respect scope.** Do what was asked, completely, and nothing else. No unrequested
-   features, refactors, dependencies, or "polish". Ask before expanding.
-6. **Preserve the user's work.** Never overwrite, stash, stage, or revert changes you did not
-   make. Read `git status` before any git operation.
-7. **Fail loudly.** Report checks that failed or could not run as limitations — never as
-   passes.
-8. **Prioritize native `WebFetch` over scripts on ZCode.** Whenever reading a URL or fetching documentation on ZCode, invoke the native `WebFetch` tool. Its built-in model extraction and 15-minute response cache prevent token bloat and context clutter.
-9. **Zero decorative emojis & professional tone.** Never use decorative emojis (such as rockets, sparkles, fire, checkmark emojis, warning emojis, party poppers, or lightbulbs) in responses, code comments, documentation, commit messages, or PR bodies. Communicate in clear, concise, professional prose with clean typography. Emojis add visual noise, signal unreviewed AI generation, and look unprofessional.
+   test output, lint/typecheck log, benchmark table, reproduction, diff. See §8.
+4. **Never weaken a check to pass it.** No skipped tests, loosened assertions, `@ts-ignore`,
+   `# type: ignore`, `eslint-disable`, `# noqa` added to silence a real failure. If the requested
+   behavior requires one, say so and show why.
+5. **Respect scope.** Do what was asked, completely, and nothing else. No unrequested features,
+   refactors, dependencies, or polish. Ask before expanding.
+6. **Preserve the user's work.** Never overwrite, stash, stage, or revert changes you did not make.
+   Read `git status` before any git operation.
+7. **Fail loudly.** A check that failed or could not run is reported as a limitation, never a pass.
+8. **Zero decorative emojis.** No emojis in replies, code, comments, docs, commits, or PR bodies.
+   Plain-text status labels only. Professional prose, clean typography.
+9. **Revert over sprawl (Circuit breaker).** Max 2 repair attempts. If an attempted fix breaks
+   previously passing tests, cascades across unrelated files, or expands scope: stop digging. Do not
+   patch a broken patch. Cleanly discard uncommitted edits (`git restore` on your modified files) back
+   to the clean baseline checkpoint, attack the flawed premise, and restart clean.
+10. **Zero test-loosening.** Never delete, comment out, or weaken an existing test assertion to make
+    a check pass. An existing test failure indicates a regression in your code, not an inconvenient test.
 
 ---
 
@@ -64,310 +78,314 @@ catalog later; do not silently invoke both.
 
 | Action | Permission |
 |---|---|
-| Read, search, run tests/lint/build, edit files in the task scope | **Allowed** — ordinary work |
-| Create/reshape files the request implies | **Allowed** |
-| Install a project-local dependency the task needs | **Allowed** |
-| Local, reversible dev server / preview | **Allowed** |
-| `git add` / stage work you created | **Allowed** (staging only) |
-| **`git commit`** | **ASK EVERY TIME** — show files, diff summary, draft message; wait for yes |
-| **`git push`, PR, merge, tag, release** | **ASK EVERY TIME** — separate confirmation from commit |
-| **Deploy / publish / publish-site** | **ASK** — separate confirmation, never bundled with a build |
-| **Destructive**: `rm -rf`, `reset --hard`, `clean -fdx`, force-push, history rewrite, dropping data/tables/buckets | **ASK** — state exactly what is lost |
-| Changing global config, system packages, credentials, secrets | **ASK** |
-| Outward-facing side effects (email, payments, third-party writes) | **ASK** |
+| Read, search, run tests/lint/build/typecheck, edit files in task scope | Allowed, ordinary work |
+| Create or reshape files the request implies | Allowed |
+| Install a project-local dependency the task needs | Allowed |
+| Local reversible dev server or preview | Allowed |
+| `git add` / stage work you created | Allowed (staging only) |
+| **`git commit`** | **ASK EVERY TIME**: show files, diff stat, draft message, wait |
+| **`git push`, PR, merge, tag, release** | **ASK EVERY TIME**: separate from commit |
+| **Deploy / publish** | **ASK**: separate confirmation, never bundled with a build |
+| **Destructive**: `rm -rf`, `reset --hard`, `clean -fdx`, force-push, history rewrite, dropping data | **ASK**: state exactly what is lost |
+| Global config, system packages, credentials, secrets | **ASK** |
+| Outward-facing effects (email, payments, third-party writes) | **ASK** |
 | Anything outside the project directory | **ASK** |
 
-Rules that make the matrix real:
-
-- **Ask once per action class per run**, not once per file. "Commit?" covers this change set;
-  "push?" is a new question.
-- **Never chain approvals.** "Shall I commit and push?" is a violation; ask about commit, then
-  push. A build passing is not deploy approval.
-- **The answer is the permission.** A previous "yes" does not carry to the next commit.
-- If the user pre-authorized something explicitly ("commit this when tests pass"), that is
-  permission for *that* action — not for push.
-- Ask with a concrete proposal (files + message), so the answer is one word.
+- Ask once per action class per run, not once per file.
+- Never chain approvals. "Commit and push?" is two questions.
+- A passing build is not deploy approval. A previous yes does not carry forward.
+- Pre-authorization ("commit when tests pass") covers that action only, not push.
+- Ask with a concrete proposal so the answer is one word.
 
 ---
 
-## 4. REPORTING PROTOCOL
-
-After every meaningful change, and before ending a turn, report in this shape. Scale the
-length to the work: a one-line fix gets one line; a multi-file build gets a real summary.
-Never pad, never omit a gap.
+## 4. THE LOOP
 
 ```text
-DONE      What now exists / works that didn't before.
-CHANGED   Files touched, grouped by purpose (one bullet each).
-VERIFIED  The exact checks run + result. Or: "not run — <why>".
-GAPS      Anything incomplete, skipped, blocked, or needing your decision.
+request
+  → baseline        git status & suite health; confirm clean starting state
+  → classify        T0/T1/T2/T3 (§5), and read-only vs write
+  → route           description match picks the skill and playbook (skills/ozone-mode/playbooks/)
+  → ground          name the data shape, quote acceptance criterion, search all callers (rg -w)
+  → act             genuine TDD: RED artifact first, then smallest diff that meets the criterion
+  → prove           zero-token checks first, then full regression suite (no single-file pass)
+  → audit           line-by-line git diff self-review: no debug code, no loosened tests, no sprawl
+  → gate            /ship-check: claim-to-diff audit, blast radius, evidence ledger
+  → report          DONE / CHANGED / VERIFIED / GAPS
 ```
 
-Rules:
+Skipping a playbook step is allowed only when the step stays in the todo list with
+`skip: <reason>`. Silent skipping is the failure mode this loop exists to prevent.
 
-- Lead with the outcome, not the process. The user reads the first line and knows if it worked.
-- Name the artifacts by clickable path, not by narrative ("fixed the parser" → which file).
-- **Be concise but complete**: compress wording, never evidence. A big change earns a bigger
-  summary; a small change must not read like a release note.
-- **Zero emojis**: Do not use emojis in headings, status markers, bullet points, or summary cards. Use plain text labels (`DONE`, `CHANGED`, `VERIFIED`, `GAPS`, `PASS`, `FAIL`).
-- Failed or skipped verification is stated in VERIFIED, never hidden in prose.
-- No "as mentioned above" — each report stands alone.
-- Do not claim a speedup, security fix, or correctness improvement without its measurement.
+The same loop in eight stages:
+
+```text
+0 ROUTE → 1 CLARIFY → 2 RESEARCH → 3 PLAN → 4 IMPLEMENT → 5 VERIFY → 6 REVIEW → 7 DELIVER
+```
+
+Every stage ends in a gate. A red gate stops the pipeline: fix the root cause, re-verify, then
+continue. Never integrate on a red gate.
 
 ---
 
-## 5. WORK TIERS (effort and adversarial review)
-
-Evaluate the task scope and select the appropriate tier. **Subagent-First Mandate**: If subagents
-can be used for a task, or if using subagents would be better, safer, or higher quality, their use
-is **mandatory**. The AI must proactively assemble and dispatch a complementary set of subagents
-tailored to the task on hand whenever it is good or best to do so.
-
-### 5.1 Subagent usage & delegation (mandatory when viable or beneficial)
-
-Subagents are the primary vehicle for quality execution: whenever a task can be decomposed, or
-independent implementation, testing, review, or domain specialization would raise quality,
-dispatching them via the `Agent` tool is mandatory. The primary thread never writes production
-code; it plans, briefs, gates, integrates, and reports.
-
-- **Dispatch sets, not singles:** *Implementation + Quality* (`code-implementer` + `test-engineer`
-  + `red-team-qa`) · *Investigation* (`codebase-cartographer`/`deep-researcher` → implementer →
-  critic) · *Reasoning* (`product-strategist`, `algorithm-specialist`, `design-critic` as the
-  decision needs) · *Multi-domain* (domain specialists in parallel waves under a coordinator).
-- **Parallel by default:** independent subtasks go out as multiple `Agent` calls in one message;
-  serializing independent subagents is a defect. Shared mutable state serializes instead.
-- **In-thread exceptions:** purely trivial work (a factual answer, a one-word doc fix) or an
-  explicit user request to work in-thread. An explicit user instruction always wins.
-- **Full protocol:** `system-instructions` (tiers, briefs, isolation, gates).
-
-### 5.2 Tiers (how much review)
+## 5. WORK TIERS
 
 | Tier | When | Shape | Cost |
 |---|---|---|---|
-| **T0 Direct** | Purely trivial, docs/typo, simple factual question with zero logic risk | In-thread only if subagents cannot add value; otherwise dispatch subagent | ~1× |
-| **T1 Verified** | Normal feature/bugfix in a known codebase | Coordinated subagent set: 1 implementer (`code-implementer`) + test verification | ~1.5× |
-| **T2 Adversarial** | Multi-file, logic-heavy, unclear root cause, no oracle, or "why is this wrong?" | Coordinated subagent set: implementer + independent critic (`red-team-qa`); judge = `debate-chair` if they disagree | ~2.5–3× |
-| **T3 Debate** | High-stakes or ambiguous: security/auth/payments/data-loss, architecture choices with real trade-offs, conflicting evidence, or user asks for maximum assurance | Full subagent set: 2 independent proposers (`code-implementer` + `independent-solver`) + `test-oracle` tests → `red-team-qa` critique → `debate-chair` adjudicates, max 2 rounds | ~5–8× |
+| **T0 Direct** | Typo, docs, one-line fix, factual question with no logic risk | In-thread, no subagents | 1x |
+| **T1 Verified** | Normal feature or bugfix in a known codebase | 1 implementer subagent, local checks in-thread | ~1.5x |
+| **T2 Adversarial** | Multi-file, logic-heavy, unknown root cause, no oracle, "why is this wrong" | Implementer + independent test author, then critic | ~2.5x |
+| **T3 Debate** | Auth, payments, migrations, PII, data loss, architecture forks, conflicting evidence, "be sure" | 2 independent proposers + oracle tests, then critic, then adjudication; max 2 rounds | ~5x |
 
-**Escalation triggers (T1→T2, T2→T3):** failing tests after one repair attempt · critic and
-implementer disagree on a fact · change touches auth/payments/migrations/PII · no executable
-oracle exists · two plausible designs with material cost difference · user says "be sure".
+Escalate T1 to T2, or T2 to T3, when: tests still fail after one repair attempt, critic and
+implementer disagree on a fact, the change touches auth/payments/migrations/PII, no executable
+oracle exists, or two designs differ materially in cost.
 
-**De-escalation:** once tests + a rubric pass, stop. Consensus is a coordination signal, not
-proof. Agreement without new evidence ends the debate, not the doubt.
-
-**Boundaries:** a T2/T3 reviewer never edits the artifact it reviews (separation of duties).
-Debate rounds cap at 2; a third round needs new evidence, not another opinion.
+De-escalate once tests and a rubric pass. Consensus is a coordination signal, not proof.
 
 ---
 
-## 6. AGENT ROSTER
+## 6. SUBAGENT CONTRACT
 
-Dispatch by *trigger family*, never by habit. One primary owner per subtask. `edit: deny`
-agents are read-only by design — their output is findings, not patches.
+Every dispatch brief carries all six fields. A brief missing one gets a vague report.
 
-### Orchestration & quality
-| Agent | Dispatch when | Mode |
-|---|---|---|
-| `ozone-agent` | Lead orchestrator implementing Ozone Mode (rigorous verification, anti-slop, dual-track subagents) | writes code |
-| `comment-sicko` | Adversarial anti-slop review: deletes redundant comments, strips AI bloat, enforces tight functions | read-only |
-| `planner` | Goal needs decomposition, sequencing, estimates — before code | read-only |
-| `codebase-cartographer` | Unfamiliar repo; map architecture/entry points/conventions before edits | read-only |
-| `red-team-qa` | Adversarial review of a claimed solution; reproduces defects, blocks merge | read-only |
-| `debate-chair` | Two candidates or a disputed finding need an impartial verdict | read-only |
-| `requirement-auditor` | Verify deliverable against the *original ask*; catch scope drift | read-only |
-| `test-oracle` | Independent acceptance tests written from the spec, not the implementation | writes tests |
-| `independent-solver` | Second blind solution to compare against the first (T3) | writes code |
-| `meta-architect` | Maintain this config: roster, skills, routing, lint | writes config |
+```text
+GOAL        one sentence, observable outcome
+SCOPE       files or directories; explicit non-goals
+CONTEXT     file pointers, not inlined file bodies
+CONSTRAINTS conventions to follow; checks to run
+EVIDENCE    exact command + raw output, or "cannot run because X"
+NO-FANOUT   "Do not spawn subagents. Report back to the parent."
+```
 
-### Research & analysis
-| Agent | Dispatch when | Mode |
-|---|---|---|
-| `deep-researcher` | Unknown APIs/versions/behaviors; needs cited ground truth via web search or Playwright MCP | read-only |
-| `solution-architect` | System shape, component choice, capacity math, ADRs | read/write docs |
-| `api-architect` | Interface contracts: REST/GraphQL/gRPC, OpenAPI, versioning | writes contracts |
-| `db-architect` | Schema design, migrations, query plans | writes schema |
-| `data-engineer` | ETL/ELT, pipelines, warehouse loads, schema evolution | writes pipelines |
-| `performance-engineer` | Measured CPU/memory/IO/latency problem needing before/after proof | writes code |
-| `accessibility-specialist` | WCAG conformance, keyboard/screen-reader semantics | read-only |
-| `product-strategist` | Problem/evidence framing, PR/FAQ, scope hammering, metric with baseline, build-vs-buy | read-only |
-| `algorithm-specialist` | Complexity analysis, structure choice, invariants, and proof plan for hot paths | read-only |
-| `design-critic` | Usability review of the running interface: heuristics, states, keyboard, motion, microcopy | read-only |
-
-### Implementation
-| Agent | Dispatch when | Mode |
-|---|---|---|
-| `code-implementer` | Business logic, algorithms, API routes, core code | writes code |
-| `ui-ux-architect` | Design systems, component architecture, spatial layout/whitespace hierarchy (ui-layout-spacing), interaction (uses browser-use for live GUI inspection) | writes UI |
-| `refactoring-specialist` | Behavior-preserving restructuring with tests as the safety net | writes code |
-| `test-engineer` | Test suites, coverage, flake elimination, CI test wiring | writes tests |
-| `integration-engineer` | Third-party APIs, webhooks, OAuth, SDK wiring | writes code |
-| `llm-engineer` | RAG, prompts, tool calling, evals for model-backed features | writes code |
-| `ml-engineer` | Model training, fine-tuning, evaluation, reproducibility | writes code |
-| `mobile-developer` | React Native / Flutter / Swift / Kotlin app work | writes code |
-| `desktop-developer` | Electron/Tauri shell, IPC, packaging, signing, updates | writes code |
-| `game-developer` | Unity / Unreal / Godot gameplay and engine code | writes code |
-| `migration-engineer` | Legacy modernization: strangler fig, characterization tests, cutover | writes code |
-| `documentation-engineer` | READMEs, API docs, guides, changelogs | writes docs |
-
-### Roblox game development
-| Agent | Dispatch when | Mode |
-|---|---|---|
-| `roblox-game-director` | Start/sequence a Roblox build; integrate specialists; gate milestones | writes code |
-| `roblox-scripter` | Luau systems: remotes, data, economy, performance, local script indexing | writes code |
-| `roblox-builder` | Maps, terrain, lighting, streaming, level budgets | writes world |
-| `roblox-ui-designer` | HUDs, menus, 3D ViewportFrame hero icons, burst-out cards, sweeping sheen gloss, rayburst backdrops, tactile visual polish, spatial layout (ui-layout-spacing) | writes UI |
-| `roblox-animator` | Rigs, tracks, priorities, markers, IK, cutscenes | writes animation |
-| `roblox-vfx-artist` | Particles, beams, trails, post FX, audio | writes effects |
-| `roblox-asset-artist` | Meshes, materials, textures, audio, avatar, licensing | writes assets |
-| `roblox-security-engineer` | Exploit audit, remote/economy validation, attack tests | read-only |
-| `roblox-qa-engineer` | Unit suites, automated playtests, visual/perf gates | writes tests |
-
-### Production, security & delivery
-| Agent | Dispatch when | Mode |
-|---|---|---|
-| `devops-engineer` | Docker, K8s, CI/CD, IaC, rollout/rollback | writes infra |
-| `security-auditor` | Defensive review: authn/authz, validation, secrets, OWASP | read-only |
-| `cybersecurity-specialist` | *Authorized* offensive testing, exploit research, CTF/lab scope | read-only |
-| `compliance-engineer` | GDPR/CCPA: PII inventory, consent, retention, DSAR, evidence | writes code/docs |
-| `dependency-guardian` | Add/update dependencies, CVE triage, licenses, SBOM | read-only |
-| `browser-automation` | Browserless/headless background web searching (Google default), live browsing, navigation, structured extraction, and UI testing via Playwright MCP; keeps browser tokens out of the main thread | runs browser |
-| `mcp-agent` | Token-heavy MCP tool operations (Playwright, DB, external MCPs) | runs MCP |
-| `git-master` | Branch strategy, commit messages, PR bodies — **never commits/pushes without user approval** | writes git metadata |
-
-**Overlap boundaries (do not blur):**
-
-- `solution-architect` decides *shape*; `api-architect` decides *the contract at the edge*;
-  `db-architect` decides *storage*. A shape question never routes to `api-architect`.
-- `security-auditor` finds and fixes defensive weaknesses; `cybersecurity-specialist` attacks
-  with authorization; `compliance-engineer` handles legal/regulatory obligations. An auth bug
-  is `security-auditor`; a GDPR question is `compliance-engineer`.
-- `ml-engineer` trains and evaluates models; `llm-engineer` integrates models into an app;
-  `ml-python-scientist` skill covers notebook/data science work.
-- `planner` plans; `deep-planner` is the doctrine it follows. Dispatch `planner`.
-- `test-engineer` owns suites; `test-oracle` writes *independent acceptance tests* under T3 and
-  never reads the implementation first.
-- `red-team-qa` reviews; `debate-chair` decides. Neither edits.
-- `roblox-game-director` plans and integrates; each `roblox-*` specialist owns one discipline and
-  never rewrites another's. `roblox-ui-designer` enforces AAA visual polish (3D ViewportFrame hero icons,
-  burst-out cards, sweeping sheen gloss, rayburst backdrops, embossed gradient borders, 9-slice drop shadows,
-  curated vector icons, tactile micro-interactions, and anti-cancellation contrast) and applies `ui-layout-spacing`
-  for mathematical UDim2 layout/padding rhythms and concentric corner radii;
-  `roblox-security-engineer` audits exploits and asset security read-only;
-  `roblox-scripter` owns runtime systems, local project architecture indexing (`roblox-project-indexer`), and Rojo/toolchain setups; `roblox-qa-engineer` proves
-  with evidence. Studio tool execution follows `roblox-studio-mcp` for all of them.
-- **Browser tooling division of labor**:
-  - **Playwright MCP** (via `browser-automation` / `deep-researcher`): Operates strictly in browserless/headless background mode with zero visible browser windows. Performs fast general web searching defaulting to Google (`https://www.google.com/search?q=...` instead of DuckDuckGo), online documentation retrieval, API lookups, quick scraping, and token-isolated data extraction.
-  - **Browser-Use Plugin** (via `ui-ux-architect` / `frontend-web-engineer` / `browser-use:web-gui-tester` & `browser-use:control-browser`): Dedicated live UI/UX inspection, webapp GUI testing, responsive layout checks, and validating interactive user flows.
+- **Cap the wave at 5 concurrent subagents** (hard 8). One owner per subtask.
+- **Fresh subagent per unit**, with consolidated scope. Interrupt-chained resumes drop directives.
+- **Reviewers never edit** the artifact they review. Separation of duties, always.
+- **You own the work.** Read the diff, write your own summary. Never paste a subagent's claim.
+- **Independent verification is not optional for T2/T3.** The builder's own "tests pass" is not
+  evidence. A separate agent re-runs the check on the exact head; any later edit voids the verdict.
+- **Recursion guard.** Subagents that can re-enter the router fan out without bound. The NO-FANOUT
+  line is mandatory, not advisory.
+- **Cheap work first.** Local tsc/lint/tests cost zero model tokens. Never pay a subagent to read a
+  stack trace a command can print.
 
 ---
 
 ## 7. SKILL ROUTING
 
-`skills/INDEX.md` is the full table. Quick map:
+Routing is automatic. Every skill's `description` is a trigger, so match the work type first and
+load only the skills it cannot be done without. `/ozone-mode` is the explicit form of the same
+router, not a gate in front of it.
 
-| Domain | Skills |
+| Work type | Load |
 |---|---|
-| **doctrine** | ozone-mode · poteto-mode · system-instructions · debate-protocol · deep-planner · spec-driven-development · requirements-elicitation · general-orchestrator · verification-before-completion · test-driven-development · systematic-debugging · requesting-code-review · doubt-driven-development · session-continuity · context-engineering · token-economy · web-search |
-| **architecture** | system-design-architect · distributed-systems-engineer · database-at-scale · concurrency-engineer · api-design-architect · adr-engineering · refactoring-intelligence · resilience-pattern-engineer · legacy-modernization · monorepo-workspace-architect |
-| **delivery** | frontend-web-engineer · ui-layout-spacing · refactoring-ui · impeccable · mobile-developer · desktop-app-developer · game-developer · animation-web-builder · accessibility-audit · web-performance · readme-architect · llm-app-engineer · agent-harness-design · product-engineering · ux-review · testing-strategy · source-driven-development · codebase-navigation · browser-use plugin (browser-use:control-browser, browser-use:web-gui-tester) |
-| **production** | devops-pipeline-engineer · container-optimizer · observability-sre · incident-response-engineer · performance-profiler · query-performance-engineer · payments-billing · email-notifications · background-jobs-engineer · realtime-engineer · data-pipeline-engineer · third-party-integration · dependency-supply-chain-guardian · github-flow-master |
-| **security** | security-hardening-specialist · cybersecurity-specialist · privacy-compliance · threat-modeling |
-| **roblox** | roblox-game-production · roblox-studio-mcp · roblox-lua-developer · roblox-scripting · roblox-world-building · roblox-ui-ux · roblox-animation · roblox-vfx · roblox-assets · roblox-security · roblox-testing · roblox-toolchain · roblox-asset-security · roblox-project-indexer |
-| **fundamentals** | algorithms-and-data-structures |
-| **languages** | java-jvm-expert · ml-python-scientist · systems-core-architect |
-| **meta** | skill-creator · find-skills · mcp-builder · agent-browser · browser-automation (browserless/headless Google web search, docs search & UI automation via Playwright MCP) · web-search (native WebFetch mandatory when available + local multi-engine CLI search; webfetch.mjs fallback) · agent-config-maintenance |
-
-Imported pstack workflow family (full table in `skills/INDEX.md`): how · why · recall · reflect ·
-architect · arena · swarm · interrogate · figure-it-out · show-me-your-work · blast-radius ·
-tdd · unslop · no-comments · automate-me · setup-pstack · teach · bro · technical-writing ·
-typescript-best-practices · create-verification-skill · maintain-verification-skill · principle-*.
-
-Selection rule: match the **task's verb and artifact** (design a schema → db; tune one query →
-query-performance; harden an endpoint → security-hardening; UI / HUD / menu / 3D hero showcase styling → roblox-ui-ux (enforces AAA visual polish, 3D ViewportFrame hero icons, burst-out cards, sweeping sheen gloss, rayburst backdrops, vector icons, tactile micro-interactions, anti-cancellation contrast); whitespace / gap / padding / margin / concentric radius / spatial rhythm → ui-layout-spacing; web search / docs search → browser-automation via browserless Playwright MCP (Google default); Rojo / package sync → roblox-toolchain; audit inserted model → roblox-asset-security; offline project architecture map / index (scripts, remotes, GUIs, tags) → roblox-project-indexer). If two match, the one naming the
-artifact wins. If none match, proceed without a skill and note the gap.
-
-### 7.1 Relevance gate (mandatory skill loading)
-
-Match the work type first, then load the skills the task cannot be done without. Calling the `Skill`
-tool to load relevant skills is **strictly mandatory before taking action on any user task**. Loading
-a skill provides essential context, domain doctrine, and execution rails — bypassing the `Skill` tool
-or performing operations before loading required skills is an explicit protocol violation.
-
-| Work type (from the verb/artifact) | Always load | Why |
-|---|---|---|
-| **Development** — feature, bugfix, behavior change, refactor | `test-driven-development` + `verification-before-completion` | Red→GREEN is the only proof the change works; "done" needs an artifact |
-| **Web / UI / UX** — live webapp, UI surfaces, frontend components, interaction flows | `frontend-web-engineer` (or `ui-ux-architect` agent); for spatial rhythm, padding, gaps, and concentric radii, load `ui-layout-spacing`; for live browser inspection and GUI testing, load `browser-use:control-browser` or `browser-use:web-gui-tester` (`browser-use@zcode-plugins-official`) | Live UI rendering, interactive clicks, forms, and layout cannot be verified by static code analysis alone |
-| **Web Search & Research** — online docs lookup, live search engine queries (Google default), external vendor investigation | `browser-automation` (browserless Playwright MCP) or `deep-researcher`; native `WebFetch` tool is mandatory whenever available in the harness as the most efficient way to read pages and gather facts; `web-search` provides local multi-engine CLI discovery (`tools/web_search.mjs`) with `tools/webfetch.mjs` as fallback | Live browserless web search defaulting to Google, native WebFetch summarization, and structured extraction keep main thread tokens clean and citations accurate |
-| **Product / scope framing** — unclear value, competing options, refactor or infra case | `product-engineering` | The most expensive failure is building the wrong thing correctly |
-| **Interface quality review** — a shipped screen or flow needs a usability pass | `ux-review` | Missing states, dead ends, and unreachable controls do not show up in tests |
-| **Cost or context pressure** — tokens disproportionate to output, tiering decisions | `token-economy` | Savings need a measurement; quality is the constraint |
-| **Security** — audit, threat review, hardening, exploit report | a security skill: `threat-modeling` · `security-hardening-specialist` · `roblox-security` · `roblox-asset-security` | The domain's failure modes are not guessable |
-| **Roblox** — any Studio/place task | the matching `roblox-*` skill (UI/HUD/hero showcase tasks enforce `roblox-ui-ux` AAA visual polish, 3D ViewportFrame hero icons, burst-out cards, sweeping sheen gloss, rayburst backdrops, vector iconography, tactile micro-interactions, and anti-cancellation contrast) · executing in Studio → `roblox-studio-mcp` · verifying → `roblox-testing` · toolchain setup → `roblox-toolchain` · external assets → `roblox-asset-security` · offline project architecture index & navigation (scripts, remotes, GUIs, tags in local game workspace) → `roblox-project-indexer` | Platform budgets and the MCP loop live in the skill |
-| **Any claim of done** | `verification-before-completion` | No artifact, no done |
-| **Two or more domains** | `general-orchestrator` | Per-subtask gates |
+| Development: feature, bugfix, behavior change, refactor | `test-driven-development`, `verification-before-completion` |
+| Web / UI / UX surfaces, interaction flows | `frontend-web-engineer`; spatial rhythm -> `ui-layout-spacing`; live browser proof -> `webapp-qa` |
+| Interface quality review of a shipped screen | `ux-review` |
+| Security: audit, threat review, hardening | `threat-modeling` or `security-hardening-specialist` |
+| Roblox anything | matching `roblox-*` skill; execution -> `roblox-studio-mcp` |
+| Two or more domains in one task | `general-orchestrator` |
+| Web search, external docs, page reading | `web-search`; interactive/browser -> `browser-automation`; in-app desktop browser -> `browser-use:control-browser` |
+| Multi-source deep research, external facts, RFCs | `deep-researcher` (agent) + `web-search` |
+| Architecture mapping, codebase graph, dependency exploration | `graphify`, `codebase-navigation` |
+| Shipping anything | `ship-gate` |
+| Same correction twice | `correct` |
+| Unfamiliar technology, novel framework, or missing domain skill | `learner` |
+| Writing, docs, README, reports | `technical-writing`; long-form docs -> `readme-architect` |
+| Planning, specs, ambiguous scope | `deep-planner`, `spec-driven-development`, `requirements-elicitation` |
+| Learning or explaining a topic | `teach` |
+| Product and scope tradeoffs | `product-engineering`, `principles` |
+| Data analysis, scripts, one-off computation | `ml-python-scientist`, `principles` |
+| Editing this configuration | `agent-config-maintenance`, `skill-creator` |
 
 Rules:
 
-- **Mandatory Skill tool calls**: Always invoke the `Skill` tool before taking action. The primary skill picks the *method*; the mandatory co-skills pick the *safety rails*. Both must be loaded.
-- Skipping a mandatory skill or acting without calling the `Skill` tool is a §8 failure, not a style choice. Report which skills loaded and why.
-- **Mandatory Subagent dispatch**: Calling the `Agent` tool to dispatch subagents is mandatory whenever viable or beneficial (§5.1). If a task can use subagents or if using them provides better quality, cleaner separation of concerns, or bug prevention, the AI must deploy an appropriate set of subagents. When independent subtasks exist, subagents must be dispatched concurrently in parallel within a single turn via multiple `Agent` tool calls. In-thread execution with direct `Read`/`Edit` is strictly prohibited except for purely trivial, zero-risk tasks where subagents cannot add value. TDD evidence is required for all development work.
-- **Web / UI / UX live verification**: For UX, UI, or webapp work, agents and orchestrators can utilize the `browser-use` plugin (`browser-use@zcode-plugins-official`: `browser-use:control-browser`, `browser-use:web-gui-tester`) to inspect live interfaces, test web GUIs, and validate interactions.
+- The primary skill picks the method; the co-skills are the safety rails. Load both when the
+  work type mandates them.
+- Skip a skill when its `WHEN NOT TO USE` section covers the case. Loading everything is how
+  token budgets die and how instructions start contradicting each other.
+- Adding or renaming a skill means updating `skills/INDEX.md` and running the linters in §10.
+
+### Trigger breadcrumbs
+
+These words should make you reach for the `skill` tool without being asked:
+
+| Signal | Words |
+|---|---|
+| Plan / vague / scope | "build", "add", "make it", "not sure", "design" |
+| Debug | "broken", "fails", "error", "flake", "regression", "why" |
+| Test | "test", "cover", "E2E", "reproduce", "TDD" |
+| Review | "review", "check", "safe to merge", "hole", "adversarial" |
+| Ship | "commit", "PR", "release", "deploy", "changelog" |
+| Perf | "slow", "latency", "memory", "profile", "optimize" |
+| Security | "auth", "token", "vulnerability", "secret", "injection" |
+| Docs | "README", "ADR", "document", "explain" |
+| AI | "LLM", "RAG", "embedding", "prompt", "chatbot" |
+| Money | "payment", "subscribe", "billing", "invoice" |
+| Async / live | "queue", "worker", "cron", "websocket", "realtime" |
+| Data | "ETL", "pipeline", "warehouse", "backfill", "CDC" |
+| Privacy | "GDPR", "PII", "consent", "retention", "delete my data" |
+| Desktop | "Electron", "Tauri", "installer", "auto-update" |
+| Motion | "scroll animation", "GSAP", "Lenis", "React Bits", "60fps" |
+| Cost | "cloud bill", "spend", "rightsize", "egress" |
+| i18n | "translate", "locale", "RTL", "hreflang" |
+
+Ambiguity rule: compare skill descriptions, take the most specific match. If a breadcrumb fires
+on a request that turns out to be trivial, drop the skill and stay in-thread.
+
+### Commands — one-word entry points
+
+`commands/*.md` inject live shell context. Four of them declare `agent:` and `subtask: true`, so
+they run in an isolated context and cannot edit the file they are reviewing:
+
+| Isolated command | Agent |
+|---|---|
+| `/doctor` | `meta-architect` |
+| `/review` | `red-team-qa` |
+| `/ship-check` | `red-team-qa` |
+| `/onboard` | `codebase-cartographer` |
+
+The rest run in the current thread. `/ship` deliberately does not isolate: it orchestrates
+verification, then a `git-master` commit, which needs the main thread.
+
+A command's template wins for that run; report a conflict back to `agent-config-maintenance`.
+
+| Group | Commands |
+|---|---|
+| Plan and route | `/route` `/plan` `/architect` `/product` `/parallel-dev` `/ozone-mode` |
+| Build | `/tdd` `/algorithms` `/roblox` |
+| Investigate | `/debug` `/map` `/graphify` `/search` `/fetch` `/blast-radius` |
+| Review and ship | `/review` `/verify` `/ship` `/ship-check` |
+| Explain and polish | `/ux-review` `/unslop` |
+| Session | `/onboard` `/handoff` `/resume` `/doctor` |
+
+The exhaustive index — every skill, agent, and command with its trigger — is `docs/ROUTING.md`.
+When no row above matches a request, read that file before improvising a workflow.
 
 ---
 
 ## 8. DEFINITION OF DONE
 
-A task is done only when every applicable line is true **and evidenced**:
+All lines true and evidenced before reporting completion:
 
-- [ ] The original request is fully satisfied — every explicit requirement checked off.
-- [ ] Scope respected: nothing extra shipped, nothing silently deferred.
-- [ ] Mandatory `Skill` tool invocations performed before action (§0, §7.1); required domain and safety skills loaded.
-- [ ] Mandatory subagents dispatched via `Agent` tool (§0, §5.1); independent subagents dispatched concurrently in parallel; no bypassing delegation for in-thread implementation.
-- [ ] Tests for changed behavior pass (or the reason they don't exist is stated), with TDD evidence for development work.
-- [ ] Lint/typecheck clean for touched code.
-- [ ] The delivered behavior was exercised the way the user will use it (test, request, DOM),
-      not just compiled.
-- [ ] Non-trivial changes got review at the tier's level (T2/T3: critic verdict attached).
-- [ ] No secrets, debug artifacts, or unrelated diffs in the change.
-- [ ] Report written per §4, with gaps named.
-- [ ] For anything to be committed/pushed/deployed: **user approval obtained**.
+- [ ] Every explicit requirement in the original request is satisfied, checked off one by one.
+- [ ] Nothing extra shipped, nothing silently deferred.
+- [ ] A mode and playbook were declared for non-trivial work.
+- [ ] The changed behavior was exercised the way the user will use it: test, request, DOM, or run.
+- [ ] For bugfixes or new features, a raw pre-fix RED failure artifact is recorded in the evidence ledger.
+- [ ] Typecheck, lint, and the full workspace/package regression suite are green (single-file runs prohibited as final proof).
+- [ ] Zero pre-existing tests were weakened, skipped, or deleted; any assertion change is an explicit contract change.
+- [ ] All direct callers of modified symbols were searched (`rg -w`) and verified unbroken.
+- [ ] The git diff was reviewed line-by-line: no secrets, debug artifacts (`console.log`, prints), dead code, or sprawl.
+- [ ] An independent reviewer or adversarial pass covered T2/T3 work.
+- [ ] `ship-gate` ran: claim-to-diff audit, blast radius stated.
+- [ ] Unrun checks are named with a reason and marked unverified.
+- [ ] The report follows §4 of the reporting protocol: DONE, CHANGED, VERIFIED, GAPS.
+- [ ] Commit, push, or deploy has explicit approval.
 
 ---
 
 ## 9. COST DISCIPLINE
 
-- **Quality first:** Flawless, bug-free execution and high quality take precedence over minimizing agent calls.
-  When it is good or best to use subagents, use them. Deploy complementary sets of subagents whenever
-  beneficial to ensure correctness, rigorous testing, and adversarial review. Avoid only wasteful,
-  duplicate loops or unguided spinning.
-- **Model tiering:** cheap/fast agents for bounded read-heavy work (mapping, searches,
-  summarization, doc lookup); strong models only for ambiguity, architecture, security review,
-  and adjudication. Never set a per-agent model unless you know the ID exists — inherit otherwise.
-- **Fan-out cap:** ≤5 concurrent subagents per wave (hard 8), ≤10 subtasks per orchestration.
-  Past that, verification stops being reviewable and cost grows superlinearly.
-- **Cheapest sufficient evidence:** prefer executable checks (tests, linters, repro scripts) over
-  another LLM opinion. An LLM judgement is a *secondary* signal to a failing test, never a veto.
-- **No duplicate dispatch:** one subagent per subtask; re-dispatch only with new information.
-- **Stop rules:** 2 retries on a flaky gate, 2 debate rounds, one repair attempt per tier before
-  escalating. When a round adds no new evidence, stop and report.
-- **Measured anchors:** cache reads ~0.1× input (writes 1.25×–2×); multi-agent fan-out has been
-  measured at ~15× a chat — spend it deliberately; one published tool-flow refactor cut
-  150k → 2k tokens by running tools outside model context. Savings claims need before/after
-  numbers; estimates are labeled (`token-economy`).
-- **Context is budget:** file work and long reads go to subagents; the main thread keeps the plan
-  and the ledger. Orient with `tools/repo_map.py` + ranged reads before whole-file sweeps.
-  See `context-engineering` and `token-economy`.
+- **Quality first, then price.** Subagents are for parallelizable depth, not for routine reading.
+- **Model tiering.** Cheap models for bounded read-heavy work: mapping, search, summarization.
+  Strong models only for ambiguity, architecture, security review, adjudication. Never hardcode a
+  model ID you cannot verify; inherit otherwise.
+- **Fan-out cap.** 5 concurrent subagents per wave, 10 subtasks per orchestration. Past that,
+  verification stops being reviewable and cost grows faster than quality.
+- **Context is budget.** Long files and wide reads stay in subagents; the main thread keeps the
+  plan and the ledger. Prefer ranged reads over whole-file sweeps.
+- **Cheapest sufficient evidence.** An executable check beats another model opinion. A reviewer
+  opinion is a secondary signal to a failing test, never a veto.
+- **No duplicate dispatch.** One subagent per subtask; re-dispatch only with new information.
+- **Stop rules.** 2 retries on a flaky gate, 2 debate rounds, one repair attempt per tier before
+  escalating. A round that adds no evidence ends the work, not the doubt.
+- **Skill bodies are lazy.** A skill costs its description until it is matched. Keep descriptions
+  sharp and bodies focused; put long material in the skill's `references/`.
 
 ---
 
 ## 10. MAINTENANCE
 
-- Validate after any change to `skills/` or `agents/`:
-  `python tools/lint_config.py`
-- Regenerate the catalog after adding/removing/renaming a skill:
-  `python tools/lint_config.py --write-index`
+```bash
+python tools/gen_routing.py                 # regenerate docs/ROUTING.md (coverage index)
+python tools/lint_config.py --write-index   # validate + regenerate skills/INDEX.md
+python tools/skill_lint.py --regen          # second validator + docs/skills/skills.json
+python tools/sync_catalog.py --apply --prune # deploy; prune files absent from the source
+python tools/gen_catalog_report.py          # regenerate docs/catalog-report.md (real numbers)
+python tools/sync_catalog.py                # confirm: must print "in sync"
+```
+
+The report goes **after** the sync: it records the deployed diff, so generating it first
+guarantees it goes stale the moment the sync copies anything.
+
+- Validate after any change to `skills/` or `agents/`. Regenerate the index after adding,
+  removing, or renaming a skill. Regenerate `docs/ROUTING.md` and the report in the same pass.
+- `AGENTS.md` is the only hand-written router. `docs/ROUTING.md` is generated and must index every
+  skill and agent; the linter fails if one is missing. `docs/catalog-report.md` carries the counts,
+  the budget, and the conformance gaps — never hand-edit either.
+- This repo is the source of truth. The deployed catalog is a build artifact; `sync_catalog.py
+  --check` must report `in sync` before the config is considered shipped. The deployed `AGENTS.md`
+  is a pointer to this file, not a copy; `sync_catalog.py` warns if it grows past 4 KB.
 - Changes to this file or the roster are `meta-architect` work and get a version bump.
-- A skill that has not been exercised in 6 months, or that overlaps a newer skill, is marked
-  `status: deprecated` with a pointer — never silently deleted.
-- Version: 3.16.0 · last reviewed 2026-10-27
+- A skill unexercised for 6 months, or overlapping a newer one, points at its replacement in its
+  description; delete only after all references are gone.
+- Version: 4.2.0 · last reviewed 2026-11-08
+
+# DeepSeek Harness (`@deepseek-ai/dsh-ptc-runtime-node` / `dsh-ptc-plus`) PTC Rules — CRITICAL
+
+All code inside `run_code` executes in a TypeScript / ES Module sandbox on Windows bridged to `tools.*`. Follow these rules strictly on EVERY `run_code` call without exception:
+
+## 1. Valid TypeScript/JavaScript Syntax Only (NO Python `r"..."` Strings & Safe Windows Paths)
+- You are writing TypeScript/JavaScript, NEVER Python.
+- NEVER use Python raw string syntax like `r"C:\..."` or `f"..."`. It throws `error[PTC-C001]: cell could not be parsed: Unexpected token`.
+- NEVER use single unescaped backslashes in normal quotes like `"C:\Users\Oz\..."` (in JS/TS, `\U` or `\t` is interpreted as an escape sequence).
+- For Windows file paths (such as reading `dsh-spill` temp files), ALWAYS use `String.raw` with backticks OR forward slashes:
+  - CORRECT (String.raw): ``const spilled = await fs.readFile(String.raw`C:\Users\Oz\AppData\Local\Temp\file.txt`, "utf8");``
+  - CORRECT (Forward slashes): `const spilled = await fs.readFile("C:/Users/Oz/AppData/Local/Temp/file.txt", "utf8");`
+  - WRONG (Python syntax): `const spilled = await fs.readFile(r"C:\Users\Oz\AppData\Local\Temp\file.txt", "utf8");`
+
+## 2. Module System: ESM Only (`require` Does NOT Exist)
+- NEVER use CommonJS `require()` (e.g., `const fs = require("fs")`). It throws `ReferenceError: require is not defined`.
+- Whenever you need Node.js built-in modules, ALWAYS use dynamic ESM `await import(...)`:
+  - CORRECT: `const fs = await import("node:fs/promises"); const path = await import("node:path");`
+  - WRONG: `const fs = require("fs");`
+- Because the sandbox runs with `danger-full-access`, you can directly read, write, or inspect large files (such as `.ipynb` notebooks, JSON files, or `dsh-spill` output files) using `await import("node:fs/promises")`.
+
+## 3. Tool Arguments: Strict Lossless JSON Only
+- Every `tools.<name>(args)` call requires a valid lossless JSON object as its first argument.
+- NEVER call any `tools.*` method with zero arguments (`undefined`). It throws `ToolCallError: binding arguments must be lossless JSON`.
+- ALWAYS pass at least an empty object `{}` when calling parameterless tools:
+  - CORRECT: `const agents = await tools.list_agents({});`
+  - WRONG: `const agents = await tools.list_agents();`
+- NEVER include non-JSON types inside argument objects (`undefined`, `NaN`, `Infinity`, `BigInt`, `Date` instances, `RegExp` literals, `Map`, `Set`, or functions). Omit optional keys entirely rather than setting `{ key: undefined }`.
+
+## 4. Exact Built-in Tool Names & `ops_load_sdk` Rules
+- NEVER guess or hallucinate tool names like `read_files`, `read_file`, `write_files`, or `start_agent`.
+- Passing a non-existent tool name to `tools.ops_load_sdk({ tools: [...] })` silently ignores it and leaves `tools.<name>` as `undefined`, causing `TypeError: tools.<name> is not a function`.
+- ALWAYS inspect the return value of `ops_load_sdk` before calling a deferred tool if you are not 100% certain of its exact name and schema:
+  - CORRECT: `const sdk = await tools.ops_load_sdk({ tools: ["read", "glob", "grep"] }); console.log(sdk);`
+- Exact built-in file and search tool names in DeepSeek Harness (`@deepseek-ai/dsh-tool-fs`):
+  - Read a file: `read` (NEVER `read_files` or `read_file`). Load via `await tools.ops_load_sdk({ tools: ["read"] })`, or use `const fs = await import("node:fs/promises")`.
+  - Write a file: `write` (NEVER `write_files` or `write_file`).
+  - Edit a file: `edit` (NEVER `edit_files` or `edit_file`).
+  - Find files by pattern: `glob` — `pattern` MUST be a single string, NEVER an array:
+    - CORRECT: `await tools.ops_load_sdk({ tools: ["glob"] }); const files = await tools.glob({ pattern: "**/*" });`
+    - WRONG: `const files = await tools.glob({ pattern: ["**/*"] });` (throws `ToolCallError: invalid arguments: "pattern" must be a string`)
+  - Search text in files: `grep` — `pattern` MUST be a plain string, NEVER a `/regex/` literal:
+    - CORRECT: `await tools.ops_load_sdk({ tools: ["grep"] }); const matches = await tools.grep({ pattern: "TODO" });`
+  - Run shell commands: `bash` or `pwsh`.
+
+## 5. Subagent & Agent Team Lifecycle (`inactive` vs `running`)
+- NEVER call `tools.start_agent(...)`, `tools.run_agent(...)`, `tools.activate_agent(...)`, or `tools.spawn_agent(...)`. `tools.start_agent` DOES NOT EXIST and throws `TypeError: tools.start_agent is not a function`.
+- In DeepSeek Harness Agent Teams, subagents with status `inactive` (e.g., `task1-subagent: inactive`) are idle sessions waiting for input—they are NOT started via a lifecycle start method.
+- To wake or trigger an `inactive` subagent, send it an explicit message or task instruction using the registered subagent messaging/control tool exposed on `tools`.
+- Before calling any unfamiliar subagent or team tool, ALWAYS inspect `Object.keys(tools)` first:
+  - CORRECT: `console.log("Bound tools:", Object.keys(tools)); const agents = await tools.list_agents({}); console.log("Agents:", agents);`
+
+## 6. Mandatory First-Turn Safe Discovery Pattern
+- On your first turn or whenever discovering workspace files and active agents, run this exact safe pattern:
+  - `console.log("Bound tools:", Object.keys(tools));`
+  - `if (typeof tools.list_agents === "function") console.log("Agents:", await tools.list_agents({}));`
+  - `const sdk = await tools.ops_load_sdk({ tools: ["read", "glob", "grep"] }); console.log("SDK Schemas:", sdk);`
+  - `console.log("Files:", await tools.glob({ pattern: "*" }));`

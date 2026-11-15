@@ -1,19 +1,13 @@
 ---
 name: roblox-toolchain
-description: >-
-  Configures and operates the modern Roblox development toolchain: Rojo project synchronization
-  (default.project.json, sourcemap generation, partition mappings), Wally and pesde package
-  management, and luau-lsp type checking integrated with Studio MCP. Use when configuring Rojo,
-  managing external Luau dependencies or package manifests, setting up sourcemaps, or running
-  CI/CD Luau typecheck gates. Studio script execution routes to roblox-studio-mcp; game architecture
-  and runtime logic route to roblox-scripting; Luau language fundamentals to roblox-lua-developer.
+description: "Configures Roblox tooling: Rojo project sync, Wally/pesde package managers, and Luau LSP type checking. Use when configuring Rojo, managing dependencies, or running Luau typecheck."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: roblox
   grade: G3
   status: active
-  last-reviewed: '2026-10-24'
-  owned-by-agent: roblox-scripter
+  last-reviewed: '2026-11-09'
+  authored-by: roblox-scripter
 ---
 
 # Roblox Toolchain
@@ -125,6 +119,18 @@ and automated toolchains. This skill governs the integration between the externa
 - `sourcemap.json` regenerated whenever the filesystem project tree changes.
 - Luau type checking in strict mode (`--!strict`) on all core shared libraries.
 - Package manifest and lockfile committed together on dependency updates.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Rojo mapping drift.** A folder renamed in Studio but not in `default.project.json` silently stops
+  syncing. Mitigation: after any rename, re-run `rojo sourcemap` and confirm the tree.
+- **Two project files.** Mitigation: one root project file; environment variants live in overlays.
+- **Package versions floating.** Mitigation: commit the lockfile and install with `--locked` in CI.
+- **Types checked against a stale sourcemap.** Mitigation: regenerate the sourcemap in the same step as
+  the typecheck.
+- **CI skipping the typecheck gate.** Mitigation: the analyzer runs in CI and fails the build.
+- **Hand-edited installed packages.** Mitigation: treat the packages directory as generated; patch
+  upstream or vendor a fork.
 
 ## VERIFICATION GATE
 

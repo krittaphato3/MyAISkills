@@ -1,18 +1,13 @@
 ---
 name: email-notifications
-description: >-
-  Implements transactional and product email or SMS: templates, provider integration,
-  SPF/DKIM/DMARC, bounce and complaint handling, suppression lists, send queues, and
-  provider webhooks. Use when the product must send a message and it must arrive.
-  Marketing strategy and list growth are out of scope; general provider wiring routes to
-  third-party-integration.
+description: "Implements transactional email and SMS: templates, SPF/DKIM/DMARC, queues, and bounce handling. Use when sending critical product messages or notifications."
 metadata:
   version: 3.0.0
   domain: production
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: integration-engineer
+  authored-by: integration-engineer
 ---
 
 # Email & Notifications

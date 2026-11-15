@@ -1,18 +1,13 @@
 ---
 name: web-performance
-description: >-
-  Diagnoses and fixes browser performance: Core Web Vitals (LCP, INP, CLS), bundle and hydration
-  cost, image/font loading, render blocking, caching, and third-party scripts, measured lab and
-  field. Use when a page is slow, scores poorly, or a performance budget must be met or defended.
-  Server-side CPU/memory profiling routes to performance-profiler; SQL slowness to
-  query-performance-engineer; scroll animation budgets to animation-web-builder.
+description: "Profiles and optimizes Core Web Vitals (LCP, INP, CLS), asset bundles, lazy loading, and rendering performance. Use when diagnosing slow page loads or optimizing frontend speed."
 metadata:
   version: 3.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: ui-ux-architect
+  authored-by: ui-ux-architect
 ---
 
 # Web Performance

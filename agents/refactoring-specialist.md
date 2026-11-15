@@ -1,10 +1,5 @@
 ---
-description: >-
-  Refactoring specialist. Restructures code while preserving behavior: code smells, SOLID
-  and coupling analysis, duplication removal, safe AST-assisted moves, and measured
-  complexity reduction. Use when tests pin current behavior and the goal is clarity rather
-  than new behavior. New behavior routes to code-implementer; legacy cutover to
-  migration-engineer.
+description: "Restructures code safely preserving behavior: code smells, coupling, and complexity reduction. Use when clarifying code architecture without changing behavior."
 mode: subagent
 color: accent
 temperature: 0.2

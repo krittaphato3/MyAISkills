@@ -1,18 +1,13 @@
 ---
 name: roblox-scripting
-description: >-
-  Builds Roblox game systems in Luau: module architecture, server-authoritative remotes, validated
-  payloads, DataStore persistence with session locking, economy receipts, state machines, and
-  measured performance. Use when implementing or fixing gameplay logic, networking, saving, or
-  purchases. Language/platform fundamentals route to roblox-lua-developer; exploit defense to
-  roblox-security; in-Studio tool operations to roblox-studio-mcp.
+description: "Builds server-authoritative Roblox gameplay systems: networking, DataStores, state machines, and replication. Use when implementing gameplay systems, server logic, or economy state."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-scripter
+  authored-by: roblox-scripter
 ---
 
 # Roblox Scripting

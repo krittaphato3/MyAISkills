@@ -3,20 +3,19 @@ name: create-verification-skill
 description: Generate a project-local verification skill that drives your app the way a user does — any
   language, framework, or platform. Use for /create-verification-skill, "make a control skill for this
   repo", or when a project has no scripted way to prove UI/CLI/service behavior.
-disable-model-invocation: true
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: test-engineer
+  last-reviewed: '2026-11-09'
+  authored-by: test-engineer
 ---
 
 
 # Create a verification skill
 
-Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`.pi/skills/verify-<app>/`) tailored to the repo. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
+Every serious project needs a scripted way to drive the real app and prove behavior: launch it, exercise a feature the way a user would, and capture evidence. This skill generates that as a project-local skill (`skills/verify-<app>/`) tailored to the repo. You write the generator's output for the next agent, not for a human: it will be read cold, mid-task, by an agent that has never seen the app.
 
 ## 1. Interview the repo, not the user
 
@@ -32,7 +31,7 @@ If the checkout doesn't build or start as-is, fix that first (or report it preci
 
 ## 2. Generate the skill
 
-Write `.pi/skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app>` and a `description` that names the app, the surface, and when to reach for it — without frontmatter the skill never registers) and these sections, each grounded in what the interview actually found (no placeholders left):
+Write `skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<app>` and a `description` that names the app, the surface, and when to reach for it — without frontmatter the skill never registers) and these sections, each grounded in what the interview actually found (no placeholders left):
 
 - **Launch:** the exact command that starts the app for verification, and how to tell it's ready (a log line, a port answering, a prompt). Include teardown. For a short-lived CLI or TUI there is no server to keep alive: launch means build the binary (or install deps) once, then start each drive in its own isolated PTY or tmux session.
 - **Doctor:** one read-only check that answers "is this instance worth driving?" — process up, right version/build, port owned by us, auth valid. An agent runs this first whenever anything looks off.
@@ -43,7 +42,7 @@ Write `.pi/skills/verify-<app>/SKILL.md` with YAML frontmatter (`name: verify-<a
 
 ## 3. Seed the feature map
 
-Create `.pi/skills/verify-<app>/features/README.md` plus one file per user-facing feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, or docs). Follow the shape in [`references/feature-map-example/`](references/feature-map-example/), with a README index and one file per feature. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
+Create `skills/verify-<app>/features/README.md` plus one file per user-facing feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, or docs). Follow the shape in [`references/feature-map-example/`](references/feature-map-example/), with a README index and one file per feature. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
 
 ## 4. Prove the generated skill before handing it over
 
@@ -52,6 +51,26 @@ Run its own instructions end to end once: launch, doctor, drive ONE mapped featu
 ## 5. Offer the maintenance loop
 
 Point the user at `/maintain-verification-skill` for keeping the map honest as the app changes. Suggest a cadence only if they ask.
+
+## DECISION TREE
+
+- The repo has a UI or CLI a user drives -> this skill applies.
+- The deliverable is a library with no user-visible surface -> a test suite is the proof; skip this skill.
+- A harness already exists (`verify-*`, e2e suite, recorded fixture) -> extend it; do not add a second entry point.
+- The app cannot start headlessly (licence, hardware, credentials) -> write the skill with an explicit Human step and say so.
+- Success would require the model to grade its own output -> that is not a verification skill; do not generate it.
+
+## FAILURE MODES & MITIGATIONS
+
+- **The generated skill tests internals.** Mitigation: drive the same commands a user or CI runs, never
+  private modules.
+- **Green without evidence.** Mitigation: every step saves an artifact (screenshot, log, exit code) and
+  the gate reads the artifact.
+- **Unrunnable on a clean checkout.** Mitigation: run it once from a fresh clone; install steps belong
+  in the skill, not in your shell history.
+- **A feature map that rots immediately.** Mitigation: seed it from this pass and schedule
+  `maintain-verification-skill`.
+- **Promising more than the app does.** Mitigation: the map lists only surfaces proven in this pass.
 
 ## WHEN TO USE
 
@@ -66,3 +85,10 @@ Test scope and type selection — `testing-strategy`.
 
 The generated skill runs green against the real surface.
 The feature map is seeded and the maintenance loop handed over.
+
+## REFERENCES
+
+- `maintain-verification-skill` - the periodic re-audit.
+- `webapp-qa` - the driving loop for web surfaces.
+- `roblox-testing` - the equivalent for Roblox places.
+- `verification-before-completion` - what counts as proof.

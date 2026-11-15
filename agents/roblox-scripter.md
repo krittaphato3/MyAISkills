@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox Luau systems engineer. Builds server-authoritative gameplay: module architecture, remotes
-  and validation, DataStore profiles with session locking, economy and receipts, state machines, and
-  measured performance. Use when implementing or fixing gameplay logic, networking, saving, purchases,
-  navigating place architecture via local project index, or a runtime-only bug. UI layout, world art,
-  animation, VFX, and asset creation route to their specialists; exploit audits to roblox-security-engineer.
+description: "Builds server-authoritative Roblox systems: networking remotes, session-locked DataStores, and state logic. Use for Roblox gameplay systems and replication."
 mode: subagent
 color: accent
 temperature: 0.2

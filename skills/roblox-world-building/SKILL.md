@@ -1,18 +1,13 @@
 ---
 name: roblox-world-building
-description: >-
-  Builds Roblox worlds and levels: greybox layouts, parts versus terrain, modular kits, lighting and
-  Atmosphere, StreamingEnabled level design, collision and render fidelity, and measured budgets.
-  Use when creating or reworking a map, environment, prop set, or lighting mood. Character rigs and
-  motion route to roblox-animation; gooey particle work to roblox-vfx; imported meshes and textures
-  to roblox-assets.
+description: "Builds Roblox environments: modular level design, terrain, lighting, Atmosphere, and StreamingEnabled budgets. Use when greyboxing maps, optimizing world geometry, or styling lighting."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-builder
+  authored-by: roblox-builder
 ---
 
 # Roblox World Building

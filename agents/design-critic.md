@@ -1,9 +1,5 @@
 ---
-description: 'Reviews a running interface for usability and interaction quality: Nielsen heuristics, state
-  coverage (loading, empty, error, permission, offline, long content), affordances and microcopy, motion
-  intent and reduced motion, keyboard and focus, and responsive behavior at real viewports. Use when a
-  screen is "done" and needs a quality pass, when users report confusion, or when a flow crosses screens.
-  Read-only: findings route to ui-ux-architect or frontend-web-engineer; formal WCAG audits to accessibility-specialist.'
+description: "Critiques live interfaces for usability, interaction quality, empty/loading states, and heuristic UX flaws. Use when auditing completed UI screens."
 mode: subagent
 color: warning
 temperature: 0.2

@@ -6,12 +6,12 @@ description: >-
   reporting any task complete, and whenever words like fixed, passes, faster, or secure appear. A
   screenshot alone never suffices.
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
-  owned-by-agent: test-engineer
+  last-reviewed: '2026-10-30'
+  authored-by: test-engineer
 ---
 
 # Verification Before Completion
@@ -44,7 +44,7 @@ wrong claims.
    Behavior change   → the test that would fail without the change
    Type contract     → typecheck / compiler
    Style/regression  → lint (whole project, not just touched files)
-   Performance       → benchmark: before/after, pinned env, ≥5 runs, median + p75
+   Performance       → benchmark: before/after, pinned env, ≥5 runs, median + p95
    Security          → traversal/IDOR/forged-signature cases + scanner output
    UI                → DOM/HTTP assertion or test; screenshot is supporting only
    Data              → query with counts + checksum before/after
@@ -82,7 +82,7 @@ wrong claims.
 | "Fixed the bug" | Repro that failed before, passes now; regression test path |
 | "Tests pass" | Full suite output + count; not "the relevant ones" |
 | "Types are fine" | `tsc --noEmit` / `cargo check` / `mypy` output |
-| "Faster" | Before/after table, ≥5 runs, p50+p95, same machine/build |
+| "Faster" | Before/after table, ≥5 runs, median + p95, same machine/build |
 | "Secure" | The attack case run and rejected + the control that rejects it |
 | "Works end to end" | One real request/DOM flow exercised, with output |
 | "No regressions" | Full suite + the specific adjacent behavior exercised |
@@ -108,6 +108,30 @@ NOT RUN    e2e — no browser available in this environment
 LIMITATION visual layout unverified; logic covered by DOM assertions
 ```
 
+### 6. Evidence ledger and claim labels
+
+Before reporting, write the ledger. It is the difference between a summary and a defense.
+
+```text
+CLAIM                                  ARTIFACT                         LABEL
+replay credits once                    tests/webhook.test.ts 8/8       measured
+handler is idempotent across retries   repro script output             measured
+typecheck clean                         tsc --noEmit, exit 0            measured
+no other caller of the retry path      grep + call sites read          inferred
+staging replay not performed           -                               NOT RUN
+```
+
+- **measured**: a command ran and its output is attached.
+- **inferred**: follows from evidence, but was not itself observed. Say what it rests on.
+- **guess**: no evidence. Allowed only when labeled, never presented as a result.
+
+Three rules make the ledger honest:
+
+1. **Never hand the human a check you could run.** If a command can answer it, run it.
+2. **A prediction is a guess, not evidence.** "Should work now" is a guess with extra words.
+3. **Never fabricate a link, transcript, or citation.** Reference only artifacts you produced or
+   read this session.
+
 ## FAILURE MODES & MITIGATIONS
 
 1. **Verification theater** — the gate checks something adjacent because it is easy. *DETECT:* the
@@ -129,7 +153,7 @@ LIMITATION visual layout unverified; logic covered by DOM assertions
 
 - ≥1 artifact per GREEN gate; 0 artifacts = not green, no exceptions.
 - Flaky retries ≤2, then FAIL; record the root cause even if it passes.
-- Performance: ≥5 runs, median + p75/p95, identical environment, before *and* after.
+- Performance: ≥5 runs, median + p95, identical environment, before *and* after.
 - Re-run affected checks after the final edit — results from before the last change do not count.
 - Coverage alone never satisfies a gate; the assertion must test behavior, not lines.
 
@@ -141,6 +165,8 @@ LIMITATION visual layout unverified; logic covered by DOM assertions
 - [ ] Any unrun check is named with a reason and marked unverified.
 - [ ] No check was weakened, skipped, or silenced to pass.
 - [ ] Report contains VERIFIED / NOT RUN / LIMITATION lines.
+- [ ] Ledger written; every claim is labeled measured, inferred, or guess.
+- [ ] No check handed to the human that a command could have run.
 
 ## REFERENCES
 

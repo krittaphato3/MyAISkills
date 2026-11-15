@@ -1,9 +1,5 @@
 ---
-description: >-
-  General-purpose worker with the full built-in toolset. Use when a delegated task needs a
-  full-toolset worker and no more specialized agent fits: code-writing delegates, swarm workers,
-  reviewers, investigators, and explorers all default here. Specialized roles route to their
-  named agent; this one keeps the broadest permissions.
+description: "General-purpose agent with full toolset for delegated tasks, investigation, and code authoring. Use when delegated work needs general capabilities without a narrow specialist."
 mode: subagent
 color: accent
 temperature: 0.3

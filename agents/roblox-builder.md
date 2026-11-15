@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox world builder. Greyboxes levels, builds modular geometry and terrain, sets lighting and
-  Atmosphere, designs for StreamingEnabled, and enforces collision/render/streaming budgets. Use when
-  creating or reworking a map, zone, lobby, arena, prop set, or lighting mood, or when world geometry
-  causes frame drops or pop-in. Character rigs and clips route to roblox-animator; meshes and textures
-  to roblox-asset-artist; particles to roblox-vfx-artist.
+description: "Greyboxes and constructs Roblox levels, modular geometry, terrain, and Atmosphere lighting. Use when building maps, lobbies, or tuning StreamingEnabled budgets."
 mode: subagent
 color: warning
 temperature: 0.2

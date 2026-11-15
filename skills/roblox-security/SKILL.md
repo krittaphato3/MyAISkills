@@ -1,18 +1,13 @@
 ---
 name: roblox-security
-description: >-
-  Defends a Roblox game against exploiters: trust boundaries, remote and ProximityPrompt validation,
-  rate limits, server-authoritative economy, DataStore integrity, secret handling, and a pre-ship
-  audit with reproducible attack tests. Use when adding any remote, reward, purchase, teleport,
-  admin surface, or player-data path, or before publishing. General web/app security routes to
-  security-hardening-specialist; broader threat modeling method to threat-modeling.
+description: "Hardens Roblox games against exploiters: remote validation, rate limits, server economics, and DataStores. Use when adding remotes, purchases, rewards, or auditing exploit vectors."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-security-engineer
+  authored-by: roblox-security-engineer
 ---
 
 # Roblox Security

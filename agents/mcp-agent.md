@@ -1,9 +1,5 @@
 ---
-description: >-
-  MCP operations specialist. Executes token-heavy MCP tool calls (browser, database,
-  external services) in an isolated context and returns only the distilled result. Use
-  when a task needs MCP tools whose raw output would flood the main thread. Building or
-  configuring MCP servers routes to the mcp-builder skill.
+description: "Executes token-heavy MCP tool calls (browser, database, APIs) in an isolated context. Use when running token-heavy MCP operations without polluting context."
 mode: subagent
 color: accent
 temperature: 0.2

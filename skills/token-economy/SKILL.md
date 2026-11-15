@@ -1,19 +1,13 @@
 ---
 name: token-economy
-description: >-
-  Cuts the token cost of agent work without cutting quality: cache economics, stable prefixes,
-  model tiering, tool-result filtering, map-first code reading, progressive disclosure, bounded
-  fan-out, and session budgets. Use when a task or session burns tokens out of proportion to its
-  output, when configuring models or skills for cost, or before claiming any token saving. What
-  belongs in context at each step routes to context-engineering; harness design to
-  agent-harness-design; the roster itself to agent-config-maintenance.
+description: "Optimizes LLM token consumption: cache economics, prefix stability, model tiering, and progressive disclosure. Use when tuning agent token efficiency, budgets, or prompt bloat."
 metadata:
   version: 1.0.0
   domain: doctrine
   grade: G3
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 # Token Economy

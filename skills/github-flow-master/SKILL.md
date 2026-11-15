@@ -1,17 +1,13 @@
 ---
 name: github-flow-master
-description: >-
-  Handles Git and GitHub collaboration: branch strategy, conventional commits, PR
-  descriptions, review etiquette, labels, and release notes. Use when preparing a change
-  for review or a release. Committing, pushing, merging, or tagging requires explicit user
-  approval first; deployment pipelines route to devops-pipeline-engineer.
+description: "Handles Git and GitHub collaboration: branch strategy, conventional commits, PR descriptions, review etiquette, labels, and release notes. Use when preparing a change for review or a release."
 metadata:
   version: 3.0.0
   domain: production
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: git-master
+  authored-by: git-master
 ---
 
 # GITHUB FLOW MASTER

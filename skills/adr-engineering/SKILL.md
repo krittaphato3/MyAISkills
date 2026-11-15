@@ -1,18 +1,13 @@
 ---
 name: adr-engineering
-description: >-
-  Records architecture decisions as ADRs: context, options considered, trade-off,
-  consequence, and a revisit trigger. Use when a structural choice needs a durable written
-  rationale (database, protocol, framework, build-vs-buy), when onboarding needs the
-  'why', or when docs have drifted from code. Implementing the chosen design routes to the
-  architecture or delivery skills.
+description: "Records architecture decisions as ADRs: context, options, tradeoffs, and revisit triggers. Use when structural technical choices need written rationale."
 metadata:
   version: 3.0.0
   domain: architecture
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: solution-architect
+  authored-by: solution-architect
 ---
 
 # ADR ENGINEERING

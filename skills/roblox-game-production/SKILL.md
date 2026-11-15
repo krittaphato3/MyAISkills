@@ -1,18 +1,13 @@
 ---
 name: roblox-game-production
-description: >-
-  Runs a Roblox game from concept to publishable build: scope a vertical slice, sequence systems and
-  content, hand off between code/art/UI/audio specialties, gate each milestone, and decide what to
-  cut. Use when starting a Roblox project, planning a feature set, or coordinating several Roblox
-  specialists. Single-discipline work routes to that discipline's skill; Studio execution to
-  roblox-studio-mcp.
+description: "Directs Roblox game development: scopes vertical slices, sequences milestones, and integrates system disciplines. Use when scoping, planning, or coordinating Roblox game production."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-game-director
+  authored-by: roblox-game-director
 ---
 
 # Roblox Game Production
@@ -166,6 +161,7 @@ no known economy exploit · VFX/particles within budget · every remote validate
 
 ## REFERENCES
 
+- `references/anti-slop-production-pipeline.md` — end-to-end multi-agent autonomous game generation standards
 - `roblox-studio-mcp` — how work is executed and verified in Studio
 - `roblox-scripting` · `roblox-world-building` · `roblox-ui-ux` · `roblox-animation` ·
   `roblox-vfx` · `roblox-assets` · `roblox-security` · `roblox-testing`

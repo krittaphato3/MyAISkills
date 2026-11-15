@@ -1,17 +1,13 @@
 ---
 name: roblox-asset-security
-description: 'Audits third-party Roblox marketplace and Creator Store assets (models, packages, meshes,
-  plugins) inserted via Studio MCP for supply-chain risks: hidden backdoors, obfuscated bytecode, malicious
-  require(assetId) calls, and fake core scripts. Use when searching, inserting, or reviewing external
-  assets before parenting them into the DataModel. Runtime exploit defense routes to roblox-security;
-  general dependency auditing to dependency-supply-chain-guardian; visual tuning to roblox-assets.'
+description: "Audits Roblox Creator Store models and assets for hidden backdoors, obfuscation, and malicious require() calls. Use when inspecting third-party Roblox assets before importing them."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: roblox
   grade: G3
   status: active
-  last-reviewed: '2026-10-24'
-  owned-by-agent: roblox-security-engineer
+  last-reviewed: '2026-11-09'
+  authored-by: roblox-security-engineer
 ---
 
 
@@ -105,6 +101,22 @@ When using `insert_asset`:
 - 0 obfuscated or hex-encoded strings allowed in accepted scripts.
 - 100% of inserted models scanned for unexpected descendant scripts before release.
 - Cross-owner inserts require explicit verification against the current place universe owner.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Scanning the model tree only.** Scripts arrive inside nested packages and hidden instances.
+  Mitigation: walk every `Script` and `ModuleScript` in the inserted subtree, including client scripts
+  under `StarterPlayer`.
+- **Trusting the marketplace name.** Mitigation: inspect bytecode and every `require` regardless of
+  author or verification badge.
+- **Quarantining after parenting.** Mitigation: insert into a `ServerStorage` quarantine folder,
+  inspect, then move; never insert straight into `Workspace`.
+- **Missing obfuscated payloads.** Mitigation: flag long hex strings, `loadstring`, `getfenv`, and
+  client scripts that reach `HttpService`.
+- **Deleting the injected script but leaving its hook.** Mitigation: audit `PlayerAdded`,
+  `ChildAdded`, and heartbeat connections in surviving scripts.
+- **Claiming clean without evidence.** Mitigation: record the scan output and the instance list in the
+  audit result.
 
 ## VERIFICATION GATE
 

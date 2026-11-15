@@ -1,10 +1,5 @@
 ---
-description: >-
-  Defensive security reviewer (read-only): authentication, authorization, input
-  validation, secrets, OWASP risks, insecure config, and remediation guidance. Use when
-  building or reviewing a trust boundary, or preparing for release. Owns threat-modeling
-  and security-hardening-specialist. Authorized offensive testing routes to
-  cybersecurity-specialist; privacy and GDPR obligations to compliance-engineer.
+description: "Reviews code for defensive security vulnerabilities: OWASP top 10, auth boundaries, input validation, and secrets. Use for security audits before code release."
 mode: subagent
 color: warning
 temperature: 0.1

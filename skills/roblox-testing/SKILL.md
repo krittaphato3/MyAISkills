@@ -1,18 +1,13 @@
 ---
 name: roblox-testing
-description: >-
-  Tests Roblox games: TestEZ/Jest-Lua unit suites, in-Studio runners, MCP-driven playtests with real
-  input, multiplayer and network checks, visual regression from fixed cameras, data isolation, and
-  performance gates. Use when writing tests, automating a playtest, reproducing a runtime-only bug,
-  or deciding whether a build is shippable. Test content authored from a spec before implementation
-  routes to test-oracle.
+description: "Implements Roblox test suites: TestEZ unit tests, in-Studio integration tests, and multiplayer verification. Use when writing Roblox automated tests or proving gameplay bugfixes."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-qa-engineer
+  authored-by: roblox-qa-engineer
 ---
 
 # Roblox Testing

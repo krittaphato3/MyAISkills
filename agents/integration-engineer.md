@@ -1,9 +1,5 @@
 ---
-description: >-
-  Integration engineer. Wires external services: provider selection, server-side
-  credentials, OAuth, signed webhooks, idempotency, retries and timeouts, sandbox tests,
-  and error mapping. Use when adding or repairing any third-party API, SDK, or webhook.
-  Payments route to the payments-billing skill; sending email to email-notifications.
+description: "Wires external services: provider selection, OAuth, signed webhooks, retries, and error mapping. Use when adding or repairing third-party APIs or webhooks."
 mode: subagent
 color: warning
 temperature: 0.2

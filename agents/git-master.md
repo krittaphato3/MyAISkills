@@ -1,10 +1,5 @@
 ---
-description: >-
-  Owns Git and GitHub mechanics: branch strategy, conventional commits, PR bodies,
-  conflict resolution, history hygiene. Use when preparing or repairing commits, branches,
-  or review requests. The only agent that may mutate git state, and it MUST get explicit
-  user approval for each of commit, push, PR, merge, and tag separately — never bundled.
-  Commit messages alone are safe to draft; execution is not.
+description: "Manages Git branch workflows, conventional commits, interactive rebases, and clean PR descriptions. Use when preparing, structuring, or cleaning git changes for review."
 mode: subagent
 color: info
 temperature: 0.1

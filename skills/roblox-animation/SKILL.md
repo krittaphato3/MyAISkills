@@ -1,18 +1,13 @@
 ---
 name: roblox-animation
-description: >-
-  Handles Roblox character and object animation: R15 rig setup, Animator and AnimationTrack playback,
-  priority layers, blended transitions, animation markers, IKControl, in-place locomotion, and
-  cutscene camera work. Use when animating a character, NPC, weapon, door, or cinematic, or when
-  animation fails to play, blend, or replicate. UI motion belongs to roblox-ui-ux; tweened VFX to
-  roblox-vfx.
+description: "Builds Roblox animations: R15 rigs, AnimationTracks, blend states, animation markers, and IKControl. Use when animating characters, NPCs, weapons, or cutscene cameras in Roblox."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-animator
+  authored-by: roblox-animator
 ---
 
 # Roblox Animation

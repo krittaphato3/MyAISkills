@@ -1,19 +1,13 @@
 ---
 name: testing-strategy
-description: >-
-  Chooses what to test and how, layer by layer: behavior lists, test sizes, builders, property-based
-  tests, mutation checks, fuzzing parsers, contract tests at service boundaries, snapshot review
-  rules, and flake triage. Use when deciding which tests a change needs, when a suite feels slow,
-  brittle, or falsely green, or before adding a new testing layer or tool. The red-green implementation
-  loop routes to test-driven-development; proving a task complete routes to verification-before-completion;
-  coverage tooling questions route to test-engineer.
+description: "Designs multi-layer test strategies: unit, property, contract, mutation, snapshot, and flake triage. Use when deciding testing architecture or repairing brittle test suites."
 metadata:
   version: 1.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: test-engineer
+  authored-by: test-engineer
 ---
 
 # Testing Strategy

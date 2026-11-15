@@ -1,18 +1,13 @@
 ---
 name: accessibility-audit
-description: >-
-  Audits and remediates web accessibility against WCAG 2.2 AA: keyboard-only operation,
-  screen-reader semantics, focus management, contrast, and accessible forms and dialogs.
-  Use whenever a UI must work with assistive technology, a compliance review is requested,
-  or an a11y defect is reported — even when the user only says 'keyboard trap' or 'screen
-  reader reads it wrong'. Visual direction routes to frontend-web-engineer.
+description: "Audits digital products against WCAG 2.1/2.2 AA: color contrast, keyboard navigation, focus, and ARIA markup. Use when auditing interfaces for accessibility compliance and fixes."
 metadata:
   version: 3.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: accessibility-specialist
+  authored-by: accessibility-specialist
 ---
 
 # Accessibility Audit

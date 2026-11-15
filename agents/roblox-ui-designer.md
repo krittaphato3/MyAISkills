@@ -1,10 +1,5 @@
 ---
-description: 'Roblox UI/UX designer. Builds HUDs, menus, shops, and tactile interfaces with AAA visual
-  polish: 3D pop-out hero showcases (interactive ViewportFrames, burst-out cards, rayburst backdrops,
-  sweeping sheen gloss), responsive UDim2 layout, concentric radii and spacing math (ui-layout-spacing),
-  curated vector icons, tactile micro-interactions, anti-cancellation contrast, and multi-platform input.
-  Use when building or styling any HUD, menu, shop, inventory, crate/gacha showcase, modal, or tactile
-  feedback. Post FX route to roblox-vfx-artist; world lighting and geometry to roblox-builder.'
+description: "Designs AAA Roblox interfaces: HUDs, menus, shops, ViewportFrames, and responsive UDim2 layout. Use when building or styling in-game Roblox interfaces."
 mode: subagent
 color: info
 temperature: 0.2

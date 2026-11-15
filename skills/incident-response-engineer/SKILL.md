@@ -1,18 +1,13 @@
 ---
 name: incident-response-engineer
-description: >-
-  Runs production incident response: severity classification, blast-radius containment,
-  war-room coordination, communication cadence, mitigation, and a blameless postmortem
-  with owned follow-ups. Use when a live service is degraded or failing its SLOs.
-  Root-causing a reproducible bug routes to systematic-debugging; SLO design to
-  observability-sre.
+description: "Coordinates production incident response: severity triage, containment, mitigation, and postmortems. Use when active production services are degraded."
 metadata:
   version: 3.0.0
   domain: production
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: devops-engineer
+  authored-by: devops-engineer
 ---
 
 # incident-response-engineer

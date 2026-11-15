@@ -1,20 +1,13 @@
 ---
 name: product-engineering
-description: >-
-  Frames work by user value before code: the problem and its evidence, a working-backwards PR/FAQ,
-  appetite with scope hammering, the smallest valuable slice, success metrics with baselines,
-  cost-of-delay ordering, and build-vs-buy calls. Use when a request is a solution without a
-  stated problem, when scope needs cutting, when choosing between two things to build, or when a
-  refactor or infrastructure project needs an outcome-based case. Delivery sequencing routes to
-  deep-planner; UX behavior review to ux-review; pricing, legal, and roadmap politics are product
-  decisions this skill does not make.
+description: "Frames engineering by user value, PR/FAQs, appetite, scope hammering, and build-vs-buy tradeoffs. Use when cutting scope, shaping problems, or prioritizing user impact."
 metadata:
   version: 1.0.0
   domain: delivery
   grade: G3
   status: active
   last-reviewed: '2026-10-27'
-  owned-by-agent: product-strategist
+  authored-by: product-strategist
 ---
 
 # Product Engineering

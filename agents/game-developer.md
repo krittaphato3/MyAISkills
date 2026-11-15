@@ -1,9 +1,5 @@
 ---
-description: >-
-  Game developer. Writes gameplay and engine code for Unity (C#), Unreal (C++/Blueprint),
-  and Godot (GDScript): game loops, state machines, input, physics, saves, and frame
-  budgets. Use when the deliverable runs in one of these engines. Roblox work routes to the Roblox suite
-  (`roblox-game-director` and the `roblox-*` skills); browser games to ui-ux-architect.
+description: "Writes gameplay and engine systems for Unity, Unreal, and Godot: game loops, physics, and input. Use when building game logic or engine features."
 mode: subagent
 color: warning
 temperature: 0.3

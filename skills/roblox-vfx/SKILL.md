@@ -1,18 +1,13 @@
 ---
 name: roblox-vfx
-description: >-
-  Creates Roblox effects and sound: ParticleEmitters, Beams, Trails and attachments, lighting
-  post-effects, impact/ambient/spatial audio, pooling and cleanup, and low-quality fallbacks. Use
-  when a hit, cast, explosion, aura, weather, trail, or sound needs to exist or be fixed. UI motion
-  routes to roblox-ui-ux; character clips to roblox-animation; map lighting mood to
-  roblox-world-building.
+description: "Creates Roblox visual and sound effects: ParticleEmitters, Beams, Trails, lighting tweaks, and spatial 3D audio. Use when creating combat VFX, environmental effects, or hit impacts."
 metadata:
   version: 1.0.0
   domain: roblox
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: roblox-vfx-artist
+  authored-by: roblox-vfx-artist
 ---
 
 # Roblox VFX & Audio

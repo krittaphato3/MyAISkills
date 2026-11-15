@@ -1,16 +1,13 @@
 ---
 name: automate-me
-description: Use for "automate me", "create/update/refresh my -mode skill", "turn/capture my preferences
-  or working style into a skill", or wanting agents to follow how the user works. Drafts or revises a
-  personal -mode skill via direct authoring + unslop, optionally pulling fresh evidence from recent transcripts.
-disable-model-invocation: true
+description: "Captures user preferences and working style into personalized agent skills. Use for 'automate me' or updating personalized developer workflow skills."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: meta
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: meta-architect
+  last-reviewed: '2026-11-09'
+  authored-by: meta-architect
 ---
 
 
@@ -18,13 +15,13 @@ metadata:
 
 A guided flow for turning the user's working conventions into a skill agents will follow. The output is one `-mode` skill tailored to them (e.g. `jay-mode`, `priya-mode`).
 
-This skill orchestrates three others: an inline mining pass (see step 1), `skill-authoring` (authoring), and the **unslop** skill (prose discipline). It sequences them; it doesn't replace them.
+This skill orchestrates three others: an inline mining pass (see step 1), `skill-creator` (authoring), and the **unslop** skill (prose discipline). It sequences them; it doesn't replace them.
 
 ## Flow
 
 ### 0. Check for an existing skill
 
-Look recursively for `.pi/skills/**/*-mode/SKILL.md` and `~/.pi/agent/skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`.pi/skills/<handle>/`), not only at the top level. If one exists, confirm intent by asking a structured question (unless they already said "update my skill" or similar):
+Look recursively for `skills/**/*-mode/SKILL.md` and `skills/*-mode/SKILL.md` matching the user's handle. Mode skills can live in a personal category directory (`skills/<handle>/`), not only at the top level. If one exists, confirm intent by asking a structured question (unless they already said "update my skill" or similar):
 
 - Update the existing skill (default for repeat runs)
 - Start fresh (rare; ask why before doing it)
@@ -36,7 +33,7 @@ Update mode changes the rest of the flow:
 
 ### 1. Mine their history
 
-Locate the active workspace's transcripts before fanning out. The system prompt names the workspace's `agent-transcripts/` directory. Use only that path. Don't glob across `~/~/.pi/agent/sessions/*/`. That crosses workspace boundaries and reads private chats from unrelated projects.
+Locate the active workspace's transcripts before fanning out. The system prompt names the workspace's `agent-transcripts/` directory. Use only that path. Don't reach into other workspaces' session directories. That crosses workspace boundaries and reads private chats from unrelated projects.
 
 Survey recent agent conversations within that scope for recurring patterns. Run multiple parallel subagents across slices of history (e.g. last 2-4 weeks, split into 3 slices so each has enough material). Each slice mining subagent reads transcripts from the workspace-scoped path the parent provides, looks for the signals below, and returns a short structured list of patterns it saw with evidence pointers. Default signals worth hunting:
 
@@ -68,23 +65,23 @@ Group the combined signals into sections. Common ones (use only what applies):
 - **Prose / code discipline**: principles, lint tools, style guides.
 - **Review and verify**: repro posture, verification skills, live-testing tools.
 - **Process**: git worktrees, commits, PRs, review/merge tooling.
-- **Skills**: skill-authoring habits, fix-the-skill-first, proposing new skills.
+- **Skills**: skill-creator habits, fix-the-skill-first, proposing new skills.
 
 The **poteto-mode** skill shows the shape. Read it for granularity. Don't copy its content; the user's rules are not the same as poteto-mode's.
 
 ### 4. Draft the skill
 
-Use `skill-authoring` skill to author the skill. Placement:
+Use `skill-creator` skill to author the skill. Placement:
 
-- Path: preserve an existing mode skill's category. For a new mode, use `.pi/skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle; otherwise default to `.pi/skills/<handle>-mode/SKILL.md` in the project (or `~/.pi/agent/skills/<handle>-mode/` if the user prefers a personal skill).
+- Path: preserve an existing mode skill's category. For a new mode, use `skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle; otherwise default to `skills/<handle>-mode/SKILL.md` in the project (or `skills/<handle>-mode/` if the user prefers a personal skill).
 - Handle: the user's first name or chosen identifier.
 - Frontmatter `description`: trigger on their name + `/<handle>-mode` + "work in their style", not on generic keywords like "write code" or "review PR".
 - Frontmatter formatting: follow standard YAML frontmatter rules. Keep `description` as one YAML scalar; quote it or use `description: >-` with indented continuation lines when punctuation or wrapping requires it.
-- Frontmatter `disable-model-invocation: true` by default. Mode skills are heavy and opinionated; they should only apply when the user explicitly invokes them (by name or slash command), not auto-trigger on description matching. Opt out only if the user explicitly wants their mode to apply on every turn.
+- Frontmatter: leave disable-model-invocation off, so the mode auto-triggers from its description. Set it to true only for a pure alias that must never compete with its target, or for a skill destructive enough to require an explicit command.
 
 ### 5. Iterate on prose
 
-Apply the **unslop** skill and skill-authoring writing guidelines to every line. Both apply to any agent-read prose, not just skills.
+Apply the **unslop** skill and skill-creator writing guidelines to every line. Both apply to any agent-read prose, not just skills.
 
 Show the draft to the user and take feedback. Expect multiple iterations. Cut ruthlessly; a mode skill is not a manual.
 
@@ -112,11 +109,30 @@ Run a description-optimization loop only if the skill's trigger accuracy turns o
 - User wants a task-specific skill (not working conventions): direct skill authoring, no mining required.
 - User wants to capture one narrow workflow (e.g. "how I write commit messages"): that's a regular skill, not a mode skill.
 
-## Reference files
+## REFERENCES
 
 - The **poteto-mode** skill: example of the output shape.
 - The **unslop** skill: prose discipline for every line.
-- `skill-authoring` skill: skill authoring process and writing guidelines.
+- `skill-creator` skill: skill authoring process and writing guidelines.
+
+## DECISION TREE
+
+- The user asks for a one-off task -> do it; do not author a skill.
+- The same working preference shows up twice -> draft or revise the `-mode` skill.
+- An existing `-mode` skill covers it -> revise that skill; a second one splits the trigger.
+- Evidence is thin (one session, one correction) -> ask the user directly, then mark the skill `draft`.
+- The preference is enforceable by a lint, hook, or config -> encode it there instead of in prose.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Inventing preferences from one data point.** Mitigation: every rule cites a transcript line or an
+  explicit user answer.
+- **Duplicating an existing skill.** Mitigation: step 0 searches the catalog by trigger words before
+  drafting.
+- **Writing a personality essay.** Mitigation: each rule is observable behavior a reviewer could score.
+- **Untested prose.** Mitigation: run the new skill against a fresh prompt before landing; if it
+  changes nothing, it is decoration.
+- **A skill that never fires.** Mitigation: the description names the phrases the user actually says.
 
 ## WHEN TO USE
 
@@ -125,7 +141,7 @@ Capturing a repeated preference or working style into a `-mode` skill.
 ## WHEN NOT TO USE
 
 A one-off instruction.
-A rule that belongs in lint or CI — `principle-encode-lessons-in-structure`.
+A rule that belongs in lint or CI — `principles`.
 
 ## VERIFICATION GATE
 

@@ -1,18 +1,13 @@
 ---
 name: security-hardening-specialist
-description: >-
-  Implements defensive security: authentication and session design, authorization checks,
-  input validation, output encoding, secrets handling, security headers, and remediation
-  of a detected vulnerability. Use when building or reviewing a trust boundary. Authorized
-  attack work routes to cybersecurity-specialist; privacy law to privacy-compliance;
-  design-level risk assessment to threat-modeling.
+description: "Implements defensive security controls: session management, input sanitization, security headers, and secret hygiene. Use when hardening code against vulnerabilities."
 metadata:
   version: 3.0.0
   domain: security
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: security-auditor
+  authored-by: security-auditor
 ---
 
 # SECURITY HARDENING SPECIALIST

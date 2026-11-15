@@ -1,17 +1,13 @@
 ---
 name: figure-it-out
-description: 'Design an auditable playbook when no narrower one fits: a large migration, an ambitious
-  multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis
-  loop, and logs decisions via show-me-your-work. Use for /figure-it-out, ''figure it out'', a large migration,
-  or when no narrower playbook applies.'
-disable-model-invocation: true
+description: "Designs auditable playbooks for complex migrations, open-ended tasks, or large multi-part changes. Use for /figure-it-out or ambitious unguided work."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: planner
+  last-reviewed: '2026-11-09'
+  authored-by: planner
 ---
 
 
@@ -23,7 +19,7 @@ Don't reinvent a playbook you already have. A focused single-unit task that matc
 
 ## Start
 
-Open a todolist whose first item is to read the Principles section of the **poteto-mode** skill. Then add the phases below as todos.
+Open a todolist whose first item is to read the Principles section of the **ozone-mode** skill. Then add the phases below as todos.
 
 ## Phase A: Frame
 
@@ -65,16 +61,40 @@ Check the whole against the Phase A predicate on the real product, not just the 
 
 **Reply:** the playbook you designed, the rigor level and why, the decision-trail path, what's verified against the predicate, and what's still open.
 
+## DECISION TREE
+
+- A narrower skill fits the task (debug, feature, migration) -> use it; this skill is the fallback.
+- The work has no known shape, spans days, or must be reviewable after the fact -> run this skill.
+- The work is one mechanical change -> do it directly.
+- Two iterations fail the same way -> attack the premise before iterating again.
+- Someone will review this after you step away -> Phase D is mandatory.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Playbook sprawl.** Mitigation: one phase per decision, no phase that only repeats another.
+- **Silent skipping.** Mitigation: a skipped step stays in the plan with `skip: <reason>`.
+- **A loop with no stopping rule.** Mitigation: state the failure predicate and the budget before Phase C.
+- **A trail written after the fact.** Mitigation: log each decision as it happens, with the evidence.
+- **A handoff that cannot be resumed.** Mitigation: Phase E names the exact next action and what is
+  still unverified.
+
 ## WHEN TO USE
 
 A large or cross-cutting effort no bundled playbook fits; work a human reviews after stepping away.
 
 ## WHEN NOT TO USE
 
-A narrower playbook fits — `poteto-mode` routes to it.
+A narrower playbook fits — `ozone-mode` routes to it.
 One task driven to a predicate — the autonomous-run playbook.
 
 ## VERIFICATION GATE
 
 The bespoke playbook exists with gates before work starts.
 The audit trail is kept and final verification matches the plan.
+
+## REFERENCES
+
+- `show-me-your-work` - the decision-log format.
+- `deep-planner` - dependency graph and estimates when the work needs a plan.
+- `principles/attack-the-premise` - when two iterations fail the same way.
+- `session-continuity` - the handoff artifact.

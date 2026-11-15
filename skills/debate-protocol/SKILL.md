@@ -1,19 +1,13 @@
 ---
 name: debate-protocol
-description: >-
-  Runs adversarial multi-agent review with an impartial verdict: independent candidates,
-  executable evidence first, capped critique rounds, and a rubric-based judge that cannot
-  grade its own work. Use when a change is high-stakes or ambiguous (auth, payments,
-  migrations, data loss, architecture trade-offs), when an implementer and reviewer
-  disagree, or when the user asks for maximum assurance. Routine changes use
-  requesting-code-review; single-step work needs no protocol.
+description: "Orchestrates multi-agent debate and impartial adjudication on contested changes. Use when deciding high-stakes architecture forks, conflicting evidence, or ambiguous changes."
 metadata:
   version: 3.0.0
   domain: doctrine
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: debate-chair
+  authored-by: debate-chair
 ---
 
 # Debate Protocol

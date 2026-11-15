@@ -1,17 +1,13 @@
 ---
 name: realtime-engineer
-description: >-
-  Adds live update features: WebSockets, Server-Sent Events, presence, pub/sub fan-out,
-  reconnection and backfill, delivery guarantees, and scaling long-lived connections. Use
-  when users must see changes without polling. In-process concurrency routes to
-  concurrency-engineer; request and response contracts to api-design-architect.
+description: "Builds real-time communication: WebSockets, Server-Sent Events, pub/sub fanout, connection reconnections, and state backfills. Use when building live streaming updates, chats, or presence."
 metadata:
   version: 3.0.0
   domain: production
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: code-implementer
+  authored-by: code-implementer
 ---
 
 # Realtime Engineer

@@ -1,18 +1,13 @@
 ---
 name: system-design-architect
-description: >-
-  Shapes systems and does the capacity math: component selection, boundaries, data flow,
-  caching, load balancing, and back-of-envelope sizing that justifies the design. Use when
-  choosing an architecture or defending one at scale. Consistency and replication behavior
-  routes to distributed-systems-engineer; database topology to database-at-scale; the
-  decision record to adr-engineering.
+description: "Designs distributed system architectures, service boundaries, data flows, caching, and back-of-envelope sizing. Use when designing scalable systems or drafting architecture ADRs."
 metadata:
   version: 3.0.0
   domain: architecture
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: solution-architect
+  authored-by: solution-architect
 ---
 
 # SYSTEM DESIGN ARCHITECT

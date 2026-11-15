@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox asset artist. Sources and optimizes assets: Creator Store search and licensing, generated
-  meshes/materials/procedural models, textures and triangle budgets, audio import rules, avatar
-  appearance, and kit reuse. Use when a build needs a model, mesh, material, texture, sound, or avatar
-  asset, or when assets inflate load time. Placement and lighting route to roblox-builder; rigging and
-  clips to roblox-animator; particle textures to roblox-vfx-artist.
+description: "Sources and optimizes Roblox 3D models, procedural meshes, PBR textures, and audio budgets. Use when sourcing or optimizing assets for Roblox experiences."
 mode: subagent
 color: accent
 temperature: 0.3

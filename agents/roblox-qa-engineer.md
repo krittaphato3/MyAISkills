@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox QA engineer. Writes and runs unit suites (TestEZ/Jest-Lua), automates playtests through the
-  Studio MCP with real input, verifies persistence and receipts across sessions, captures visual
-  baselines, and gates builds on measured performance. Use when tests are needed, a runtime-only bug
-  must be reproduced, or a milestone needs a release check. Independent acceptance tests from a spec
-  route to test-oracle.
+description: "Automates Roblox playtests, runs TestEZ unit suites, and verifies data persistence across sessions. Use when adding test coverage or verifying Roblox bugfixes."
 mode: subagent
 color: warning
 temperature: 0.15

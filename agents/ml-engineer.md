@@ -1,10 +1,5 @@
 ---
-description: >-
-  Trains, evaluates, and serves models: data validation and leakage checks, fixed
-  holdouts, multi-seed variance, reproducibility, GPU memory, and serving latency/cost.
-  Use when model quality or model serving is the question. LLM product features (RAG,
-  prompts, tool calling) route to llm-engineer; notebooks and analysis to the
-  ml-python-scientist skill.
+description: "Trains, evaluates, and deploys machine learning models: data validation, holdouts, GPU memory, and low-latency inference. Use when training model checkpoints or optimizing model serving latency."
 mode: subagent
 color: success
 temperature: 0.2

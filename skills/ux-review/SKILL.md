@@ -1,19 +1,13 @@
 ---
 name: ux-review
-description: >-
-  Reviews a live interface for usability and interaction quality: Nielsen heuristics, full state
-  coverage (loading, empty, error, permission, offline, long content), affordances and microcopy,
-  motion intent and reduced motion, keyboard and focus sanity, and responsive behavior at real
-  viewports. Use when a screen is "done" and needs a quality pass, when users report confusion, or
-  when a flow crosses several screens. Formal conformance audits route to accessibility-audit;
-  visual craft (color, type, hierarchy) to refactoring-ui; spacing math to ui-layout-spacing.
+description: "Audits live interfaces for usability, interaction quality, loading/empty/error states, and affordances. Use when evaluating shipped screens or resolving user interaction confusion."
 metadata:
-  version: 1.0.0
+  version: 1.2.0
   domain: delivery
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: design-critic
+  last-reviewed: '2026-11-09'
+  authored-by: design-critic
 ---
 
 # UX Review
@@ -21,6 +15,17 @@ metadata:
 Screens pass tests and still fail people: the empty state says "no data", the error says "an error
 occurred", the primary action is a gray label, the spinner never resolves. This skill is the
 review pass that catches those — on the running interface, with evidence, before users do.
+
+## DECISION TREE
+
+- A flow crosses more than one screen -> review the flow, not a screen.
+- Visual craft is the issue -> `refactoring-ui`.
+- Keyboard or screen-reader failure -> `accessibility-audit`.
+- The screen loads data -> check loading, empty, error, permission, and long-content states before
+  judging the happy path.
+- The screen is static and complete -> judge hierarchy, affordance, and microcopy.
+- Motion is present -> check reduced-motion behavior before approving it.
+- The claim is "it works" -> drive it like a user and record the interaction.
 
 ## WHEN TO USE
 
@@ -119,6 +124,7 @@ review pass that catches those — on the running interface, with evidence, befo
 
 ## REFERENCES
 
+- `references/ui-conformance-checklist.md` — the itemized pass to run alongside the heuristics
 - `accessibility-audit` — formal WCAG 2.2 AA conformance
 - `refactoring-ui`, `impeccable`, `ui-layout-spacing` — visual craft and layout
 - `frontend-web-engineer` — implementation of accepted findings

@@ -2,14 +2,13 @@
 name: reflect
 description: Spawn three parallel review subagents over the active transcript, surface learnings, and
   route each to a concrete edit on an existing skill. Use when the user says reflect.
-disable-model-invocation: true
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   domain: doctrine
   grade: G2
   status: active
-  last-reviewed: '2026-10-27'
-  owned-by-agent: meta-architect
+  last-reviewed: '2026-11-09'
+  authored-by: meta-architect
 ---
 
 
@@ -47,15 +46,15 @@ One message, three `subagent` calls, `agent: "general-purpose"`, explicit `model
 
 | Lens | `model` | Prompt template |
 |---|---|---|
-| Judgment | your configured reflect-judgment model (default `claude-fable-5-thinking-max`) | `references/judgment-reviewer.md` |
-| Tooling | your configured reflect-tooling model (default `gpt-5.6-sol-max`) | `references/tooling-reviewer.md` |
-| Divergent | your configured reflect-judgment model (default `claude-fable-5-thinking-max`) | `references/divergent-reviewer.md` |
+| Judgment | your configured reflect-judgment model | `references/judgment-reviewer.md` |
+| Tooling | a different model family from Judgment | `references/tooling-reviewer.md` |
+| Divergent | your configured reflect-judgment model | `references/divergent-reviewer.md` |
 
 Pass each template verbatim, substituting the transcript path or digest where marked. Reviewers return findings in the subagent output.
 
 ### 3. Synthesize
 
-One `subagent` call, `agent: "general-purpose"`, using your configured reflect-judgment model (default `claude-fable-5-thinking-max`), agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access; readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
+One `subagent` call, `agent: "general-purpose"`, using your configured reflect-judgment model, agent mode (`readonly: false`). The synthesizer's quality check includes spot-verifying citations, which can require MCP access; readonly strips MCPs. Use `references/synthesizer.md` verbatim, with each reviewer's full output inlined where marked. The synthesizer returns a structured Accepted / Rejected / Backlog list.
 
 ### 4. Structural enforcement check
 
@@ -70,9 +69,9 @@ Backlog items file to whatever devex / backlog tracker your team uses automatica
 For each approved Accepted item, follow the Routing field exactly:
 
 - Trivial existing-skill edit (a one-line bullet, a tightened sentence, a stale fact corrected): parent does directly.
-- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): author per the skill-authoring-style loop below skill and run its draft / test / iterate loop.
-- `tune description: <skill path>` (the skill exists but didn't trigger when it should have): author per the skill-authoring-style loop below and run its description-optimization loop.
-- `new skill via skill-authoring: <kebab-name>`: draft and iterate the skill directly. Do not invent the shape ad hoc.
+- Substantive existing-skill edit (a new section, a new pattern table, more than ~10 lines): author per the skill-creator-style loop below skill and run its draft / test / iterate loop.
+- `tune description: <skill path>` (the skill exists but didn't trigger when it should have): author per the skill-creator-style loop below and run its description-optimization loop.
+- `new skill via skill-creator: <kebab-name>`: draft and iterate the skill directly. Do not invent the shape ad hoc.
 
 If your environment ships a SKILL.md validator, run it on every touched skill before declaring done. Skip this step if it doesn't.
 
@@ -85,6 +84,22 @@ Short list, no preamble:
 - Backlog filed to the devex tracker: `<issue title>` (`<tags>`). One line each.
 - Dropped: one line per rejected finding + reason from the synthesizer.
 
+## DECISION TREE
+
+- The session produced a repeated correction -> reflect.
+- The session was routine -> skip it; there is nothing structural to learn.
+- The learning is enforceable by a lint or check -> `correct` encodes it instead.
+- The learning belongs to one skill's content -> `skill-creator` edits that skill.
+- The user has not approved the edits -> present Accepted/Rejected/Backlog and wait.
+
+## FAILURE MODES & MITIGATIONS
+
+- **Reflecting without evidence.** Mitigation: every finding cites a transcript line.
+- **Auto-applying edits.** Mitigation: step 5 requires explicit approval.
+- **Learnings that never land.** Mitigation: each accepted item names the file and section it changes.
+- **Prose where structure works.** Mitigation: the enforcement check moves rules to lint or metadata.
+- **Reviewers with the same blind spot.** Mitigation: three distinct lenses, not three copies.
+
 ## WHEN TO USE
 
 After a notable task or session, to turn lessons into concrete skill or config edits.
@@ -96,3 +111,11 @@ Nothing surprising happened — a routine task needs no reflection pass.
 ## VERIFICATION GATE
 
 Every lesson routes to a named file and edit, applied or explicitly listed.
+
+## REFERENCES
+
+- `references/judgment-reviewer.md` - the judgment lens.
+- `references/tooling-reviewer.md` - the tooling lens.
+- `references/divergent-reviewer.md` - the divergent lens.
+- `references/synthesizer.md` - the synthesis pass.
+- `correct` - structural enforcement of a repeated correction.

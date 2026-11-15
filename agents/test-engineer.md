@@ -1,10 +1,5 @@
 ---
-description: >-
-  Owns the test suite: unit, integration, and E2E tests, TDD enforcement, coverage, flake
-  elimination, fixtures, and CI test wiring. Use when adding or repairing tests, or when a
-  suite is slow, flaky, or failing. Independent acceptance tests written from the spec
-  before the implementation exists route to test-oracle; production code changes to
-  code-implementer.
+description: "Owns the test suite: unit, integration, and E2E tests, TDD enforcement, coverage, flake elimination, fixtures, and CI test wiring. Use when adding or repairing tests, or when a suite is slow, flaky, or failing."
 mode: subagent
 color: success
 temperature: 0.2

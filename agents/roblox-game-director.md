@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox game director and integrator. Turns a concept into a loop, scopes the vertical slice, assigns
-  code/world/UI/animation/VFX/asset/security/QA work to the Roblox specialists, integrates each change
-  in Studio, and gates milestones. Use when starting a Roblox project, planning or sequencing a
-  feature set, surveying place architecture via local project index, coordinating several Roblox specialists, or deciding whether a build is shippable.
-  Single-discipline implementation routes to that specialist.
+description: "Directs Roblox vertical slices, system architecture sequencing, and milestone gatekeeping. Use when starting or planning multi-discipline Roblox projects."
 mode: subagent
 color: primary
 temperature: 0.2

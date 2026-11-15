@@ -1,17 +1,13 @@
 ---
 name: readme-architect
-description: >-
-  Writes and restructures project READMEs: positioning, quickstart, configuration tables,
-  badges, architecture overview, troubleshooting, and contribution guidance. Use when
-  creating or overhauling a README or its information architecture. API reference docs
-  route to documentation-engineer.
+description: "Structures and authors project READMEs: positioning, quickstart, architecture, and configuration. Use when writing or overhauling project documentation READMEs."
 metadata:
   version: 3.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: documentation-engineer
+  authored-by: documentation-engineer
 ---
 
 # README ARCHITECT

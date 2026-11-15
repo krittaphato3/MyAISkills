@@ -1,18 +1,13 @@
 ---
 name: codebase-navigation
-description: >-
-  Finds and understands code fast in an unfamiliar or large repository: entry points, call
-  graphs, conventions, test/build commands, blast radius, and reading order before editing. Use
-  when onboarding onto a repo, when you need to know where a behavior lives, or before changing
-  code whose callers are unknown. Whole-architecture mapping with a written brief routes to the
-  codebase-cartographer agent; debugging a specific failure routes to systematic-debugging.
+description: "Maps and navigates unfamiliar codebases: entry points, call graphs, conventions, and blast radiuses. Use when onboarding onto an unfamiliar codebase or tracing symbols before edits."
 metadata:
   version: 3.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: codebase-cartographer
+  authored-by: codebase-cartographer
 ---
 
 # Codebase Navigation

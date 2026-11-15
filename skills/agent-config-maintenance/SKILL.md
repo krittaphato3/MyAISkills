@@ -1,18 +1,13 @@
 ---
 name: agent-config-maintenance
-description: >-
-  Maintains the agent and skill configuration itself: roster hygiene, routing accuracy, duplicate
-  triggers, description tuning, deprecation, version bumps, and the lint/registry loop. Use when
-  adding, renaming, merging, or retiring a skill or subagent, when delegation picks the wrong
-  agent, or when the catalog has drifted from reality. Authoring a single skill's content routes
-  to skill-creator; running skill evals to find-skills/skill-creator.
+description: "Maintains agent configuration files, skill rosters, triggers, index registries, and linters. Use when adding, renaming, or validating skills, agents, or routing configuration."
 metadata:
   version: 3.0.0
   domain: meta
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: meta-architect
+  authored-by: meta-architect
 ---
 
 # Agent Config Maintenance
@@ -132,7 +127,10 @@ If the index and the files disagree, the files win — regenerate.
 ## QUANTITATIVE RULES
 
 - One skill per capability; one primary agent per trigger family.
-- Description ≤1024 chars; target 250–400. Always-loaded catalog should stay under ~30k chars total.
+- Description ≤1024 chars; target 250–400 average. Catalog total is `skills × average` and is
+  reported in `docs/catalog-report.md` — adding a skill costs its description in every prompt, so
+  growth is paid for by merging or retiring an equal amount, not by shortening triggers until
+  routing breaks.
 - Routing eval set: 5–10 prompts, ≥2 near-misses, re-run after every description change.
 - Deprecation window: one release before deletion, with a pointer.
 - Lint must pass with zero errors before a config commit.

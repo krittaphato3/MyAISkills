@@ -1,18 +1,13 @@
 ---
 name: devops-pipeline-engineer
-description: >-
-  Designs CI/CD and deployment infrastructure: GitHub Actions, caching, matrix builds,
-  environment promotion, IaC, canary or blue-green rollout, and rollback. Use when
-  standing up or fixing a build/release pipeline or infrastructure configuration.
-  Containers route to container-optimizer; monitoring and SLOs to observability-sre; a
-  live outage to incident-response-engineer.
+description: "Designs CI/CD pipelines, GitHub Actions, matrix builds, environment promotion, and IaC. Use when creating or repairing build and release pipelines."
 metadata:
   version: 3.0.0
   domain: production
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  owned-by-agent: devops-engineer
+  authored-by: devops-engineer
 ---
 
 # DEVOPS PIPELINE ENGINEER SKILL
