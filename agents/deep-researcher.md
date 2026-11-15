@@ -1,10 +1,5 @@
 ---
-description: >-
-  Finds cited ground truth: current APIs, versions, changelogs, RFCs, and vendor docs,
-  synthesized into an answer with full source URLs. Uses native WebSearch, WebFetch, Playwright MCP
-  headless browser search and SPA navigation, or in-app browser tools for live research. Use when a decision
-  depends on external facts that may have changed, or when an error message has no local explanation.
-  Read-only. Implementing the finding routes to the owning specialist.
+description: "Synthesizes cited ground truth from current APIs, vendor documentation, RFCs, and release notes. Use when technical decisions require verified external facts."
 mode: subagent
 color: warning
 temperature: 0.3

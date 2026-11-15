@@ -1,11 +1,6 @@
 ---
 name: deep-planner
-description: >-
-  Turns a goal or spec into an executable plan: independently testable tasks, a dependency
-  graph and critical path, range estimates, a risk register, and escalation triggers. Use
-  before code on multi-task or multi-day work, or when an approved plan is required.
-  Consumes research and emits the plan general-orchestrator executes; single-step work
-  needs no plan.
+description: "Converts goals into executable plans: testable tasks, dependency graphs, and risk registers. Use before code on multi-task work requiring approved plans."
 metadata:
   version: 3.0.0
   domain: doctrine

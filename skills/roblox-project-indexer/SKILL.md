@@ -1,10 +1,6 @@
 ---
 name: roblox-project-indexer
-description: 'Builds and maintains an offline project architecture index (roblox_project_index.json/.md)
-  in the active game workspace: scripts, remotes (RemoteEvents/Functions/Bindables), GUI surfaces, value
-  configs, and CollectionService tags, refreshed via Studio MCP. Replaces slow, token-heavy game-tree
-  sweeps with an instant local map. Use when opening or switching Roblox projects, mapping architecture,
-  or looking up remotes and scripts.'
+description: "Indexes Roblox DataModel structures, instance trees, and module dependencies for fast offline querying. Use when exploring large Roblox place files or mapping place architecture."
 metadata:
   version: 1.1.0
   domain: roblox

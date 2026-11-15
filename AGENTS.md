@@ -331,3 +331,61 @@ guarantees it goes stale the moment the sync copies anything.
 - A skill unexercised for 6 months, or overlapping a newer one, points at its replacement in its
   description; delete only after all references are gone.
 - Version: 4.2.0 · last reviewed 2026-11-08
+
+# DeepSeek Harness (`@deepseek-ai/dsh-ptc-runtime-node` / `dsh-ptc-plus`) PTC Rules — CRITICAL
+
+All code inside `run_code` executes in a TypeScript / ES Module sandbox on Windows bridged to `tools.*`. Follow these rules strictly on EVERY `run_code` call without exception:
+
+## 1. Valid TypeScript/JavaScript Syntax Only (NO Python `r"..."` Strings & Safe Windows Paths)
+- You are writing TypeScript/JavaScript, NEVER Python.
+- NEVER use Python raw string syntax like `r"C:\..."` or `f"..."`. It throws `error[PTC-C001]: cell could not be parsed: Unexpected token`.
+- NEVER use single unescaped backslashes in normal quotes like `"C:\Users\Oz\..."` (in JS/TS, `\U` or `\t` is interpreted as an escape sequence).
+- For Windows file paths (such as reading `dsh-spill` temp files), ALWAYS use `String.raw` with backticks OR forward slashes:
+  - CORRECT (String.raw): ``const spilled = await fs.readFile(String.raw`C:\Users\Oz\AppData\Local\Temp\file.txt`, "utf8");``
+  - CORRECT (Forward slashes): `const spilled = await fs.readFile("C:/Users/Oz/AppData/Local/Temp/file.txt", "utf8");`
+  - WRONG (Python syntax): `const spilled = await fs.readFile(r"C:\Users\Oz\AppData\Local\Temp\file.txt", "utf8");`
+
+## 2. Module System: ESM Only (`require` Does NOT Exist)
+- NEVER use CommonJS `require()` (e.g., `const fs = require("fs")`). It throws `ReferenceError: require is not defined`.
+- Whenever you need Node.js built-in modules, ALWAYS use dynamic ESM `await import(...)`:
+  - CORRECT: `const fs = await import("node:fs/promises"); const path = await import("node:path");`
+  - WRONG: `const fs = require("fs");`
+- Because the sandbox runs with `danger-full-access`, you can directly read, write, or inspect large files (such as `.ipynb` notebooks, JSON files, or `dsh-spill` output files) using `await import("node:fs/promises")`.
+
+## 3. Tool Arguments: Strict Lossless JSON Only
+- Every `tools.<name>(args)` call requires a valid lossless JSON object as its first argument.
+- NEVER call any `tools.*` method with zero arguments (`undefined`). It throws `ToolCallError: binding arguments must be lossless JSON`.
+- ALWAYS pass at least an empty object `{}` when calling parameterless tools:
+  - CORRECT: `const agents = await tools.list_agents({});`
+  - WRONG: `const agents = await tools.list_agents();`
+- NEVER include non-JSON types inside argument objects (`undefined`, `NaN`, `Infinity`, `BigInt`, `Date` instances, `RegExp` literals, `Map`, `Set`, or functions). Omit optional keys entirely rather than setting `{ key: undefined }`.
+
+## 4. Exact Built-in Tool Names & `ops_load_sdk` Rules
+- NEVER guess or hallucinate tool names like `read_files`, `read_file`, `write_files`, or `start_agent`.
+- Passing a non-existent tool name to `tools.ops_load_sdk({ tools: [...] })` silently ignores it and leaves `tools.<name>` as `undefined`, causing `TypeError: tools.<name> is not a function`.
+- ALWAYS inspect the return value of `ops_load_sdk` before calling a deferred tool if you are not 100% certain of its exact name and schema:
+  - CORRECT: `const sdk = await tools.ops_load_sdk({ tools: ["read", "glob", "grep"] }); console.log(sdk);`
+- Exact built-in file and search tool names in DeepSeek Harness (`@deepseek-ai/dsh-tool-fs`):
+  - Read a file: `read` (NEVER `read_files` or `read_file`). Load via `await tools.ops_load_sdk({ tools: ["read"] })`, or use `const fs = await import("node:fs/promises")`.
+  - Write a file: `write` (NEVER `write_files` or `write_file`).
+  - Edit a file: `edit` (NEVER `edit_files` or `edit_file`).
+  - Find files by pattern: `glob` — `pattern` MUST be a single string, NEVER an array:
+    - CORRECT: `await tools.ops_load_sdk({ tools: ["glob"] }); const files = await tools.glob({ pattern: "**/*" });`
+    - WRONG: `const files = await tools.glob({ pattern: ["**/*"] });` (throws `ToolCallError: invalid arguments: "pattern" must be a string`)
+  - Search text in files: `grep` — `pattern` MUST be a plain string, NEVER a `/regex/` literal:
+    - CORRECT: `await tools.ops_load_sdk({ tools: ["grep"] }); const matches = await tools.grep({ pattern: "TODO" });`
+  - Run shell commands: `bash` or `pwsh`.
+
+## 5. Subagent & Agent Team Lifecycle (`inactive` vs `running`)
+- NEVER call `tools.start_agent(...)`, `tools.run_agent(...)`, `tools.activate_agent(...)`, or `tools.spawn_agent(...)`. `tools.start_agent` DOES NOT EXIST and throws `TypeError: tools.start_agent is not a function`.
+- In DeepSeek Harness Agent Teams, subagents with status `inactive` (e.g., `task1-subagent: inactive`) are idle sessions waiting for input—they are NOT started via a lifecycle start method.
+- To wake or trigger an `inactive` subagent, send it an explicit message or task instruction using the registered subagent messaging/control tool exposed on `tools`.
+- Before calling any unfamiliar subagent or team tool, ALWAYS inspect `Object.keys(tools)` first:
+  - CORRECT: `console.log("Bound tools:", Object.keys(tools)); const agents = await tools.list_agents({}); console.log("Agents:", agents);`
+
+## 6. Mandatory First-Turn Safe Discovery Pattern
+- On your first turn or whenever discovering workspace files and active agents, run this exact safe pattern:
+  - `console.log("Bound tools:", Object.keys(tools));`
+  - `if (typeof tools.list_agents === "function") console.log("Agents:", await tools.list_agents({}));`
+  - `const sdk = await tools.ops_load_sdk({ tools: ["read", "glob", "grep"] }); console.log("SDK Schemas:", sdk);`
+  - `console.log("Files:", await tools.glob({ pattern: "*" }));`

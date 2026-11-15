@@ -1,11 +1,6 @@
 ---
 name: cloud-cost-optimization
-description: >-
-  Reduces cloud spend with evidence: unit economics and showback, idle and orphaned resource
-  hunts, rightsizing, storage lifecycle and egress, commitment discounts, and architectural
-  changes that cut cost per request without breaching an SLO. Use when a bill spikes, a cost
-  review is due, or someone asks what a feature costs to run. Pricing negotiation, vendor
-  selection, and database query tuning route elsewhere.
+description: "Analyzes and reduces cloud infrastructure spend: rightsizing, idle resources, storage tiers, and egress costs. Use when optimizing AWS/GCP bills or reducing cloud run costs."
 metadata:
   version: 1.0.0
   domain: production

@@ -1,11 +1,6 @@
 ---
 name: context-engineering
-description: >-
-  Manages what an agent knows at each step: context budgets, retrieval over dumping, file-based
-  handoffs, subagent isolation, compaction, and durable project conventions. Use when a task
-  outgrows one context window, an agent starts forgetting earlier decisions, long sessions
-  degrade, or output quality drops as the conversation grows. Prompt wording alone routes to
-  llm-app-engineer; whole-session state transfer routes to session-continuity.
+description: "Optimizes context window allocation: system prompt packing, progressive disclosure, and memory compaction. Use when managing long chat histories, context bloat, or prompt limits."
 metadata:
   version: 3.0.0
   domain: doctrine

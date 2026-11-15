@@ -1,10 +1,6 @@
 ---
 name: desktop-app-developer
-description: >-
-  Builds and ships desktop apps with Electron or Tauri: main/renderer boundaries, IPC and
-  sandboxing, native OS integration, auto-update, and per-platform packaging and code
-  signing. Use when the deliverable is an installable desktop application. Web UI logic
-  routes to frontend-web-engineer; mobile apps to mobile-developer.
+description: "Builds desktop apps with Electron or Tauri: main/renderer IPC, packaging, and code signing. Use when creating or debugging installable desktop applications."
 metadata:
   version: 3.0.0
   domain: delivery

@@ -1,10 +1,6 @@
 ---
 name: mcp-builder
-description: >-
-  Builds production MCP servers: tool schema design, transport, auth, error contracts,
-  pagination, evaluation, and packaging for Python (FastMCP) or TypeScript (MCP SDK). Use
-  when exposing an external service or dataset to agents as tools. Consuming existing MCP
-  tools routes to mcp-agent; general API design to api-design-architect.
+description: "Builds production Model Context Protocol (MCP) servers with typed schemas, transport, and auth. Use when exposing APIs or services to agents via MCP tools."
 license: Complete terms in LICENSE.txt
 metadata:
   version: 3.0.0

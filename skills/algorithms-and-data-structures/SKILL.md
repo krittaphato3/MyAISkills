@@ -1,13 +1,6 @@
 ---
 name: algorithms-and-data-structures
-description: >-
-  Reasons about algorithmic cost and structure choice in production code: complexity analysis,
-  the working set of patterns (two pointers, sliding window, binary search, heaps, hashing,
-  prefix sums, graph traversal, dynamic programming), invariants, and when NOT to optimize.
-  Use when code will run on large or adversarial inputs, when a hot path looks quadratic, or
-  when choosing between a list, map, set, heap, or tree. Measured profiling of a named
-  slowdown routes to performance-profiler; database-query tuning to query-performance-engineer;
-  interview-style puzzle solving is out of scope.
+description: "Analyzes big-O complexity, invariants, and data-structure choices for production code. Use when optimizing hot paths, preventing quadratic bottlenecks, or handling large inputs."
 metadata:
   version: 1.0.0
   domain: fundamentals

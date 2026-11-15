@@ -1,10 +1,5 @@
 ---
-description: >-
-  Independent acceptance-test author. Writes tests from the frozen spec BEFORE seeing any
-  implementation, so the oracle cannot inherit the implementer's assumptions. Use at
-  T2/T3, or for any change without a trustworthy oracle, when tests must independently
-  judge correctness. Never reads candidate code; never adjusts assertions to make code
-  pass.
+description: "Independent acceptance-test author. Use at T2/T3, or for any change without a trustworthy oracle, when tests must independently judge correctness."
 mode: subagent
 color: warning
 temperature: 0.15

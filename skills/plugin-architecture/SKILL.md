@@ -1,11 +1,6 @@
 ---
 name: plugin-architecture
-description: >-
-  Designs extension points that third parties or other teams build against: a versioned plugin
-  contract, capability and permission model, lifecycle and discovery, in-process vs out-of-process
-  isolation, and the conformance suite that keeps plugins working across releases. Use when adding
-  a plugin system, webhooks and event hooks, a marketplace, or an internal extension API. Normal
-  REST/GraphQL API design routes to api-design-architect.
+description: "Designs extensible plugin architectures: hook points, sandboxed extensions, lifecycle events, and contracts. Use when building or refactoring plugin systems and extensible runtimes."
 metadata:
   version: 1.0.0
   domain: architecture

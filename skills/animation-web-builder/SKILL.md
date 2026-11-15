@@ -1,12 +1,6 @@
 ---
 name: animation-web-builder
-description: >-
-  Builds scroll-driven, motion-rich web experiences: image-sequence canvas animation, GSAP
-  timelines and ScrollTrigger, Lenis smooth scrolling, parallax, section transitions, and
-  performance-budgeted motion. Use when a landing or marketing page needs immersive scroll
-  storytelling, a smooth-scroll feel, or a 60fps animation budget. Ready-made React Bits
-  components route to react-bits; routine UI transitions, layout, and component work route to
-  frontend-web-engineer.
+description: "Builds scroll-driven animations and motion-rich web pages using GSAP, ScrollTrigger, and smooth scroll. Use when building high-performance landing pages with 60fps animations."
 metadata:
   version: 3.1.0
   domain: delivery

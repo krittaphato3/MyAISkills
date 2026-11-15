@@ -1,11 +1,6 @@
 ---
 name: cybersecurity-specialist
-description: >-
-  Performs authorized offensive security work only: penetration testing, exploit
-  development, vulnerability research, CTF and lab exercises, and bug-bounty scope with
-  written authorization. Use when the goal is to attack a system you are permitted to test
-  and produce a severity-rated finding. Defensive fixes route to
-  security-hardening-specialist; privacy obligations to privacy-compliance.
+description: "Conducts authorized offensive security assessments: penetration testing, exploit analysis, and vulnerability reports. Use for authorized penetration testing or exploit validation."
 metadata:
   version: 3.0.0
   domain: security

@@ -1,10 +1,6 @@
 ---
 name: ship-gate
-description: >-
-  The last gate before "done": audits every claim against the diff, re-runs the checks after the
-  final edit, dispatches an independent verdict on the exact head, and states blast radius,
-  rollback, and what was not verified. Use before reporting a non-trivial change complete or
-  asking for commit, push, or deploy approval.
+description: "Audits claimed changes against actual diffs, running final checks and verifying blast radius. Use before marking tasks complete or requesting git commit/push."
 metadata:
   version: 1.0.0
   domain: delivery

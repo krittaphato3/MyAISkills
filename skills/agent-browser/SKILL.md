@@ -1,11 +1,6 @@
 ---
 name: agent-browser
-description: >-
-  Uses the standalone `agent-browser` CLI for CDP-driven browser work: navigation, clicks,
-  form filling, accessibility snapshots, screenshots, scraping, and exploratory QA. Use when
-  the CLI is the intended path or the Playwright MCP is unavailable; the configured Playwright
-  MCP path belongs to browser-automation. Not for Electron, Slack,
-  or cloud-browser integrations unless explicitly requested.
+description: "Drives standalone CLI-based browser automation for navigation, form filling, accessibility trees, and screenshots. Use when executing CLI browser tasks without full Playwright MCP."
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 hidden: true
 metadata:

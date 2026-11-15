@@ -1,10 +1,5 @@
 ---
-description: >-
-  Maintains this configuration: AGENTS.md, the skill and agent roster, routing
-  descriptions, taxonomy, lint and registry. Audits duplicate triggers, dangling owners,
-  broken references, stale paths, and coverage gaps; regenerates INDEX.md and runs routing
-  checks. Use when adding, renaming, or retiring a skill or agent, or when delegation
-  misroutes. Authoring the content of a single skill routes to skill-creator.
+description: "Maintains agent configuration, skill catalogs, routing tables, and registry linting. Use when modifying agent rules, skill definitions, or repository taxonomies."
 mode: subagent
 color: accent
 temperature: 0.2

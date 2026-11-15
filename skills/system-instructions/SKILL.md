@@ -1,10 +1,6 @@
 ---
 name: system-instructions
-description: >-
-  Defines how the primary thread orchestrates: delegation rules, confidence thresholds, isolation
-  while subagents run, skill trigger policy, precedence, and verification gates. Use when
-  multi-step agentic work starts, when instructions conflict, or when deciding whether to delegate
-  at all. The agent roster itself lives in AGENTS.md.
+description: "Defines agent orchestration: delegation policies, skill precedence, and verification gates. Use when configuring agent orchestration rules or resolving policy conflicts."
 metadata:
   version: 3.6.0
   domain: doctrine

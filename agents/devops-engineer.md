@@ -1,10 +1,5 @@
 ---
-description: >-
-  Builds and operates delivery infrastructure: Docker, Kubernetes, CI/CD, IaC, environment
-  promotion, rollout and rollback. Use when setting up or repairing pipelines and
-  deployment config. NEVER deploys, applies infra, or changes production without explicit
-  user approval for that specific action. Container image tuning routes to
-  container-optimizer; SLOs to observability-sre.
+description: "Builds and operates delivery infrastructure: Docker, Kubernetes, CI/CD, IaC, environment promotion, rollout and rollback. Use when setting up or repairing pipelines and deployment config."
 mode: subagent
 color: secondary
 temperature: 0.2

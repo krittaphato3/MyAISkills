@@ -1,11 +1,6 @@
 ---
 name: load-testing
-description: >-
-  Designs and runs load, stress, soak, and spike tests that answer a capacity question: open vs
-  closed workload model, arrival rate and think time, production-shaped data, percentile and
-  saturation metrics, and a pass/fail decided before the run. Use when someone asks how much
-  traffic a system handles, before a launch, or when capacity, autoscaling, or a latency SLO
-  must be proven. Profiling a single slow request routes to performance-profiler.
+description: "Designs and executes load, stress, spike, and soak tests with realistic arrival rates and latency metrics. Use when validating system capacity, autoscaling limits, or throughput SLOs."
 metadata:
   version: 1.0.0
   domain: production

@@ -1,12 +1,6 @@
 ---
 name: ux-review
-description: >-
-  Reviews a live interface for usability and interaction quality: Nielsen heuristics, full state
-  coverage (loading, empty, error, permission, offline, long content), affordances and microcopy,
-  motion intent and reduced motion, keyboard and focus sanity, and responsive behavior at real
-  viewports. Use when a screen is "done" and needs a quality pass, when users report confusion, or
-  when a flow crosses several screens. Formal conformance audits route to accessibility-audit;
-  visual craft (color, type, hierarchy) to refactoring-ui; spacing math to ui-layout-spacing.
+description: "Audits live interfaces for usability, interaction quality, loading/empty/error states, and affordances. Use when evaluating shipped screens or resolving user interaction confusion."
 metadata:
   version: 1.2.0
   domain: delivery

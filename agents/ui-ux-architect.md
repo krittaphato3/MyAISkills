@@ -1,10 +1,5 @@
 ---
-description: UI/UX architect. Owns design systems, component architecture, layout, interaction patterns,
-  responsive behavior, visual quality, and spatial hierarchy (ui-layout-spacing). Inspects live web interfaces
-  and verifies visual behavior via the browser-use plugin (browser-use:control-browser, browser-use:web-gui-tester)
-  or browser-automation. Use when building or redesigning a user-facing surface, or when a component boundary
-  or layout decision is the question. Pure logic routes to code-implementer; WCAG audits to accessibility-specialist;
-  motion to animation-web-builder.
+description: "Leads UI/UX design systems, component hierarchy, responsive layouts, and visual quality. Use when designing user-facing components, pages, or styling patterns."
 mode: subagent
 color: primary
 temperature: 0.2

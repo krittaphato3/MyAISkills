@@ -1,11 +1,6 @@
 ---
 name: roblox-ui-ux
-description: 'Designs and builds Roblox interfaces with AAA visual polish: ScreenGui structure, UDim2
-  sizing, safe areas, HUD state binding, tactile micro-interactions, curated vector icons, anti-cancellation
-  contrast, and 3D pop-out hero showcases (interactive ViewportFrames, burst-out cards, sheen gloss, rayburst
-  backdrops, studio lighting). Use when building or styling any HUD, menu, shop, inventory, modal, prompt,
-  crate/gacha showcase, or badge needing front-page quality. World lighting and geometry route to roblox-world-building;
-  tweened character motion to roblox-animation.'
+description: "Designs AAA Roblox interfaces: ScreenGui, UDim2 sizing, HUDs, menus, shops, ViewportFrames, and micro-interactions. Use when creating or styling in-game Roblox user interfaces."
 metadata:
   version: 1.3.0
   domain: roblox

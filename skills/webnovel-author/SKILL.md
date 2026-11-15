@@ -1,9 +1,6 @@
 ---
 name: webnovel-author
-description: 'Master webnovel authorship and rewriting engine: draft polishing, idea-to-chapter drafting,
-  scene directing, pacing/tension orchestration, and immersive sensory prose. Built from techniques
-  of Lord of the Mysteries, I Am The Fated Villain, and Xian Ni. Use for /webnovel-author, webnovel writing,
-  novel drafts, chapter rewrites, or cultivation/fantasy serial fiction.'
+description: "Authors, drafts, and polishes webnovels and serial fiction with immersive pacing and sensory prose. Use for /webnovel-author, fiction drafting, or chapter rewrites."
 metadata:
   version: 1.0.0
   domain: delivery

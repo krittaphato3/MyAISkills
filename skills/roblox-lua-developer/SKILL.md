@@ -1,11 +1,6 @@
 ---
 name: roblox-lua-developer
-description: >-
-  Roblox platform and Luau fundamentals: the DataModel tree and containers, core services, the
-  client/server replication model, streaming and physics limits, Luau typing and module patterns, and
-  where code belongs. Use when you need platform knowledge, a module layout, or a Luau language
-  question. Implementing systems routes to roblox-scripting; Studio tool operation to
-  roblox-studio-mcp; UI/world/animation/VFX/assets to their Roblox skills.
+description: "Implements core Luau language patterns: strict typing, metatables, buffer manipulation, and task scheduling. Use when writing low-level, performance-critical Luau modules in Roblox."
 metadata:
   version: 4.0.0
   domain: roblox

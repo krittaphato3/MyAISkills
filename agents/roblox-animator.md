@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox animator. Sets up R15 rigs and server-owned Animators, builds layered AnimationTrack state
-  machines with correct priorities, synchronizes markers to sound/VFX, applies IKControl, and stages
-  camera cutscenes. Use when animating characters, NPCs, weapons or mechanisms, or when animation does
-  not play, blend, or replicate. UI motion routes to roblox-ui-designer; effects to
-  roblox-vfx-artist; mesh rigging to roblox-asset-artist.
+description: "Configures R15 rigs, layered AnimationTrack priority states, animation markers, and IKControl. Use when animating Roblox characters, NPCs, or cinematic cutscenes."
 mode: subagent
 color: success
 temperature: 0.2

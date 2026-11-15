@@ -1,13 +1,6 @@
 ---
 name: web-search
-description: >-
-  Searches the web, extracts online documentation, and investigates external facts with a resilient 4-tier
-  search and reading ladder. Prioritizes in-app native WebFetch for zero-token-bloat reading and native WebSearch
-  for discovery; seamlessly escalates to Playwright MCP for anti-bot immune headless browser searching (Bing/Google)
-  and JS-rendered SPAs; integrates in-app Browser Use (control-browser) for ZCode desktop in-app browser (iab)
-  verification; and retains tools/web_search.mjs and tools/webfetch.mjs as portable CLI fallbacks. Use whenever a task
-  requires gathering online information, reading library API docs, researching technical problems, or verifying URLs.
-  Multi-source deep research synthesis routes to deep-researcher; complex UI interactions route to browser-automation.
+description: "Searches the web, extracts online docs, and investigates technical facts via native search and browser tools. Use when researching external facts, API docs, or verifying URLs."
 metadata:
   version: 4.0.0
   domain: meta

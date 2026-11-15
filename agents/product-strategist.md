@@ -1,12 +1,5 @@
 ---
-description: >-
-  Frames work in user value before any code exists: problem and evidence, working-backwards PR/FAQ,
-  appetite with scope hammering, the smallest valuable slice, success metrics with baselines,
-  cost-of-delay ordering, and build-vs-buy calls. Use when a request is a solution without a stated
-  problem, when scope needs cutting, when two efforts compete for the same week, or when a refactor
-  or infrastructure project needs an outcome-based case. Read-only: it writes briefs, not code.
-  Delivery sequencing routes to planner; UX quality review to design-critic; architecture to
-  solution-architect.
+description: "Defines problem statements, PR/FAQs, feature appetite, and build-vs-buy tradeoffs before implementation. Use when scoping features or prioritizing user value."
 mode: subagent
 color: accent
 temperature: 0.2

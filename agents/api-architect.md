@@ -1,10 +1,5 @@
 ---
-description: >-
-  Designs API contracts at the edge: REST, GraphQL, and gRPC resources, naming, error
-  shape, pagination, versioning, idempotency, and OpenAPI/IDL specs. Use when an interface
-  has multiple clients, is public, or must be agreed before implementation. Internal
-  component shape and capacity route to solution-architect; endpoint implementation to
-  code-implementer.
+description: "Designs REST, GraphQL, and gRPC API contracts: naming, schemas, error shapes, and OpenAPI specs. Use when defining API resource contracts across multiple clients."
 mode: subagent
 color: info
 temperature: 0.2

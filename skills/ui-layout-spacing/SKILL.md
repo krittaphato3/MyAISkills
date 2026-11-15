@@ -1,12 +1,6 @@
 ---
 name: ui-layout-spacing
-description: >-
-  Governs visual layout, whitespace hierarchy, spatial rhythm, and component arrangement across
-  web and Roblox interfaces: 8pt/4pt proportional spacing scale, spatial nesting law (decreasing
-  inward), container enclosure formula (outer padding >= inner gap), concentric corner radius
-  geometry, squish padding for buttons/badges, optical vs mathematical alignment, and intrinsic
-  responsive CSS Grid / Roblox UIListLayout arrangements. Use when designing, arranging, spacing,
-  or fixing gaps, padding, margins, visual clutter, cramped layouts, or misaligned interface elements.
+description: "Enforces spatial rhythm, padding, margins, alignment, and 8pt/4pt layout hierarchy for web and Roblox. Use when arranging layouts, fixing visual clutter, or spacing elements."
 metadata:
   version: 1.1.0
   domain: delivery

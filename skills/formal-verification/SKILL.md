@@ -1,11 +1,6 @@
 ---
 name: formal-verification
-description: >-
-  Proves a property that tests cannot reach: model a protocol, state machine, scheduler, retry loop,
-  parser, or concurrent data structure, check it with the tool that fits (TLA+, Alloy, Dafny, Kani,
-  loom, proptest, Jepsen), and hand back a project-local check that re-runs on every change. Use when
-  a race, deadlock, lost update, or invariant violation is plausible and stochastic tests keep
-  missing it. Ordinary test suites route to test-engineer.
+description: "Formulates formal specifications and proofs of critical algorithms and state machines via TLA+ or Alloy. Use when proving concurrent correctness, consensus, or safety invariants."
 metadata:
   version: 1.0.0
   domain: architecture

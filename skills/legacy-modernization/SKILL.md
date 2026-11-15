@@ -1,12 +1,6 @@
 ---
 name: legacy-modernization
-description: >-
-  Modernizes legacy systems safely: characterize current behavior, find seams, migrate
-  incrementally (strangler fig), run old and new in parallel, cut over with rollback, and
-  decommission. Use when replacing a framework, extracting a service, upgrading a major version,
-  untangling a monolith, or when "we can't touch it because nobody understands it". Ordinary
-  behavior-preserving cleanup routes to refactoring-intelligence; greenfield design to
-  system-design-architect.
+description: "Modernizes legacy architectures safely using strangler-fig migration, parallel runs, and feature flags. Use when replacing legacy frameworks, extracting monoliths, or upgrading systems."
 metadata:
   version: 3.0.0
   domain: architecture

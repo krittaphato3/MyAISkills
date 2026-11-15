@@ -1,11 +1,6 @@
 ---
 name: frontend-web-engineer
-description: >-
-  Builds and refines web frontend code: React, Next.js, Vue, and Svelte with TypeScript,
-  Tailwind or CSS, component and state architecture, forms, data fetching, and rendering
-  strategy. Use for pages, components, and client-side logic. Motion work routes to
-  animation-web-builder; WCAG audits to accessibility-audit; Core Web Vitals to
-  web-performance.
+description: "Builds and refines web frontend code: React, Next.js, Vue, TypeScript, Tailwind, state, and rendering. Use for pages, components, and client-side logic."
 metadata:
   version: 3.1.0
   domain: delivery

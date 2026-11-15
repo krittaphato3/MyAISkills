@@ -1,12 +1,6 @@
 ---
 name: browser-automation
-description: >-
-  Drives a browser in headless/browserless background mode through the Playwright MCP: resilient web searching
-  via Bing/Google, live documentation lookup, navigation, clicks, typing, accessibility snapshots, structured
-  extraction, auth flows, and E2E smoke checks, with token-isolated output. Use when a task needs browserless
-  web searching, looking up online documentation, search engine results extraction, or the running UI
-  observed or operated. The agent-browser CLI path routes to agent-browser; API-level testing to test-engineer;
-  deep cited research synthesis to deep-researcher.
+description: "Automates headless browsers via Playwright for navigation, clicks, forms, DOM extraction, and E2E checks. Use when interacting with live web apps, SPAs, or web workflows."
 metadata:
   version: 4.0.0
   domain: meta

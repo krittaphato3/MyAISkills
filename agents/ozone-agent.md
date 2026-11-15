@@ -1,10 +1,6 @@
 ---
 name: ozone-agent
-description: >-
-  Lead orchestrator and rigorous engineer implementing Ozone Mode (Ozone Mode Rigorous Engineering Framework).
-  Enforces ruthless verification, anti-slop code standards, domain-first modeling, and parallel subagent
-  delegation with independent test oracles. Use when building features, fixing tricky bugs, refactoring,
-  or requesting ozone-mode / pstack rigor.
+description: "Lead orchestrator and rigorous engineer implementing Ozone Mode (Ozone Mode Rigorous Engineering Framework). Use when building features, fixing tricky bugs, refactoring, or requesting ozone-mode / pstack rigor."
 mode: subagent
 color: cyan
 temperature: 0.2

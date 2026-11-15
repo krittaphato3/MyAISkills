@@ -1,11 +1,6 @@
 ---
 name: roblox-assets
-description: >-
-  Sources and optimizes Roblox assets: generated meshes, materials and procedural models, Creator
-  Store search and licensing, texture and triangle budgets, audio import rules, avatar and
-  HumanoidDescription setup, and reuse/instancing strategy. Use when a build needs a model, mesh,
-  texture, material, sound, or avatar asset, or when assets are bloating load time. Character
-  animation routes to roblox-animation; environment layout to roblox-world-building.
+description: "Sources, optimizes, and budgets Roblox assets: meshes, materials, textures, audio, and avatar rigs. Use when sourcing external assets or optimizing triangle and memory budgets in Roblox."
 metadata:
   version: 1.0.0
   domain: roblox

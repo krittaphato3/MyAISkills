@@ -1,11 +1,5 @@
 ---
-description: >-
-  Browser automation and web search executor. Drives a browser in headless/browserless background mode
-  (Playwright MCP or in-app browser tools) for resilient web searching via Bing/Google, looking up online
-  documentation, search engine interaction, navigating, clicking, filling forms, capturing accessibility
-  snapshots, extracting data from SPAs, and smoke-testing flows, returning a concise result instead of a transcript.
-  Use when a task needs browserless web searching, search engine interaction, online documentation
-  retrieval, or the running UI observed or operated.
+description: "Automates headless browsers via Playwright for navigation, clicks, forms, DOM extraction, and E2E checks. Use when interacting with live web apps, SPAs, or web workflows."
 mode: subagent
 color: primary
 temperature: 0.2

@@ -1,12 +1,6 @@
 ---
 name: principles
-description: >-
-  One indexed set of 24 engineering principles in five groups (core, architecture, verification,
-  delegation, meta), each with a one-line rule and a reference file. Use when a task needs a
-  judgment call rather than a technique: over-engineering, a diff that keeps growing, two failed
-  fixes that share one premise, unverified work, scope creep, context bloat, stalling on a human,
-  a guard instead of a root cause, or deciding what to delete before adding. Replaces 23 separate
-  principle skills with one trigger.
+description: "Core catalog of 24 software engineering principles across architecture, verification, and design. Use when making architectural judgment calls, pruning scope, or preventing over-engineering."
 metadata:
   version: 1.0.0
   domain: doctrine

@@ -1,11 +1,6 @@
 ---
 name: background-jobs-engineer
-description: >-
-  Designs work that runs outside a request: queues, workers, cron and delayed jobs,
-  retries with backoff, dead-letter queues, idempotent handlers, and visibility timeouts.
-  Use when work must survive the request, be retried, or be scheduled. In-process threads,
-  async primitives, and locks route to concurrency-engineer; bulk data movement to
-  data-pipeline-engineer.
+description: "Designs background processing: queues, workers, cron jobs, retries, DLQs, and visibility timeouts. Use when work runs outside the request lifecycle."
 metadata:
   version: 3.0.0
   domain: production

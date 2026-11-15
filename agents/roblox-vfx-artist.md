@@ -1,10 +1,5 @@
 ---
-description: >-
-  Roblox VFX and audio artist. Builds particle bursts, beams, trails, auras, post-processing and sound
-  design with pooling, cleanup, spatialization, and mobile/low-quality fallbacks. Use when an impact,
-  cast, explosion, weather, trail, ambience, or UI sound needs to exist or be fixed, or when effects
-  cause frame drops. UI motion routes to roblox-ui-designer; character clips to roblox-animator; map
-  lighting to roblox-builder.
+description: "Creates Roblox particle bursts, beams, trails, auras, and spatial sound effects with pooling. Use when authoring combat VFX, weather, or audio in Roblox."
 mode: subagent
 color: secondary
 temperature: 0.3

@@ -1,9 +1,5 @@
 ---
-description: >-
-  Mobile developer. Builds React Native, Flutter, and native Swift/Kotlin apps: screens,
-  navigation, state, local storage, permissions, push, and platform integration. Use when
-  the deliverable is an iOS or Android app or a mobile-specific bug. Desktop shells route
-  to desktop-developer; shared web UI to ui-ux-architect.
+description: "Builds iOS and Android apps using React Native, Flutter, Swift, and Kotlin. Use when building mobile screens, native features, or fixing mobile bugs."
 mode: subagent
 color: info
 temperature: 0.3

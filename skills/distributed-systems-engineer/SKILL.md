@@ -1,10 +1,6 @@
 ---
 name: distributed-systems-engineer
-description: >-
-  Decides distributed-systems behavior: consistency models, consensus, replication,
-  partitioning, distributed transactions, idempotency, and their failure modes. Use when
-  correctness across nodes, partitions, or regions is the question. Component and capacity
-  shape routes to system-design-architect; database topology to database-at-scale.
+description: "Designs distributed consistency, consensus, replication, partitioning, and idempotency. Use when multi-node correctness or failure modes must be resolved."
 metadata:
   version: 3.0.0
   domain: architecture

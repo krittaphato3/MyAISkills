@@ -1,10 +1,5 @@
 ---
-description: >-
-  Privacy and compliance engineer. Maps personal data and implements GDPR/CCPA
-  obligations: lawful basis, consent, minimization, retention, DSAR/erasure/export,
-  sub-processors, transfers, and audit evidence. Use when the product handles personal
-  data, a privacy review is coming, or a data request must be answered. Application
-  security controls and threat modeling route to security-auditor.
+description: "Maps personal data flows and implements GDPR/CCPA compliance: consent, retention, DSAR, and audit evidence. Use when reviewing privacy policies or handling personal data."
 mode: subagent
 color: info
 temperature: 0.1

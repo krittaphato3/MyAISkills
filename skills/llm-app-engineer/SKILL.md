@@ -1,11 +1,6 @@
 ---
 name: llm-app-engineer
-description: >-
-  Builds LLM-backed product features: RAG and embeddings, prompt and context design,
-  structured output, tool calling, streaming, guardrails, evals, and token or cost
-  budgets. Use when an application calls a model and the result must be reliable. Model
-  training routes to ml-python-scientist; orchestrating your own subagents to
-  debate-protocol.
+description: "Builds production LLM features: RAG, prompt engineering, structured outputs, and eval guardrails. Use when building model-backed features requiring high reliability."
 metadata:
   version: 3.0.0
   domain: delivery

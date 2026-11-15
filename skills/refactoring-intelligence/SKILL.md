@@ -1,10 +1,6 @@
 ---
 name: refactoring-intelligence
-description: >-
-  Detects code smells and performs behavior-preserving restructuring: SOLID and coupling
-  analysis, duplication removal, AST-assisted moves, and measured complexity reduction.
-  Use when tests pin current behavior and the goal is clarity rather than new behavior.
-  New behavior routes to code-implementer; legacy cutover to legacy-modernization.
+description: "Analyzes code smells and refactors code: coupling reduction, deduplication, and SOLID cleanup. Use when improving code structure while preserving current tests."
 metadata:
   version: 3.0.0
   domain: architecture

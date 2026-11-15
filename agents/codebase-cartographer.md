@@ -1,10 +1,5 @@
 ---
-description: >-
-  Onboards onto an unfamiliar repository and writes the map: architecture, entry points,
-  data flow, conventions, test/build commands, and risk zones — before anyone edits a
-  file. Use at the start of work in an unknown codebase, or when a subsystem's boundaries
-  are unclear. Read-only. For the navigation method and search ladder it follows, use
-  codebase-navigation.
+description: "Maps unfamiliar codebases: architecture diagrams, entry points, data flows, and build commands. Use before editing unfamiliar repositories or complex subsystems."
 mode: subagent
 color: warning
 temperature: 0.1

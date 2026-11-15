@@ -1,12 +1,6 @@
 ---
 name: roblox-toolchain
-description: >-
-  Configures and operates the modern Roblox development toolchain: Rojo project synchronization
-  (default.project.json, sourcemap generation, partition mappings), Wally and pesde package
-  management, and luau-lsp type checking integrated with Studio MCP. Use when configuring Rojo,
-  managing external Luau dependencies or package manifests, setting up sourcemaps, or running
-  CI/CD Luau typecheck gates. Studio script execution routes to roblox-studio-mcp; game architecture
-  and runtime logic route to roblox-scripting; Luau language fundamentals to roblox-lua-developer.
+description: "Configures Roblox tooling: Rojo project sync, Wally/pesde package managers, and Luau LSP type checking. Use when configuring Rojo, managing dependencies, or running Luau typecheck."
 metadata:
   version: 1.1.0
   domain: roblox

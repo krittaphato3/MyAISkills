@@ -1,10 +1,6 @@
 ---
 name: find-skills
-description: >-
-  Finds, evaluates, installs, and verifies agent skills from the ecosystem CLI or
-  registry. Use when asked 'is there a skill for X', when extending capabilities, or
-  before writing a new skill from scratch. Creating or improving a skill routes to
-  skill-creator; maintaining this roster routes to agent-config-maintenance.
+description: "Finds, evaluates, installs, and verifies agent skills from the ecosystem CLI or registry. Use when asked 'is there a skill for X', when extending capabilities, or before writing a new skill from scratch."
 metadata:
   version: 3.0.0
   domain: meta

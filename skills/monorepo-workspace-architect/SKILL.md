@@ -1,10 +1,6 @@
 ---
 name: monorepo-workspace-architect
-description: >-
-  Configures multi-package repositories: pnpm, npm, or yarn workspaces, Turborepo or Nx,
-  task graphs, caching, affected builds, and package boundaries. Use when setting up a
-  monorepo, fixing slow or incorrect builds, or enforcing dependency direction. CI
-  pipeline authoring routes to devops-pipeline-engineer.
+description: "Configures monorepos: pnpm/npm workspaces, Turborepo/Nx caching, and package boundaries. Use when configuring workspaces or fixing monorepo build graphs."
 metadata:
   version: 3.0.0
   domain: architecture

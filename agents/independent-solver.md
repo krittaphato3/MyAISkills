@@ -1,10 +1,5 @@
 ---
-description: >-
-  Blind second implementer for high-stakes changes. Solves the same frozen spec
-  independently of the first implementer — correctness and edge cases first, restructuring
-  allowed — and returns a diff plus evidence and its own stated risks. Use at T3 when a
-  second independent candidate is needed, or when the first solution's approach is
-  contested. Never shown the other candidate.
+description: "Blind second implementer for high-stakes changes. Use at T3 when a second independent candidate is needed, or when the first solution's approach is contested."
 mode: subagent
 color: accent
 temperature: 0.25

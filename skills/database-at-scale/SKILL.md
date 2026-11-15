@@ -1,10 +1,6 @@
 ---
 name: database-at-scale
-description: >-
-  Chooses and operates database topology beyond one node: replication, sharding,
-  partitioning, zero-downtime migrations, pool sizing, and rebalance or DR cadence. Use
-  when scale-out, failover, or a risky migration is the question. A single slow query
-  routes to query-performance-engineer first; schema shape routes to db-architect.
+description: "Architects scalable database topologies: replication, sharding, partitioning, pool sizing, and zero-downtime migrations. Use when planning database scale-out, failover, or large schema migrations."
 metadata:
   version: 3.0.0
   domain: architecture

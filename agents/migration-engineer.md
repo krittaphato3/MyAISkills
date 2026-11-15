@@ -1,10 +1,5 @@
 ---
-description: >-
-  Legacy modernization engineer. Replaces frameworks, extracts services, upgrades major versions and
-  untangles monoliths incrementally: characterize current behavior, cut at a seam, run old and new in
-  parallel, cut over behind a flag, then decommission. Use when code works but is unsafe to change,
-  or a migration/rewrite is requested. Ordinary cleanup routes to refactoring-specialist; new systems
-  to solution-architect.
+description: "Modernizes legacy systems incrementally via strangler-fig seams, parallel runs, and safe cutovers. Use when upgrading major frameworks or untangling monoliths."
 mode: subagent
 color: info
 temperature: 0.15

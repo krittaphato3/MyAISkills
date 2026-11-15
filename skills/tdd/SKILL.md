@@ -1,10 +1,6 @@
 ---
 name: tdd
-description: >-
-  Companion to the /tdd command. Explicit invocation only: use when the user types /tdd or asks
-  for the red-green cycle by name. Routing for test-first work belongs to
-  test-driven-development; this skill supplies the command's step list and must not compete
-  with that doctrine on description matching.
+description: "Companion to the /tdd command. Explicit invocation only: use when the user types /tdd or asks for the red-green cycle by name."
 disable-model-invocation: true
 metadata:
   version: 1.1.0

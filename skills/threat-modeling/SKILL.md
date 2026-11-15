@@ -1,11 +1,6 @@
 ---
 name: threat-modeling
-description: >-
-  Models security risk before code exists: trust boundaries, data-flow and attack paths, STRIDE
-  per boundary, ranked threats, and mitigations that map to concrete tests. Use when adding an
-  endpoint, upload, auth flow, admin surface, integration, or multi-tenant data path, or when
-  asked "what could go wrong" about a design. Implementing the fixes routes to
-  security-hardening-specialist; active exploitation to cybersecurity-specialist.
+description: "Performs threat modeling and STRIDE analysis: trust boundaries, attack surfaces, and threat mitigations. Use when designing security architectures, reviewing auth flows, or risk modeling."
 metadata:
   version: 3.0.0
   domain: security

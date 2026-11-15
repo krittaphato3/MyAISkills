@@ -1,11 +1,6 @@
 ---
 name: react-bits
-description: >-
-  Adds React Bits animated components to a React app: text effects (split, blur, gradient, shiny),
-  animated backgrounds (aurora, particles, threads, grid), magnetic and spark buttons, and card
-  micro-interactions, installed through the shadcn registry in JS or TS with CSS or Tailwind. Use
-  when a marketing or landing surface needs a designed animation and you want a vetted component
-  rather than a blank GSAP timeline. Scroll storytelling routes to animation-web-builder.
+description: "Integrates animated React Bits components: text effects, animated backgrounds, and micro-interactions. Use when adding interactive animations or marketing components to React apps."
 metadata:
   version: 1.0.0
   domain: delivery

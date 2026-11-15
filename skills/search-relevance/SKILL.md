@@ -1,11 +1,6 @@
 ---
 name: search-relevance
-description: >-
-  Builds and tunes non-LLM search quality: analyzers and tokenization, BM25 and hybrid retrieval,
-  synonyms and typo tolerance, field boosts, faceting, reranking, and relevance evaluation with a
-  labeled query set and nDCG or MRR. Use when search returns irrelevant results, an exact-match
-  catalog is migrating to search, or relevance changes need proof they helped. RAG over your own
-  documents routes to llm-app-engineer.
+description: "Tunes search engine relevance: BM25, hybrid search, tokenization, synonyms, typos, and ranking evaluations. Use when improving search quality, tuning ranking algorithms, or relevance evals."
 metadata:
   version: 1.0.0
   domain: architecture

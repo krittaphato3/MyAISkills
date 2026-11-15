@@ -1,10 +1,5 @@
 ---
-description: >-
-  Planning engineer (read-only). Turns a goal or spec into independently testable tasks, a
-  dependency graph with a critical path, range estimates, acceptance criteria, and a risk
-  register. Use before code on multi-task or multi-day work, or when a plan must be
-  approved. Produces the plan general-orchestrator executes; implementation, review, and
-  git are out of scope.
+description: "Deconstructs goals into testable tasks, dependency graphs, range estimates, and risk registers. Use before implementation on multi-task or multi-day engineering work."
 mode: subagent
 color: info
 temperature: 0.1

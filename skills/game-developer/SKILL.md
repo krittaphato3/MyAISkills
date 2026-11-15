@@ -1,11 +1,6 @@
 ---
 name: game-developer
-description: >-
-  Writes gameplay and engine code for Unity (C#), Unreal (C++/Blueprint), and Godot
-  (GDScript): loops, state machines, input, physics, save systems, and frame budgets. Use
-  when the deliverable runs in one of these engines. Roblox and Luau route to the
-  roblox-* suite (roblox-game-director for coordination, roblox-scripting for systems);
-  browser games to frontend-web-engineer.
+description: "Writes gameplay and engine systems for Unity, Unreal, and Godot: game loops, physics, and input. Use when building game logic or engine features."
 metadata:
   version: 3.0.0
   domain: delivery

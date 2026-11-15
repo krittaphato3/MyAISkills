@@ -1,11 +1,6 @@
 ---
 name: third-party-integration
-description: >-
-  Wires external services into an application: provider selection, server-side credentials,
-  OAuth, signed webhooks, idempotency, retries/timeouts, rate limits, sandbox testing, and error
-  mapping. Use when integrating any outside API, SDK, or webhook (email, SMS, storage, CRM,
-  calendars, maps, LLM providers, internal services). Payments route to payments-billing; sending
-  email itself to email-notifications; MCP tool servers to mcp-builder.
+description: "Integrates external APIs, SDKs, OAuth flows, signed webhooks, retries, and error mapping. Use when wiring external vendor APIs, third-party services, or webhooks."
 metadata:
   version: 3.0.0
   domain: production

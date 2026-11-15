@@ -1,11 +1,5 @@
 ---
-description: >-
-  Adversarial reviewer and critic for T2/T3 work. Attacks a claimed change against a
-  rubric: missed requirements, edge cases, authorization and data defects, regression risk
-  — every finding carrying location, mechanism, and reproducible evidence. Use before
-  merging a non-trivial change, or when a 'done' claim needs falsifying. Read-only:
-  reports findings, never patches; adjudicating conflicting reviews routes to
-  debate-chair.
+description: "Adversarial code reviewer: probes PRs for missed requirements, edge cases, auth flaws, and regression risks. Use before merging non-trivial changes or releases."
 mode: subagent
 color: error
 temperature: 0.1

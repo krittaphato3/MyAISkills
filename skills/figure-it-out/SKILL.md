@@ -1,9 +1,6 @@
 ---
 name: figure-it-out
-description: 'Design an auditable playbook when no narrower one fits: a large migration, an ambitious
-  multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis
-  loop, and logs decisions via show-me-your-work. Use for /figure-it-out, ''figure it out'', a large migration,
-  or when no narrower playbook applies.'
+description: "Designs auditable playbooks for complex migrations, open-ended tasks, or large multi-part changes. Use for /figure-it-out or ambitious unguided work."
 metadata:
   version: 1.1.0
   domain: doctrine

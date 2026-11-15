@@ -1,10 +1,6 @@
 ---
 name: source-driven-development
-description: >-
-  Grounds implementation in current primary sources: verify exact API signatures,
-  versions, and behavior against official docs, changelogs, and source, then cite full
-  URLs. Use when writing framework- or library-specific code from memory, or when an API
-  may have changed. Broad unknown-domain research routes to deep-researcher.
+description: "Grounds implementation in official primary sources, validating API signatures and versions. Use when writing library code from documentation rather than memory."
 metadata:
   version: 3.0.0
   domain: delivery

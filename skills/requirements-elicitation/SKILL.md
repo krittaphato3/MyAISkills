@@ -1,10 +1,6 @@
 ---
 name: requirements-elicitation
-description: >-
-  Extracts the user's real intent from an underspecified ask through one focused question
-  at a time, restating requirements until confidence is high enough to build. Use when the
-  request is ambiguous, contradictory, or missing acceptance criteria. Writing the spec
-  afterward routes to spec-driven-development.
+description: "Extracts clear requirements from ambiguous requests through focused clarifying questions. Use when user requests are underspecified or missing acceptance criteria."
 metadata:
   version: 3.0.0
   domain: doctrine

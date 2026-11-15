@@ -1,11 +1,6 @@
 ---
 name: skill-creator
-description: >-
-  Creates, improves, and evaluates skills: intent capture, SKILL.md authoring, progressive
-  disclosure, trigger-description optimization, with-skill versus baseline evals, and
-  benchmarking. Use when authoring a new skill or fixing one that misfires, undertriggers,
-  or underperforms. Maintaining the roster and routing table routes to
-  agent-config-maintenance.
+description: "Creates, improves, and evaluates skills: intent capture, SKILL. Use when authoring a new skill or fixing one that misfires, undertriggers, or underperforms."
 metadata:
   version: 3.0.0
   domain: meta

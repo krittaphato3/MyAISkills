@@ -1,12 +1,6 @@
 ---
 name: roblox-studio-mcp
-description: >-
-  Operates Roblox Studio through its built-in MCP server: pick the connected Studio instance, choose
-  the Edit/Server/Client datamodel, read the tree and scripts before writing, apply batched edits,
-  run Luau safely, playtest, and verify with console output and screenshots. Use for any Roblox task
-  that touches a live Studio session — building, scripting, asset insertion, animation setup, or
-  testing. Pure design questions route to the relevant roblox-* skill; non-Roblox engines to
-  game-developer.
+description: "Automates Roblox Studio via MCP: executes scripts, inspects the DataModel hierarchy, and reads logs. Use when running in-Studio tests, inspecting instances, or driving Studio via MCP."
 metadata:
   version: 1.0.0
   domain: roblox

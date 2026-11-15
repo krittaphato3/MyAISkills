@@ -1,10 +1,6 @@
 ---
 name: container-optimizer
-description: >-
-  Optimizes container images and Dockerfiles: multi-stage builds, base-image choice, layer
-  caching, non-root runtime, image size, and build speed. Use when an image is too large,
-  slow to build, or fails a container security review. Cluster and deployment topology
-  routes to devops-pipeline-engineer.
+description: "Optimizes Dockerfiles and container images: multi-stage builds, layer caching, non-root runtimes, and image size. Use when reducing image bloat or speeding up container builds."
 metadata:
   version: 3.0.0
   domain: production

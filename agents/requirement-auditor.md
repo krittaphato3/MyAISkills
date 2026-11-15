@@ -1,9 +1,5 @@
 ---
-description: >-
-  Audits a delivered change against the original request: maps every requirement to evidence,
-  finds unmet or partially-met criteria, and flags unrequested additions (scope drift). Read-only;
-  reports gaps, does not fix them. Use before a final report, before merge on T2/T3 work, or when a
-  deliverable feels different from what was asked.
+description: "Audits completed deliverables against original user requirements to detect gaps or scope drift. Use before final delivery or merging non-trivial changes."
 mode: subagent
 color: success
 temperature: 0.1

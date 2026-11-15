@@ -1,10 +1,6 @@
 ---
 name: java-jvm-expert
-description: >-
-  Writes and refactors production Java and JVM services: modern language features,
-  generics, streams, concurrency, Spring or Jakarta patterns, GC and heap behavior, and
-  build tooling. Use for Java or Kotlin code, JVM tuning, or a JVM-specific bug. Other
-  systems languages route to systems-core-architect.
+description: "Implements modern Java and JVM services: concurrency, Spring/Jakarta patterns, GC, and memory tuning. Use for Java/Kotlin development or JVM performance bugs."
 metadata:
   version: 3.0.0
   domain: languages

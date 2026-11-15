@@ -1,12 +1,6 @@
 ---
 name: i18n-localization
-description: >-
-  Builds software for more than one language and locale: string extraction and catalogs, ICU
-  pluralization, date/number/currency formatting, right-to-left layout, locale negotiation, URL
-  and hreflang strategy, and the translation workflow. Use when shipping to a second market,
-  adding a language picker, fixing mojibake or broken plurals, handling RTL, or setting up
-  translated routes. Single-locale copies, translation itself, and general frontend layout route
-  to frontend-web-engineer.
+description: "Implements internationalization: ICU pluralization, date/number formatting, RTL layouts, and locale catalogs. Use when localizing software, adding languages, or fixing RTL issues."
 metadata:
   version: 1.0.0
   domain: delivery

@@ -1,11 +1,6 @@
 ---
 name: roblox-game-production
-description: >-
-  Runs a Roblox game from concept to publishable build: scope a vertical slice, sequence systems and
-  content, hand off between code/art/UI/audio specialties, gate each milestone, and decide what to
-  cut. Use when starting a Roblox project, planning a feature set, or coordinating several Roblox
-  specialists. Single-discipline work routes to that discipline's skill; Studio execution to
-  roblox-studio-mcp.
+description: "Directs Roblox game development: scopes vertical slices, sequences milestones, and integrates system disciplines. Use when scoping, planning, or coordinating Roblox game production."
 metadata:
   version: 1.0.0
   domain: roblox

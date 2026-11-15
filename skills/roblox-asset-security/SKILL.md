@@ -1,10 +1,6 @@
 ---
 name: roblox-asset-security
-description: 'Audits third-party Roblox marketplace and Creator Store assets (models, packages, meshes,
-  plugins) inserted via Studio MCP for supply-chain risks: hidden backdoors, obfuscated bytecode, malicious
-  require(assetId) calls, and fake core scripts. Use when searching, inserting, or reviewing external
-  assets before parenting them into the DataModel. Runtime exploit defense routes to roblox-security;
-  general dependency auditing to dependency-supply-chain-guardian; visual tuning to roblox-assets.'
+description: "Audits Roblox Creator Store models and assets for hidden backdoors, obfuscation, and malicious require() calls. Use when inspecting third-party Roblox assets before importing them."
 metadata:
   version: 1.1.0
   domain: roblox

@@ -1,11 +1,6 @@
 ---
 name: data-pipeline-engineer
-description: >-
-  Builds bulk data movement and transformation: ETL/ELT jobs, batch versus streaming, DAG
-  orchestration, incremental loads and CDC, schema evolution, backfills, and data-quality
-  checks. Use when data must land somewhere reliably at volume. Database topology routes
-  to database-at-scale; per-query tuning to query-performance-engineer; app-side workers
-  to background-jobs-engineer.
+description: "Builds bulk data transformation: ETL/ELT, batch/streaming, DAGs, CDC, and backfills. Use when moving and transforming data reliably at scale."
 metadata:
   version: 3.0.0
   domain: production

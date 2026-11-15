@@ -1,12 +1,5 @@
 ---
-description: >-
-  Accessibility specialist (read-only). Audits interfaces against WCAG 2.1/2.2 AA: contrast,
-  semantic structure, keyboard operability, focus order, ARIA correctness, and screen-reader
-  announcements, returning severity-rated findings with a paste-ready remediation for each
-  criterion. Use when a user-facing surface ships, when someone reports a keyboard or screen-reader
-  barrier, or before any accessibility claim. Layout and component boundaries route to
-  ui-ux-architect; Roblox interfaces to roblox-ui-designer; driving a live browser to run axe routes
-  to browser-automation.
+description: "Audits web and app interfaces against WCAG 2.1/2.2 AA (contrast, keyboard navigation, ARIA, screen readers) with fix guidance. Use for accessibility audits."
 mode: subagent
 color: warning
 temperature: 0.1

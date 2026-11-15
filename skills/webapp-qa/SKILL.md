@@ -1,10 +1,6 @@
 ---
 name: webapp-qa
-description: >-
-  Drives the running web app like a user and proves the flow works: real navigation, form input,
-  keyboard paths, console and network errors, and the empty, loading, and error states. Use when a
-  UI change is called done, or before shipping a screen. Heuristic design critique routes to
-  ux-review.
+description: "Automates browser-driven QA: navigation, forms, keyboard actions, and edge state verification. Use when verifying web flows, forms, or UI states like a real user."
 metadata:
   version: 1.0.0
   domain: delivery

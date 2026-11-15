@@ -1,10 +1,6 @@
 ---
 name: resilience-pattern-engineer
-description: >-
-  Implements runtime resilience: error taxonomy, retries with backoff and jitter,
-  timeouts, circuit breakers, bulkheads, rate limiting, fallbacks, and health checks. Use
-  when a service must degrade gracefully under failure or overload. Queue durability
-  routes to background-jobs-engineer; incident command to incident-response-engineer.
+description: "Implements runtime resilience: retries with jitter, circuit breakers, rate limits, and health checks. Use when making services resilient against cascading failures."
 metadata:
   version: 3.0.0
   domain: architecture

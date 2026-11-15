@@ -1,12 +1,6 @@
 ---
 name: agent-harness-design
-description: >-
-  Designs the agent itself: prompt and skill contracts, tool schemas, subagent boundaries,
-  context budgets, model tiering, and the eval harness that proves a change helps. Use when
-  building or tuning an agentic workflow (prompts, tools, loops, subagents, memory), when an
-  agent underuses a tool or drifts mid-task, or before shipping a prompt or model change on
-  vibes. Product features that call a model route to llm-app-engineer; training and fine-tuning
-  models to ml-engineer; this repo's roster and routing table to agent-config-maintenance.
+description: "Designs AI agent workflows: prompt contracts, tool schemas, subagent boundaries, and eval harnesses. Use when building or tuning agentic workflows, prompts, loops, or memory."
 metadata:
   version: 1.0.0
   domain: delivery

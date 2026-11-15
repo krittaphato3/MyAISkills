@@ -1,10 +1,6 @@
 ---
 name: observability-sre
-description: >-
-  Designs observability and reliability targets: SLIs and SLOs, error budgets,
-  golden-signal metrics, burn-rate alerts, structured logs, traces, and dashboards that
-  drive action. Use when defining 'healthy', reducing alert noise, or instrumenting a
-  service. Active outages route to incident-response-engineer.
+description: "Designs SLIs, SLOs, golden signals, burn-rate alerting, structured logging, and tracing. Use when defining service health, alert rules, or monitoring dashboards."
 metadata:
   version: 3.0.0
   domain: production

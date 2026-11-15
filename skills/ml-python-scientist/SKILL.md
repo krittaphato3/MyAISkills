@@ -1,11 +1,6 @@
 ---
 name: ml-python-scientist
-description: >-
-  Writes Python for data science and machine learning: pandas and NumPy, scikit-learn,
-  PyTorch or TensorFlow training loops, experiment tracking, reproducibility, and
-  evaluation. Use for notebooks, model code, and analysis. Serving a model in a product
-  routes to llm-engineer or ml-engineer; general Python services to
-  systems-core-architect.
+description: "Implements Python data science and machine learning: pandas, NumPy, scikit-learn, PyTorch loops, and model evaluations. Use for data analysis, ML pipelines, or notebook development."
 metadata:
   version: 3.0.0
   domain: languages

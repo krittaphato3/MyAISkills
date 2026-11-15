@@ -1,9 +1,5 @@
 ---
-description: >-
-  Desktop app developer. Builds Electron and Tauri apps: main/renderer boundaries, IPC and
-  sandboxing, native OS integration, auto-update, packaging, and per-platform code
-  signing. Use when the deliverable is an installable desktop application. Web UI logic
-  routes to ui-ux-architect; mobile apps to mobile-developer.
+description: "Builds Electron and Tauri apps: IPC sandboxing, native OS integration, and packaging. Use when the deliverable is an installable desktop application."
 mode: subagent
 color: accent
 temperature: 0.2

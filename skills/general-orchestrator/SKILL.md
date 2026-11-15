@@ -1,10 +1,6 @@
 ---
 name: general-orchestrator
-description: >-
-  Executes multi-skill work behind per-subtask gates: build a skill inventory, route each
-  subtask to one skill and one agent, sequence by dependency graph, verify every subtask
-  with evidence, then integrate behind a smoke test. Use when a task spans two or more
-  domains or needs parallel waves. Single-skill work invokes that skill directly.
+description: "Coordinates multi-domain work across subtasks, skills, and agents with verification gates. Use when complex tasks span multiple technical domains."
 metadata:
   version: 3.5.0
   domain: doctrine

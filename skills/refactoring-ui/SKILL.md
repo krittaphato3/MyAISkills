@@ -1,10 +1,6 @@
 ---
 name: refactoring-ui
-description: 'Audits and fixes visual hierarchy, spacing, color, and depth in web UIs: grayscale-first
-  workflow, constrained scales, shadows, component styling. Use when the user says "my UI looks off" (or
-  amateur), "fix the design", "Tailwind styling", "color palette", "visual hierarchy", "design system",
-  "spacing scale", or when building design tokens, dark mode themes, or polishing before launch. Usability
-  review routes to ux-review; spacing math to ui-layout-spacing; typeface selection is out of scope.'
+description: "Audits and improves visual hierarchy, spacing scales, depth, shadows, and Tailwind styling in web UIs. Use when fixing amateur layouts, refining design tokens, or polishing UI design."
 license: MIT
 metadata:
   author: wondelai

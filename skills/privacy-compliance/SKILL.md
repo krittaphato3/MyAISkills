@@ -1,11 +1,6 @@
 ---
 name: privacy-compliance
-description: >-
-  Maps and satisfies privacy obligations: PII inventory and data flow, lawful basis and
-  consent, minimization, retention, DSAR, erasure and export, sub-processors and
-  transfers, and audit evidence for GDPR or CCPA. Use when handling personal data or
-  preparing for a privacy review. Application security controls route to
-  security-hardening-specialist.
+description: "Maps personal data, consent, retention, DSAR requests, and audit evidence for GDPR/CCPA. Use when implementing privacy workflows or auditing user data handling."
 metadata:
   version: 3.0.0
   domain: security

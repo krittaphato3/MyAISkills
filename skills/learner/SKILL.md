@@ -1,10 +1,6 @@
 ---
 name: learner
-description: >-
-  Researches unfamiliar technologies, undocumented APIs, or novel domains and synthesizes a reusable,
-  battle-tested skill before implementation. Use when encountering a technology, library, framework, or
-  architecture the agent has little or no prior experience or skill for. Routes standard skill authoring
-  to skill-creator and pure external search to web-search.
+description: "Researches unfamiliar technologies, APIs, or novel libraries to synthesize reusable skills. Use when encountering tools or libraries with no existing agent skill."
 metadata:
   version: 1.0.0
   domain: meta

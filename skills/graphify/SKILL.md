@@ -1,10 +1,6 @@
 ---
 name: graphify
-description: >-
-  Turn any codebase, documentation, SQL schemas, configs, images, or audio/video into a queryable,
-  persistent knowledge graph with deterministic AST parsing, community detection, interactive HTML
-  visualization, and query/explain tools. Use for codebase onboarding, architecture mapping,
-  exploring cross-file call flows, and answering structural questions.
+description: "Turns codebases, documentation, configs, and schemas into queryable knowledge graphs with AST parsing. Use for architecture mapping and call flow exploration."
 version: 1.0.0
 grade: G2
 domain: architecture

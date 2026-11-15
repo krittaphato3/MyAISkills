@@ -1,10 +1,6 @@
 ---
 name: systems-core-architect
-description: >-
-  Writes and reviews systems-language code: Rust, Go, C and C++, and backend Python —
-  ownership and lifetimes, error propagation, memory layout, FFI, and
-  performance-sensitive design. Use for low-level services, CLIs, or native code. JVM work
-  routes to java-jvm-expert; data and ML Python to ml-python-scientist.
+description: "Writes systems-level code in Rust, Go, C/C++, and Python: memory layout, concurrency, and FFI. Use for performance-sensitive services, CLIs, or low-level code."
 metadata:
   version: 3.0.0
   domain: languages
