@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-17",
-  "count": 127,
+  "count": 126,
   "skills": [
     {
       "name": "accessibility-audit",
@@ -411,16 +411,6 @@
       "status": "active",
       "last-reviewed": "2026-10-22",
       "authored-by": "git-master"
-    },
-    {
-      "name": "graphify",
-      "path": "skills\\graphify\\SKILL.md",
-      "version": "1.0.0",
-      "grade": "G2",
-      "domain": "architecture",
-      "status": "active",
-      "last-reviewed": "2026-11-03",
-      "authored-by": "solution-architect"
     },
     {
       "name": "how",

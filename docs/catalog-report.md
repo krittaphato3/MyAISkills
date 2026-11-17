@@ -3,7 +3,7 @@
 
 Generated 2026-11-17 from the files on disk.
 
-- skills: **127**
+- skills: **126**
 - agents: **51**
 - commands: **25**
 - playbooks: **23**
@@ -12,8 +12,8 @@ Generated 2026-11-17 from the files on disk.
 
 Two columns: reachable from the hand-written router tables in `AGENTS.md`, and reachable once the generated `docs/ROUTING.md` index is consulted.
 
-- from `AGENTS.md` alone: 36/127 skills, 7/51 agents
-- including `docs/ROUTING.md`: 127/127 skills, 51/51 agents
+- from `AGENTS.md` alone: 35/126 skills, 7/51 agents
+- including `docs/ROUTING.md`: 126/126 skills, 51/51 agents
 
 Skills not named in any `AGENTS.md` (91): `accessibility-audit`, `adr-engineering`, `agent-browser`, `agent-harness-design`, `algorithms-and-data-structures`, `animation-web-builder`, `api-design-architect`, `arena`, `automate-me`, `background-jobs-engineer`, `benchmark-checklist`, `cloud-cost-optimization`, `concurrency-engineer`, `container-optimizer`, `context-engineering`, `create-verification-skill`, `cybersecurity-specialist`, `data-pipeline-engineer`, `database-at-scale`, `debate-protocol`, `dependency-supply-chain-guardian`, `desktop-app-developer`, `devops-pipeline-engineer`, `distributed-systems-engineer`, `doubt-driven-development`, `email-notifications`, `figure-it-out`, `find-skills`, `formal-verification`, `game-developer`, `github-flow-master`, `i18n-localization`, `impeccable`, `in-your-own-words`, `incident-response-engineer`, `interrogate`, `java-jvm-expert`, `ketchup`, `legacy-modernization`, `llm-app-engineer`, `load-testing`, `maintain-verification-skill`, `mcp-builder`, `mobile-developer`, `monorepo-workspace-architect`, `mutation-testing`, `no-comments`, `observability-sre`, `payments-billing`, `performance-profiler`, `plugin-architecture`, `poteto-mode`, `privacy-compliance`, `query-performance-engineer`, `react-bits`, `realtime-engineer`, `recall`, `refactoring-intelligence`, `refactoring-ui`, `reflect`, `requesting-code-review`, `resilience-pattern-engineer`, `roblox-animation`, `roblox-asset-security`, `roblox-assets`, `roblox-game-production`, `roblox-lua-developer`, `roblox-project-indexer`, `roblox-scripting`, `roblox-security`, `roblox-testing`, `roblox-toolchain`, `roblox-ui-ux`, `roblox-vfx`, `roblox-world-building`, `search-relevance`, `session-continuity`, `sharpen`, `show-me-your-work`, `source-driven-development`, `swarm`, `system-design-architect`, `system-instructions`, `systematic-debugging`, `systems-core-architect`, `testing-strategy`, `third-party-integration`, `token-economy`, `typescript-best-practices`, `web-performance`, `webnovel-author`
 
@@ -25,9 +25,9 @@ Descriptions sit in every session's context before any work starts.
 
 | Component | Chars | Est. tokens |
 |---|---|---|
-| skill descriptions | 25273 | 6318 |
+| skill descriptions | 25092 | 6273 |
 | agent descriptions | 8500 | 2125 |
-| **total** | **33773** | **8443** |
+| **total** | **33592** | **8398** |
 
 Per `agent-config-maintenance`: each description is 120–1024 chars, average target 250–400. The total is `skills × average`, so growth is paid for by merging or retiring an equal amount.
 
@@ -36,7 +36,7 @@ Per `agent-config-maintenance`: each description is 120–1024 chars, average ta
 | Domain | Skills | G1 | G2 | G3 |
 |---|---|---|---|---|
 | doctrine | 26 | 0 | 11 | 15 |
-| architecture | 16 | 0 | 8 | 8 |
+| architecture | 15 | 0 | 7 | 8 |
 | delivery | 35 | 0 | 28 | 7 |
 | production | 16 | 0 | 13 | 3 |
 | security | 4 | 0 | 3 | 1 |
@@ -44,22 +44,22 @@ Per `agent-config-maintenance`: each description is 120–1024 chars, average ta
 | roblox | 14 | 0 | 4 | 10 |
 | meta | 11 | 0 | 10 | 1 |
 | fundamentals | 1 | 0 | 1 | 0 |
-| **total** | **127** |  |  |  |
+| **total** | **126** |  |  |  |
 
 ## Grade conformance
 
 Each grade declares required body sections. Skills missing them are listed below.
 
-- conforming: 127/127
+- conforming: 126/126
 - non-conforming: 0
 
 ## Hygiene
 
-Version families: `3.0.0` x52, `1.0.0` x33, `1.1.0` x24, `3.1.0` x6, `4.0.0` x3, `2.0.0` x2, `3.5.0` x1, `4.9.0` x1, `2.1.0` x1, `1.6.0` x1, `1.3.0` x1, `3.6.0` x1, `1.2.0` x1
+Version families: `3.0.0` x52, `1.0.0` x32, `1.1.0` x24, `3.1.0` x6, `4.0.0` x3, `2.0.0` x2, `3.5.0` x1, `4.9.0` x1, `2.1.0` x1, `1.6.0` x1, `1.3.0` x1, `3.6.0` x1, `1.2.0` x1
 
-Review stamps: `2026-10-22` x63, `2026-10-24` x2, `2026-10-27` x5, `2026-10-30` x12, `2026-10-31` x2, `2026-11-03` x4, `2026-11-08` x8, `2026-11-09` x31
+Review stamps: `2026-10-22` x63, `2026-10-24` x2, `2026-10-27` x5, `2026-10-30` x12, `2026-10-31` x2, `2026-11-03` x3, `2026-11-08` x8, `2026-11-09` x31
 
-Largest bodies (lines): `graphify` 664, `skill-creator` 385, `ui-layout-spacing` 319, `refactoring-ui` 269, `mcp-builder` 254
+Largest bodies (lines): `skill-creator` 385, `ui-layout-spacing` 319, `refactoring-ui` 269, `mcp-builder` 254, `why` 251
 
 Non-active status: `poteto-mode` (deprecated)
 
@@ -107,15 +107,41 @@ Commands referenced in docs but not on disk: none
 ## Routing eval coverage
 
 - cases: 57
-- distinct skills tested: 46/127
+- distinct skills tested: 46/126
 - negative cases (must match nothing): 3
-- skills never tested: 81
+- skills never tested: 80
 
 No runner executes this fixture; `lint_config.py` validates its schema only.
 
 ## Deployed copy
 
-No deployed copy found on this machine.
+- source: `C:\Users\Oz\.agents`
+- deployed: `C:\Users\Oz\.config\opencode`
+- files only in source: 427
+- files that differ: 0
+
+  - `skills\INDEX.md`
+  - `skills\accessibility-audit\SKILL.md`
+  - `skills\adr-engineering\SKILL.md`
+  - `skills\agent-browser\SKILL.md`
+  - `skills\agent-config-maintenance\SKILL.md`
+  - `skills\agent-harness-design\SKILL.md`
+  - `skills\algorithms-and-data-structures\SKILL.md`
+  - `skills\animation-web-builder\SKILL.md`
+  - `skills\api-design-architect\SKILL.md`
+  - `skills\architect\SKILL.md`
+  - `skills\arena\SKILL.md`
+  - `skills\automate-me\SKILL.md`
+  - `skills\background-jobs-engineer\SKILL.md`
+  - `skills\benchmark-checklist\SKILL.md`
+  - `skills\blast-radius\SKILL.md`
+  - `skills\bro\SKILL.md`
+  - `skills\browser-automation\SKILL.md`
+  - `skills\cloud-cost-optimization\SKILL.md`
+  - `skills\codebase-navigation\SKILL.md`
+  - `skills\concurrency-engineer\SKILL.md`
+
+Run `python tools/sync_catalog.py --check` for the authoritative diff.
 
 ## Regenerating
 
