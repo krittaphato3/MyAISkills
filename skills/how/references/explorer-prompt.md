@@ -18,7 +18,10 @@ Other explorers are investigating different slices of the same subsystem in para
 
 ## Exploration Instructions
 
-Start by finding the relevant code. Use Glob to find directories and files, Grep to find key symbols, Read to understand the actual implementation. Don't guess from names. Read the code.
+Choose the right tool for the job:
+- **If `graphify-out/` exists**: Run `graphify query "{QUESTION}"` or `graphify path` first to discover which files matter and how symbols connect. This avoids looping grep for hours across directories.
+- **Use Grep for exact text**: Use Grep for literal strings, regex matches, or verifying definitions inside the located files.
+- Otherwise, use Glob to find directories and files, Grep to find key symbols, and Read for actual implementation. Don't guess from names. Read the code.
 
 Follow this pattern:
 1. **Find the entry point.** What triggers this behavior? A user action, an API call, a scheduled job? Find where it starts.

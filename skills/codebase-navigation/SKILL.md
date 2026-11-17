@@ -34,17 +34,24 @@ somewhere" into a located symbol, its callers, its tests, and its conventions �
 
 ```text
 1. ORIENT (≤5 minutes, no edits)
-   Cheapest opening move: `python tools/repo_map.py . --limit 40` — structure + symbols in
-   roughly 1-2k tokens, then `--focus <symbol>` to jump to file:line hits (PATTERNS §0).
+   Cheapest opening move:
+   - If `graphify-out/` exists: `graphify query "<feature/subsystem>"` or `graphify path "<A>" "<B>"` —
+     instantly maps connected files, callers, and callees in one step.
+   - Otherwise: `python tools/repo_map.py . --limit 40` — structure + symbols in roughly 1-2k tokens.
    Read: README, package/build manifest, directory tree at depth 2, CI config, AGENTS.md/docs.
    Record: language(s), framework + version, package manager, test command, lint command,
    entry points, and where business logic lives vs where glue lives.
 
-2. LOCATE THE BEHAVIOR
+2. LOCATE THE BEHAVIOR (Choose the right tool)
+   - Graphify is best for relationships: when tracing call flows across files, finding who calls what,
+     or connecting UI to backend, use `graphify query "<symbol>"` or `graphify path`. Do not loop grep.
+   - Grep is best for exact text: finding exact string literals, regex matches, or verifying definitions
+     in the files already located.
    a. Exact identifier?  → definition search (rg "def |function |class |const X =")
    b. User-visible string/route? → search the literal, then trace to its handler
-   c. Concept only? → search 2-3 synonyms, then grep the test names (tests name behavior)
-   d. Nothing? → check generated code, config, or a different service. Widen once, then ask.
+   c. Cross-file connection / call flow? → `graphify path` or `graphify query`
+   d. Concept only? → search 2-3 synonyms, then grep the test names (tests name behavior)
+   e. Nothing? → check generated code, config, or a different service. Widen once, then ask.
 
 3. TRACE THE BLAST RADIUS
    For the symbol you will touch: find callers, implementations/overrides, tests, fixtures,

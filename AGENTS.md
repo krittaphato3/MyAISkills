@@ -71,6 +71,13 @@ description later. Do not silently load both.
    to the clean baseline checkpoint, attack the flawed premise, and restart clean.
 10. **Zero test-loosening.** Never delete, comment out, or weaken an existing test assertion to make
     a check pass. An existing test failure indicates a regression in your code, not an inconvenient test.
+11. **Graphify for topology & call flow; grep for targeted text.** When `graphify-out/graph.json` or `graphify-out/` exists
+    in the workspace, use `graphify query "<question or symbol>"` (or `graphify path "<A>" "<B>"` /
+    `graphify explain "<concept>"`) to discover which files matter, trace call flows, or map cross-component relationships.
+    `grep` / `rg` is fully supported and encouraged for finding exact string literals, regex patterns, or verifying
+    definitions within files. However, looping sequential blind `grep` commands across directories to trace dependencies or
+    discover architecture is strictly prohibited (circuit breaker: max 1 exploratory grep before querying graphify). Read
+    raw files only for specific line ranges the graph or grep locates.
 
 ---
 
@@ -106,7 +113,7 @@ request
   → baseline        git status & suite health; confirm clean starting state
   → classify        T0/T1/T2/T3 (§5), and read-only vs write
   → route           description match picks the skill and playbook (skills/ozone-mode/playbooks/)
-  → ground          name the data shape, quote acceptance criterion, search all callers (rg -w)
+  → ground          if graphify-out/ exists, query graphify first (`graphify query`); else name data shape & rg -w
   → act             genuine TDD: RED artifact first, then smallest diff that meets the criterion
   → prove           zero-token checks first, then full regression suite (no single-file pass)
   → audit           line-by-line git diff self-review: no debug code, no loosened tests, no sprawl
@@ -168,6 +175,8 @@ NO-FANOUT   "Do not spawn subagents. Report back to the parent."
   line is mandatory, not advisory.
 - **Cheap work first.** Local tsc/lint/tests cost zero model tokens. Never pay a subagent to read a
   stack trace a command can print.
+- **Graphify mandate in subagents**: When `graphify-out/` exists, every subagent brief that investigates
+  or explores code MUST include: "Run graphify query '<question>' before any grep or file read."
 
 ---
 
@@ -261,6 +270,20 @@ A command's template wins for that run; report a conflict back to `agent-config-
 
 The exhaustive index — every skill, agent, and command with its trigger — is `docs/ROUTING.md`.
 When no row above matches a request, read that file before improvising a workflow.
+
+---
+
+## 7.1 GRAPHIFY KNOWLEDGE GRAPH (TOPOLOGY FIRST, GREP FOR EXACT TEXT)
+
+This project uses `graphify` for zero-token-waste codebase exploration. When `graphify-out/` (or `graphify-out/graph.json`) exists in the workspace:
+
+- **Graphify for the map and call flows:** Run `graphify query "<symbol or question>"` (CLI) or MCP tool to find where functionality lives, trace cross-file call chains (`graphify path "<A>" "<B>"`), or inspect component neighbors (`graphify explain "<concept>"`). This replaces token-heavy sequential grep loops with a single scoped subgraph.
+- **Grep for exact text:** Once graphify points you to the relevant files and functions, use `grep` / `rg` freely for exact string matches, regex patterns, or verifying local imports within those files.
+- **Circuit breaker on grep loops:** If you find yourself running more than 1 exploratory `grep` across multiple directories to trace where data goes or what calls a function, STOP immediately and run `graphify query` or `graphify path`. Never loop grep for hours.
+- **Navigate wiki if present:** If `graphify-out/wiki/index.md` exists, use it for broad architectural navigation instead of raw file sweeps.
+- **Read only graph-located lines:** Read raw source files only for the specific line ranges the graph or grep identified.
+- **Keep graph current:** After modifying code files in a session, run `graphify update .` to keep the graph current (AST-only, zero model tokens).
+- **Subagent inheritance:** Propagate this rule to every dispatched subagent that explores, investigates, or reviews code.
 
 ---
 
