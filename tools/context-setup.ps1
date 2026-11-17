@@ -50,12 +50,10 @@ Write-Host "codebase-memory-mcp is ready (auto_index: true)." -ForegroundColor G
 # 3. Trigger codebase-memory-mcp indexing on this directory
 Write-Host "`n[2/5] Indexing repository with codebase-memory-mcp..." -ForegroundColor Yellow
 try {
-    Push-Location $TargetDir
-    & $cbmExe cli index_repository 2>$null | Out-Null
-    Pop-Location
+    & $cbmExe cli index_repository --repo-path "$TargetDir"
     Write-Host "codebase-memory-mcp index complete." -ForegroundColor Green
 } catch {
-    Write-Host "codebase-memory-mcp index will run automatically in background." -ForegroundColor Gray
+    Write-Host "codebase-memory-mcp index failed: $_" -ForegroundColor Red
 }
 
 # 4. Configure & Pre-Index Serena
