@@ -71,12 +71,12 @@ description later. Do not silently load both.
    to the clean baseline checkpoint, attack the flawed premise, and restart clean.
 10. **Zero test-loosening.** Never delete, comment out, or weaken an existing test assertion to make
     a check pass. An existing test failure indicates a regression in your code, not an inconvenient test.
-11. **Codebase Intelligence Stack (STRICT).** NEVER start tasks with broad `grep`, `rg`, or full-file reads on source code.
-    ALWAYS call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, and blast radius.
-    Once target files/classes are identified, ALWAYS use `serena` MCP tools (`get_symbols_overview`, `find_symbol`, `find_referencing_symbols`, `replace_symbol_body`)
-    to inspect signatures and surgically edit functions without reading entire files. Use `context7` (`resolve-library-id` -> `query-docs`) for external SDK/library docs.
-    Use `grep` or raw file reads ONLY for plain-text configs (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
-
+11. **Codebase Intelligence Stack & Anti-Fragmentation (STRICT).** NEVER start tasks with broad `grep`, `rg`, or full-file reads on source code.
+    ALWAYS call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`) FIRST to locate modules and callers.
+    To inspect implementations, ALWAYS prefer `codebase-memory-mcp` tool `get_code_snippet` or `serena` tool `find_symbol` to avoid file reads entirely.
+    Sequential micro-chunk reads (reading 30–60 line slices multiple times in the same file) are strictly prohibited; if a file read is required before editing,
+    read the entire relevant range in ONE consolidated call (max 1 read per file).
+    Edit surgically via `serena` tool `replace_symbol_body` or targeted `edit_file`.
 ---
 
 ## 3. PERMISSION MATRIX
@@ -274,9 +274,12 @@ When no row above matches a request, read that file before improvising a workflo
 
 - NEVER start tasks with broad `grep`, `rg`, `search_directory`, or full-file reads on source code.
 - STEP 1 (Discovery & Blast Radius): ALWAYS call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, services, and impact paths.
-- STEP 2 (Symbol Inspection & Edits): Once target files/classes are identified, ALWAYS use `serena` MCP tools (`get_symbols_overview`, `find_symbol`, `find_referencing_symbols`, `replace_symbol_body`) to inspect signatures and edit specific functions/methods without reading entire large files.
-- STEP 3 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
-- STEP 4 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
+- STEP 2 (Zero-Read Code Retrieval): To inspect function/method bodies, ALWAYS call `codebase-memory-mcp` tool `get_code_snippet(qualified_name=...)` or `serena` tool `find_symbol`. This returns the full implementation directly without triggering any file reads (`read_file`).
+- STEP 3 (Anti-Fragmentation & Consolidated Reads): Do NOT make sequential micro-chunk reads (e.g., reading 30–60 lines 3+ times in the same file). If viewing surrounding JSX/hooks is strictly necessary before editing, read the entire relevant block in ONE consolidated `read_file` call (max 1 read per file).
+- STEP 4 (Surgical Edits): ALWAYS use `serena` tool `replace_symbol_body` or precise `edit_file` on the target function without re-reading surrounding files.
+- STEP 5 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
+- STEP 6 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
+
 ---
 
 ## 8. DEFINITION OF DONE
