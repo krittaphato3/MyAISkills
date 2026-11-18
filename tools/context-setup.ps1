@@ -163,6 +163,12 @@ if (-not (Test-Path $geminiAgentsMd) -or -not (Get-Content $geminiAgentsMd | Sel
   - **Zero Bureaucracy / Anti-Slop**: Skip heavy 8-stage ceremony, multi-agent debates, or multi-page documentation logs for routine UI/logic fixes. Be concise, surgical, and fast.
 - STEP 6 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
 - STEP 7 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
+- STEP 8 (Craftsmanship & Anti-Slop Standard):
+  - **Rule of Three**: Keep logic local. No speculative helper files (`utils.ts`, `helpers.ts`) for single-use code.
+  - **Nearest-Neighbor Style**: Match adjacent patterns in the same file for error handling, naming, and typing.
+  - **Why, Not What**: Zero narrative comments. Only document external constraints or quirks.
+  - **Zero Type Escapes**: No `as any`, `@ts-ignore`, or non-null assertions (`!`) to silence typechecks.
+  - **Single-Command Proving**: Run targeted test and incremental typecheck in a single combined command (`vitest run <file> && tsc --noEmit`) to eliminate shell process latency.
 "@
     Set-Content -Path $geminiAgentsMd -Value $policyBlock -Encoding UTF8
 }

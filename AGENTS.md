@@ -82,6 +82,12 @@ description later. Do not silently load both.
     - Diagnostic questions (*"is X clickable?", "why does Y fail?"*) are answered directly with code proof in <30 seconds; do NOT unilaterally begin unrequested refactors or bundling builds.
     - Scoped edits (T0/T1) use the Fast Lane: verify with fast targeted tests (`vitest run <file>`, `jest <file>`) and fast incremental typecheck (`tsc --noEmit`). If modifying an exported function or shared utility consumed by other modules, also run targeted tests on direct callers (discovered via Serena `find_referencing_symbols`; if >3 callers, test representative callers and reserve full suite for /ship). Running full production builds (`npm run build` / `vite build`) during iterative development turns is strictly prohibited; reserve them exclusively for final `/ship` or deployment.
     - Zero slop: no boilerplate padding, no unnecessary subagent fanout, no massive markdown session logs for routine fixes.
+13. **Craftsmanship & Anti-Slop Code Standard (Staff Engineering Rigor).**
+    - **Zero Speculative Abstraction (Rule of Three)**: Never extract a helper function, utility module, or generic interface for single-use logic. Require at least 3 distinct call sites across the codebase before extracting an abstraction. Co-locate types and local helpers in the file that uses them.
+    - **Nearest-Neighbor Idiom Match**: Before modifying code, inspect neighboring functions or components in the target file. Match their exact naming style, error handling pattern (Result vs throw), typing patterns, and state conventions.
+    - **Zero Narrative Comments ("Why, Not What")**: Ban comments that narrate what code does (`// calculate total`, `// state for open`). Comments are strictly reserved for non-obvious external constraints, browser quirks, or security requirements. If code needs an explanation of *what* it does, rename variables and functions to make it self-documenting.
+    - **Zero Type Escape Hatches**: Prohibit `as any`, `as unknown as T`, `@ts-ignore`, `# type: ignore`, or non-null assertions (`!`) to silence type errors. Narrow types properly via type guards or fix the underlying interface.
+    - **Hypothesis-Driven Diagnosis ("Name Mechanism Before Code")**: For any bug or unexpected behavior, state: (1) observed symptom, (2) exact root-cause failure mechanism (file:line), and (3) minimal invariant required to fix it before modifying code.
 ---
 
 ## 3. PERMISSION MATRIX
@@ -115,10 +121,11 @@ description later. Do not silently load both.
 request
   → classify        Read-only Question vs Scoped Edit (Fast Lane) vs Heavy Architecture (Deep Lane)
   → ground          Query codebase-memory-mcp first (`search_graph`/`trace_path`), inspect symbols via serena
-  → act             Surgical diff on target symbol (zero slop, no sprawl)
-  → prove           Targeted test & fast typecheck (`tsc --noEmit`) for Fast Lane; full suite only at /ship
-  → audit           Line-by-line git diff self-review: no debug code, no loosened tests
-  → report          DONE / CHANGED / VERIFIED (concise, high-signal)
+  → diagnose        For bugs: name symptom, exact failure mechanism (file:line), and minimal invariant before edits
+  → act             Surgical diff on target symbol (zero slop, nearest-neighbor style, no speculative abstractions)
+  → prove           Combined targeted check (`vitest run <file> && tsc --noEmit`) for Fast Lane; full suite at /ship
+  → audit           Line-by-line diff review: zero narrative comments, zero type escape hatches, no debug code
+  → report          DONE / CHANGED / VERIFIED (crisp, zero-filler, dense engineering signal)
 ```
 
 Skipping a playbook step is allowed only when the step stays in the todo list with
@@ -286,6 +293,12 @@ When no row above matches a request, read that file before improvising a workflo
   - **Zero Bureaucracy / Anti-Slop**: Skip heavy 8-stage ceremony, multi-agent debates, or multi-page documentation logs for routine UI/logic fixes. Be concise, surgical, and fast.
 - STEP 6 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
 - STEP 7 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
+- STEP 8 (Craftsmanship & Anti-Slop Standard):
+  - **Rule of Three**: Keep logic local. No speculative helper files (`utils.ts`, `helpers.ts`) for single-use code.
+  - **Nearest-Neighbor Style**: Match adjacent patterns in the same file for error handling, naming, and typing.
+  - **Why, Not What**: Zero narrative comments. Only document external constraints or quirks.
+  - **Zero Type Escapes**: No `as any`, `@ts-ignore`, or non-null assertions (`!`) to silence typechecks.
+  - **Single-Command Proving**: Run targeted test and incremental typecheck in a single combined command (`vitest run <file> && tsc --noEmit`) to eliminate shell process latency.
 
 ---
 
