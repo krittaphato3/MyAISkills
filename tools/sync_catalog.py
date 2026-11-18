@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TREES = ("skills", "agents", "commands")
-DEFAULT_TARGET = Path.home() / ".config" / "opencode"
+DEFAULT_TARGET = Path.home() / ".gemini" / "config" / "plugins" / "my-agents"
 BACKUP_ROOT = ROOT / "backup"
 # Generated at runtime by a skill, not part of the source catalog.
 IGNORE = {".graphify_version"}
@@ -94,16 +94,25 @@ def apply(target: Path, prune: bool = False) -> list[str]:
 
 
 def check_pointer(target: Path) -> list[str]:
-    """The deployed AGENTS.md must point here, not duplicate the doctrine."""
+    """The deployed AGENTS.md must point here, hardlink here, or point at canonical doctrine."""
     problems = []
-    deployed = target / "AGENTS.md"
+    # In Gemini plugins, rules live in rules/AGENTS.md; in opencode, in AGENTS.md
+    deployed = target / "rules" / "AGENTS.md" if (target / "rules" / "AGENTS.md").is_file() else target / "AGENTS.md"
     if not deployed.is_file():
         return problems
+    try:
+        src_stat = (ROOT / "AGENTS.md").stat()
+        dst_stat = deployed.stat()
+        if src_stat.st_ino == dst_stat.st_ino:
+            # Canonical hardlink on NTFS/Unix - optimal setup
+            return problems
+    except OSError:
+        pass
     size = deployed.stat().st_size
     if size > POINTER_LIMIT:
         problems.append(
             f"deployed AGENTS.md is {size} bytes (> {POINTER_LIMIT}); a second copy of the "
-            f"doctrine probably reappeared — replace it with a pointer to {ROOT / 'AGENTS.md'}"
+            f"doctrine probably reappeared — replace it with a hardlink or pointer to {ROOT / 'AGENTS.md'}"
         )
     text = deployed.read_text(encoding="utf-8", errors="replace")
     if "zcode" not in text and "AGENTS.md" not in text:

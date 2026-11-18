@@ -19,9 +19,10 @@ Other explorers are investigating different slices of the same subsystem in para
 ## Exploration Instructions
 
 Choose the right tool for the job:
-- **If `graphify-out/` exists**: Run `graphify query "{QUESTION}"` or `graphify path` first to discover which files matter and how symbols connect. This avoids looping grep for hours across directories.
-- **Use Grep for exact text**: Use Grep for literal strings, regex matches, or verifying definitions inside the located files.
-- Otherwise, use Glob to find directories and files, Grep to find key symbols, and Read for actual implementation. Don't guess from names. Read the code.
+- **Codebase Memory MCP**: Use `search_graph` and `trace_path` to discover which files matter and how symbols connect without looping grep. If unindexed (projects: 0), fall back immediately to Serena.
+- **Serena MCP**: Use `get_symbols_overview`, `find_symbol`, and `find_referencing_symbols` to inspect symbol definitions and caller hierarchies directly without full-file reads.
+- **Use Grep for exact text**: Use Grep for literal strings, regex matches, or verifying definitions inside located files or config files.
+- Read line ranges only for exact targets located by graph or grep. Never make full-file reads for a single symbol.
 
 Follow this pattern:
 1. **Find the entry point.** What triggers this behavior? A user action, an API call, a scheduled job? Find where it starts.

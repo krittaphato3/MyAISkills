@@ -11,7 +11,6 @@ Cross-checks: every skill and agent reachable from `AGENTS.md` §3; no route poi
 
 Fix what is safe to fix and record it in `ANALYSIS.md` with version bumps. Report the rest with severity.
 
-Inventory:
-!`ls -1 skills`
-!`ls -1 agents`
-!`ls -1 commands 2>/dev/null || echo "(no commands directory)"`
+Validation:
+!`python tools/lint_config.py`
+!`python tools/skill_lint.py`

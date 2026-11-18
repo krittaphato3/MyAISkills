@@ -12,4 +12,4 @@ Load the `session-continuity` skill and follow its resume protocol:
 Do not re-open recorded DECISIONS; ask only if a constraint now conflicts. If no handoff exists, say so and offer `/onboard` instead of guessing.
 
 Files present:
-!`ls -1 .agent 2>/dev/null || echo "(no .agent directory)"`
+!`python -c "import pathlib; p=pathlib.Path('.agent'); print('\n'.join(x.name for x in p.iterdir()) if p.is_dir() else '(no .agent directory)')"`

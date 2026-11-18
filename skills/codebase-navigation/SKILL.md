@@ -35,21 +35,24 @@ somewhere" into a located symbol, its callers, its tests, and its conventions �
 ```text
 1. ORIENT (≤5 minutes, no edits)
    Cheapest opening move:
-   - If `graphify-out/` exists: `graphify query "<feature/subsystem>"` or `graphify path "<A>" "<B>"` —
+   - If `codebase-memory-mcp` is active: Call `search_graph` or `get_architecture()` —
      instantly maps connected files, callers, and callees in one step.
+   - Zero-Project Fallback: If `codebase-memory-mcp` returns `projects: 0` (unindexed), fall back to Serena (`get_symbols_overview`).
    - Otherwise: `python tools/repo_map.py . --limit 40` — structure + symbols in roughly 1-2k tokens.
    Read: README, package/build manifest, directory tree at depth 2, CI config, AGENTS.md/docs.
    Record: language(s), framework + version, package manager, test command, lint command,
    entry points, and where business logic lives vs where glue lives.
 
 2. LOCATE THE BEHAVIOR (Choose the right tool)
-   - Graphify is best for relationships: when tracing call flows across files, finding who calls what,
-     or connecting UI to backend, use `graphify query "<symbol>"` or `graphify path`. Do not loop grep.
-   - Grep is best for exact text: finding exact string literals, regex matches, or verifying definitions
-     in the files already located.
-   a. Exact identifier?  → definition search (rg "def |function |class |const X =")
+   - Codebase Memory MCP is best for topology & call flows: `search_graph`, `trace_path`, `query_graph`.
+     Do not loop grep.
+   - Serena MCP is best for symbol extraction & precise AST edits: `get_symbols_overview`, `find_symbol`,
+     `find_referencing_symbols`, `replace_symbol_body`.
+   - Grep is best for exact text: finding exact string literals, regex matches, or config values
+     in files already located.
+   a. Exact identifier?  → `serena` tool `find_symbol` or `codebase-memory-mcp` `search_graph`
    b. User-visible string/route? → search the literal, then trace to its handler
-   c. Cross-file connection / call flow? → `graphify path` or `graphify query`
+   c. Cross-file connection / call flow? → `trace_path` or Serena `find_referencing_symbols`
    d. Concept only? → search 2-3 synonyms, then grep the test names (tests name behavior)
    e. Nothing? → check generated code, config, or a different service. Widen once, then ask.
 
@@ -82,7 +85,7 @@ somewhere" into a located symbol, its callers, its tests, and its conventions �
 Why: whole-file reads are the dominant token cost of navigation, and half of them are for
 symbols the map already locates. The map costs ~1-2k tokens and replaces several 5k+ reads.
 Escalation for very large or frequently revisited repos (opt-in, vet before installing):
-Serena (LSP-based symbol retrieval over MCP), Graphify (local project knowledge graph),
+Serena (LSP-based symbol retrieval over MCP), codebase-memory-mcp (knowledge graph over MCP),
 Aider's repo map, repomix/gitingest for one-off snapshots. Install one only when repeated
 navigation justifies it; measure the token spend before and after rather than trusting a
 vendor claim (`token-economy`).

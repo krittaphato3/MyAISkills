@@ -152,12 +152,17 @@ if (-not (Test-Path $geminiAgentsMd) -or -not (Get-Content $geminiAgentsMd | Sel
 ## Codebase Navigation & Surgical Editing Policy (STRICT)
 
 - NEVER start tasks with broad `grep`, `rg`, `search_directory`, or full-file reads on source code.
-- STEP 1 (Discovery & Blast Radius): ALWAYS call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, services, and impact paths.
+- STEP 1 (Discovery & Blast Radius): Call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, services, and impact paths.
+  - Zero-Project Fallback: If `codebase-memory-mcp` reports `projects: 0` or is unindexed, DO NOT panic or loop. Immediately fall back to `serena` (`get_symbols_overview`, `find_symbol`, `find_referencing_symbols`), which parses AST/LSP directly from project source files on-the-fly without requiring a pre-indexed database.
 - STEP 2 (Zero-Read Code Retrieval): To inspect function/method bodies, ALWAYS call `codebase-memory-mcp` tool `get_code_snippet(qualified_name=...)` or `serena` tool `find_symbol`. This returns the full implementation directly without triggering any file reads (`read_file`).
 - STEP 3 (Anti-Fragmentation & Consolidated Reads): Do NOT make sequential micro-chunk reads (e.g., reading 30–60 lines 3+ times in the same file). If viewing surrounding JSX/hooks is strictly necessary before editing, read the entire relevant block in ONE consolidated `read_file` call (max 1 read per file).
 - STEP 4 (Surgical Edits): ALWAYS use `serena` tool `replace_symbol_body` or precise `edit_file` on the target function without re-reading surrounding files.
-- STEP 5 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
-- STEP 6 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
+- STEP 5 (World-Class Velocity & Proportional Testing — NO SLOW SNAIL WORKFLOWS):
+  - **Questions Stay Questions**: If the user asks a diagnostic question (*"is X clickable?", "how does Y work?"*), inspect the code and answer directly with file:line proof in under 30 seconds. Do NOT silently start unsolicited multi-file refactors, builds, or test suites unless explicitly requested.
+  - **Fast Lane for Scoped Changes (T0/T1)**: Verify scoped edits with targeted tests (`vitest run <file>`, `jest <file>`) and fast incremental typecheck (`tsc --noEmit`). If an exported function or shared interface is modified, run tests for direct callers too (if >3 callers, test representative callers and reserve full suite for /ship). NEVER trigger full production bundling (`npm run build` / `vite build`) during iterative development turns—reserve full workspace builds strictly for final `/ship` or deployment.
+  - **Zero Bureaucracy / Anti-Slop**: Skip heavy 8-stage ceremony, multi-agent debates, or multi-page documentation logs for routine UI/logic fixes. Be concise, surgical, and fast.
+- STEP 6 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
+- STEP 7 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
 "@
     Set-Content -Path $geminiAgentsMd -Value $policyBlock -Encoding UTF8
 }

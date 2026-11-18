@@ -73,10 +73,15 @@ description later. Do not silently load both.
     a check pass. An existing test failure indicates a regression in your code, not an inconvenient test.
 11. **Codebase Intelligence Stack & Anti-Fragmentation (STRICT).** NEVER start tasks with broad `grep`, `rg`, or full-file reads on source code.
     ALWAYS call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`) FIRST to locate modules and callers.
+    **Zero-Project Fallback**: If `codebase-memory-mcp` returns `projects: 0` (unindexed), fall back immediately to `serena` (`get_symbols_overview`, `find_symbol`), which parses AST directly from project files without needing a pre-built SQLite graph.
     To inspect implementations, ALWAYS prefer `codebase-memory-mcp` tool `get_code_snippet` or `serena` tool `find_symbol` to avoid file reads entirely.
     Sequential micro-chunk reads (reading 30–60 line slices multiple times in the same file) are strictly prohibited; if a file read is required before editing,
     read the entire relevant range in ONE consolidated call (max 1 read per file).
     Edit surgically via `serena` tool `replace_symbol_body` or targeted `edit_file`.
+12. **World-Class Velocity & Proportional Testing (No Snail Workflows).** Act like a Staff Engineer: rigorous, surgical, and fast.
+    - Diagnostic questions (*"is X clickable?", "why does Y fail?"*) are answered directly with code proof in <30 seconds; do NOT unilaterally begin unrequested refactors or bundling builds.
+    - Scoped edits (T0/T1) use the Fast Lane: verify with fast targeted tests (`vitest run <file>`, `jest <file>`) and fast incremental typecheck (`tsc --noEmit`). If modifying an exported function or shared utility consumed by other modules, also run targeted tests on direct callers (discovered via Serena `find_referencing_symbols`; if >3 callers, test representative callers and reserve full suite for /ship). Running full production builds (`npm run build` / `vite build`) during iterative development turns is strictly prohibited; reserve them exclusively for final `/ship` or deployment.
+    - Zero slop: no boilerplate padding, no unnecessary subagent fanout, no massive markdown session logs for routine fixes.
 ---
 
 ## 3. PERMISSION MATRIX
@@ -108,15 +113,12 @@ description later. Do not silently load both.
 
 ```text
 request
-  → baseline        git status & suite health; confirm clean starting state
-  → classify        T0/T1/T2/T3 (§5), and read-only vs write
-  → route           description match picks the skill and playbook (skills/ozone-mode/playbooks/)
-  → ground          query codebase-memory-mcp first (`search_graph`/`trace_path`), inspect symbols via serena
-  → act             genuine TDD: RED artifact first, then smallest diff that meets the criterion
-  → prove           zero-token checks first, then full regression suite (no single-file pass)
-  → audit           line-by-line git diff self-review: no debug code, no loosened tests, no sprawl
-  → gate            /ship-check: claim-to-diff audit, blast radius, evidence ledger
-  → report          DONE / CHANGED / VERIFIED / GAPS
+  → classify        Read-only Question vs Scoped Edit (Fast Lane) vs Heavy Architecture (Deep Lane)
+  → ground          Query codebase-memory-mcp first (`search_graph`/`trace_path`), inspect symbols via serena
+  → act             Surgical diff on target symbol (zero slop, no sprawl)
+  → prove           Targeted test & fast typecheck (`tsc --noEmit`) for Fast Lane; full suite only at /ship
+  → audit           Line-by-line git diff self-review: no debug code, no loosened tests
+  → report          DONE / CHANGED / VERIFIED (concise, high-signal)
 ```
 
 Skipping a playbook step is allowed only when the step stays in the todo list with
@@ -173,7 +175,7 @@ NO-FANOUT   "Do not spawn subagents. Report back to the parent."
   line is mandatory, not advisory.
 - **Cheap work first.** Local tsc/lint/tests cost zero model tokens. Never pay a subagent to read a
   stack trace a command can print.
-- **Codebase Intelligence Stack in subagents**: Every subagent brief that investigates or edits code MUST use codebase-memory-mcp for discovery and serena for symbol inspection/edits before any grep.
+- **Codebase Intelligence Stack in subagents**: When MCP tools are available in the subagent's toolset, the brief MUST instruct it to use codebase-memory-mcp for discovery and serena for symbol inspection/edits before any grep. If the subagent runs without MCP access (e.g. read-only sandboxed workers), the parent agent must query codebase-memory-mcp/serena first and supply exact symbol names, file paths, and line ranges in the brief.
 
 ---
 
@@ -193,7 +195,7 @@ router, not a gate in front of it.
 | Two or more domains in one task | `general-orchestrator` |
 | Web search, external docs, page reading | `web-search`; interactive/browser -> `browser-automation`; in-app desktop browser -> `browser-use:control-browser` |
 | Multi-source deep research, external facts, RFCs | `deep-researcher` (agent) + `web-search` |
-| Architecture mapping, codebase graph, dependency exploration | `graphify`, `codebase-navigation` |
+| Architecture mapping, codebase graph, dependency exploration | `codebase-navigation` (MCP: search_graph, trace_path) |
 | Shipping anything | `ship-gate` |
 | Same correction twice | `correct` |
 | Unfamiliar technology, novel framework, or missing domain skill | `learner` |
@@ -260,7 +262,7 @@ A command's template wins for that run; report a conflict back to `agent-config-
 |---|---|
 | Plan and route | `/route` `/plan` `/architect` `/product` `/parallel-dev` `/ozone-mode` |
 | Build | `/tdd` `/algorithms` `/roblox` |
-| Investigate | `/debug` `/map` `/graphify` `/search` `/fetch` `/blast-radius` |
+| Investigate | `/debug` `/map` `/graph` `/search` `/fetch` `/blast-radius` |
 | Review and ship | `/review` `/verify` `/ship` `/ship-check` |
 | Explain and polish | `/ux-review` `/unslop` |
 | Session | `/onboard` `/handoff` `/resume` `/doctor` |
@@ -273,12 +275,17 @@ When no row above matches a request, read that file before improvising a workflo
 ## Codebase Navigation & Surgical Editing Policy (STRICT)
 
 - NEVER start tasks with broad `grep`, `rg`, `search_directory`, or full-file reads on source code.
-- STEP 1 (Discovery & Blast Radius): ALWAYS call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, services, and impact paths.
+- STEP 1 (Discovery & Blast Radius): Call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, services, and impact paths.
+  - **Zero-Project Fallback**: If `codebase-memory-mcp` reports `projects: 0` or is unindexed, DO NOT panic or loop. Immediately fall back to `serena` (`get_symbols_overview`, `find_symbol`, `find_referencing_symbols`), which parses AST/LSP directly from project source files on-the-fly without requiring a pre-indexed database.
 - STEP 2 (Zero-Read Code Retrieval): To inspect function/method bodies, ALWAYS call `codebase-memory-mcp` tool `get_code_snippet(qualified_name=...)` or `serena` tool `find_symbol`. This returns the full implementation directly without triggering any file reads (`read_file`).
 - STEP 3 (Anti-Fragmentation & Consolidated Reads): Do NOT make sequential micro-chunk reads (e.g., reading 30–60 lines 3+ times in the same file). If viewing surrounding JSX/hooks is strictly necessary before editing, read the entire relevant block in ONE consolidated `read_file` call (max 1 read per file).
 - STEP 4 (Surgical Edits): ALWAYS use `serena` tool `replace_symbol_body` or precise `edit_file` on the target function without re-reading surrounding files.
-- STEP 5 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
-- STEP 6 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
+- STEP 5 (World-Class Velocity & Proportional Testing — NO SLOW SNAIL WORKFLOWS):
+  - **Questions Stay Questions**: If the user asks a diagnostic question (*"is X clickable?", "how does Y work?"*), inspect the code and answer directly with file:line proof in under 30 seconds. Do NOT silently start unsolicited multi-file refactors, builds, or test suites unless explicitly requested.
+  - **Fast Lane for Scoped Changes (T0/T1)**: Verify scoped edits with targeted tests (`vitest run <file>`, `jest <file>`) and fast incremental typecheck (`tsc --noEmit`). If an exported function or shared interface is modified, run tests for direct callers too. NEVER trigger full production bundling (`npm run build` / `vite build`) during iterative development turns—reserve full workspace builds strictly for final `/ship` or deployment.
+  - **Zero Bureaucracy / Anti-Slop**: Skip heavy 8-stage ceremony, multi-agent debates, or multi-page documentation logs for routine UI/logic fixes. Be concise, surgical, and fast.
+- STEP 6 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
+- STEP 7 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
 
 ---
 
@@ -291,7 +298,7 @@ All lines true and evidenced before reporting completion:
 - [ ] A mode and playbook were declared for non-trivial work.
 - [ ] The changed behavior was exercised the way the user will use it: test, request, DOM, or run.
 - [ ] For bugfixes or new features, a raw pre-fix RED failure artifact is recorded in the evidence ledger.
-- [ ] Typecheck, lint, and the full workspace/package regression suite are green (single-file runs prohibited as final proof).
+- [ ] Typecheck and targeted tests for modified symbols are green (fast-lane proof). Full workspace suite and production build are required only at final /ship or release.
 - [ ] Zero pre-existing tests were weakened, skipped, or deleted; any assertion change is an explicit contract change.
 - [ ] All direct callers of modified symbols were searched (`rg -w`) and verified unbroken.
 - [ ] The git diff was reviewed line-by-line: no secrets, debug artifacts (`console.log`, prints), dead code, or sprawl.
