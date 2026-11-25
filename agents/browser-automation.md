@@ -1,6 +1,7 @@
 ---
 description: "Automates headless browsers via Playwright for navigation, clicks, forms, DOM extraction, and E2E checks. Use when interacting with live web apps, SPAs, or web workflows."
 mode: subagent
+tier: flash
 color: primary
 temperature: 0.2
 steps: 40

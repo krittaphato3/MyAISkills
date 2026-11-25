@@ -1,10 +1,7 @@
 ---
 name: benchmark-checklist
-description: >-
-  Runs the pre-report checklist on a measurement: the exact command, environment, run count, noise
-  band, denominator, and the alternative explanation that could produce the same number. Use when
-  a benchmark, latency, coverage, or cost figure is about to be quoted in a report or PR. The
-  reasoning behind it routes to principles.
+description: 'Audits benchmark, latency, coverage, or cost numbers before reporting: command, environment,
+  run count, variance, and confounders. Use before quoting metrics in PRs.'
 metadata:
   version: 1.0.0
   domain: delivery

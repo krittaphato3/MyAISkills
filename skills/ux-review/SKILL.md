@@ -1,13 +1,14 @@
 ---
 name: ux-review
-description: "Audits live interfaces for usability, interaction quality, loading/empty/error states, and affordances. Use when evaluating shipped screens or resolving user interaction confusion."
+description: Audits live interfaces across viewports for usability, loading/empty/error states, keyboard,
+  and microcopy. Use when reviewing shipped screens or UX flows.
 metadata:
   version: 1.2.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-11-09'
-  authored-by: design-critic
+  authored-by: ui-reviewer
 ---
 
 # UX Review
@@ -128,4 +129,4 @@ review pass that catches those — on the running interface, with evidence, befo
 - `accessibility-audit` — formal WCAG 2.2 AA conformance
 - `refactoring-ui`, `impeccable`, `ui-layout-spacing` — visual craft and layout
 - `frontend-web-engineer` — implementation of accepted findings
-- `design-critic` (agent) — runs this review; `ui-ux-architect` — builds the fix
+- `ui-reviewer` (agent) — runs this review; `ui-ux-architect` — builds the fix

@@ -1,8 +1,7 @@
 ---
 name: arena
-description: Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the
-  losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial
-  artifact would lock in the wrong shape.
+description: Spawns N parallel candidates on a hard design task, selects a base, and grafts winners' strongest
+  parts. Use for /arena or high-stakes multi-approach exploration.
 metadata:
   version: 1.1.0
   domain: doctrine

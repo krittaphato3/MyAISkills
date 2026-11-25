@@ -1,8 +1,7 @@
 ---
 name: unslop
-description: 'Cuts AI tells from any writing surface: replies, docs, PR bodies, and commit messages. Use
-  whenever prose is produced or reviewed, especially when wording reads generic or over-explained. Code
-  comments route to no-comments; technical document structure routes to technical-writing.'
+description: Cuts AI prose tells from docs, replies, PRs, and commits while preserving precision. Use
+  when drafting or reviewing prose; code comments route to no-comments.
 metadata:
   version: 1.1.0
   domain: delivery

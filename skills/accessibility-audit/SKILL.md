@@ -7,7 +7,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  authored-by: accessibility-specialist
+  authored-by: ui-reviewer
 ---
 
 # Accessibility Audit
@@ -125,7 +125,7 @@ Residual risk: {unfixed items + impact}
 - WCAG 2.1 / 2.2 (W3C) — the normative criteria behind the four principles.
 - axe-core / Lighthouse — the automated third of the audit, never the whole.
 - WAI-ARIA Authoring Practices — expected roles, states, and key sets for custom widgets.
-- `accessibility-specialist` agent — the auditor that runs this skill.
+- `ui-reviewer` agent — the auditor that runs this skill.
 - `frontend-web-engineer`, `ui-ux-architect` — where semantic implementation happens.
 
-Ownership: maintained by accessibility-specialist; accessibility-audit is the conformance-evidence skill for delivered UI.
+Ownership: maintained by ui-reviewer; accessibility-audit is the conformance-evidence skill for delivered UI.

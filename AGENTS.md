@@ -77,7 +77,7 @@ description later. Do not silently load both.
     To inspect implementations, ALWAYS prefer `codebase-memory-mcp` tool `get_code_snippet` or `serena` tool `find_symbol` to avoid file reads entirely.
     Sequential micro-chunk reads (reading 30–60 line slices multiple times in the same file) are strictly prohibited; if a file read is required before editing,
     read the entire relevant range in ONE consolidated call (max 1 read per file).
-    Edit surgically via `serena` tool `replace_symbol_body` or targeted `edit_file`.
+    Edit surgically via `serena` tool `replace_symbol_body` or targeted `edit_file`. Call `context7` for external SDK docs; fall back to `grep` or raw reads only for configs or exact literals.
 12. **World-Class Velocity & Proportional Testing (No Snail Workflows).** Act like a Staff Engineer: rigorous, surgical, and fast.
     - Diagnostic questions (*"is X clickable?", "why does Y fail?"*) are answered directly with code proof in <30 seconds; do NOT unilaterally begin unrequested refactors or bundling builds.
     - Scoped edits (T0/T1) use the Fast Lane: verify with fast targeted tests (`vitest run <file>`, `jest <file>`) and fast incremental typecheck (`tsc --noEmit`). If modifying an exported function or shared utility consumed by other modules, also run targeted tests on direct callers (discovered via Serena `find_referencing_symbols`; if >3 callers, test representative callers and reserve full suite for /ship). Running full production builds (`npm run build` / `vite build`) during iterative development turns is strictly prohibited; reserve them exclusively for final `/ship` or deployment.
@@ -194,11 +194,11 @@ router, not a gate in front of it.
 
 | Work type | Load |
 |---|---|
-| Development: feature, bugfix, behavior change, refactor | `test-driven-development`, `verification-before-completion` |
-| Web / UI / UX surfaces, interaction flows | `frontend-web-engineer`; spatial rhythm -> `ui-layout-spacing`; live browser proof -> `webapp-qa` |
-| Interface quality review of a shipped screen | `ux-review` |
+| Development: feature, bugfix, behavior change, refactor | `test-driven-development`, `ts-test-patterns`, `verification-before-completion` |
+| Web / UI / UX surfaces, interaction flows | `frontend-web-engineer`, `ai-streaming-ux`; rhythm -> `ui-layout-spacing`; live QA -> `webapp-qa` |
+| Interface & WCAG audit of a shipped screen | `ux-review`, `accessibility-audit` (`ui-reviewer` agent) |
 | Security: audit, threat review, hardening | `threat-modeling` or `security-hardening-specialist` |
-| Roblox anything | matching `roblox-*` skill; execution -> `roblox-studio-mcp` |
+| Roblox anything | `roblox-vague-director` (vague pitch), `roblox-3d-pipeline`, `roblox-economy-retention`, matching `roblox-*` -> `roblox-studio-mcp` |
 | Two or more domains in one task | `general-orchestrator` |
 | Web search, external docs, page reading | `web-search`; interactive/browser -> `browser-automation`; in-app desktop browser -> `browser-use:control-browser` |
 | Multi-source deep research, external facts, RFCs | `deep-researcher` (agent) + `web-search` |
@@ -221,32 +221,8 @@ Rules:
   token budgets die and how instructions start contradicting each other.
 - Adding or renaming a skill means updating `skills/INDEX.md` and running the linters in §10.
 
-### Trigger breadcrumbs
-
-These words should make you reach for the `skill` tool without being asked:
-
-| Signal | Words |
-|---|---|
-| Plan / vague / scope | "build", "add", "make it", "not sure", "design" |
-| Debug | "broken", "fails", "error", "flake", "regression", "why" |
-| Test | "test", "cover", "E2E", "reproduce", "TDD" |
-| Review | "review", "check", "safe to merge", "hole", "adversarial" |
-| Ship | "commit", "PR", "release", "deploy", "changelog" |
-| Perf | "slow", "latency", "memory", "profile", "optimize" |
-| Security | "auth", "token", "vulnerability", "secret", "injection" |
-| Docs | "README", "ADR", "document", "explain" |
-| AI | "LLM", "RAG", "embedding", "prompt", "chatbot" |
-| Money | "payment", "subscribe", "billing", "invoice" |
-| Async / live | "queue", "worker", "cron", "websocket", "realtime" |
-| Data | "ETL", "pipeline", "warehouse", "backfill", "CDC" |
-| Privacy | "GDPR", "PII", "consent", "retention", "delete my data" |
-| Desktop | "Electron", "Tauri", "installer", "auto-update" |
-| Motion | "scroll animation", "GSAP", "Lenis", "React Bits", "60fps" |
-| Cost | "cloud bill", "spend", "rightsize", "egress" |
-| i18n | "translate", "locale", "RTL", "hreflang" |
-
-Ambiguity rule: compare skill descriptions, take the most specific match. If a breadcrumb fires
-on a request that turns out to be trivial, drop the skill and stay in-thread.
+Ambiguity rule: compare skill descriptions, take the most specific match. If a signal fires
+on a request that turns out to be trivial or a diagnostic question, drop the skill and stay in-thread.
 
 ### Commands — one-word entry points
 
@@ -279,29 +255,6 @@ When no row above matches a request, read that file before improvising a workflo
 
 ---
 
-## Codebase Navigation & Surgical Editing Policy (STRICT)
-
-- NEVER start tasks with broad `grep`, `rg`, `search_directory`, or full-file reads on source code.
-- STEP 1 (Discovery & Blast Radius): Call `codebase-memory-mcp` tools (`search_graph`, `trace_path`, `get_architecture`, `detect_changes`) FIRST to locate modules, callers, services, and impact paths.
-  - **Zero-Project Fallback**: If `codebase-memory-mcp` reports `projects: 0` or is unindexed, DO NOT panic or loop. Immediately fall back to `serena` (`get_symbols_overview`, `find_symbol`, `find_referencing_symbols`), which parses AST/LSP directly from project source files on-the-fly without requiring a pre-indexed database.
-- STEP 2 (Zero-Read Code Retrieval): To inspect function/method bodies, ALWAYS call `codebase-memory-mcp` tool `get_code_snippet(qualified_name=...)` or `serena` tool `find_symbol`. This returns the full implementation directly without triggering any file reads (`read_file`).
-- STEP 3 (Anti-Fragmentation & Consolidated Reads): Do NOT make sequential micro-chunk reads (e.g., reading 30–60 lines 3+ times in the same file). If viewing surrounding JSX/hooks is strictly necessary before editing, read the entire relevant block in ONE consolidated `read_file` call (max 1 read per file).
-- STEP 4 (Surgical Edits): ALWAYS use `serena` tool `replace_symbol_body` or precise `edit_file` on the target function without re-reading surrounding files.
-- STEP 5 (World-Class Velocity & Proportional Testing — NO SLOW SNAIL WORKFLOWS):
-  - **Questions Stay Questions**: If the user asks a diagnostic question (*"is X clickable?", "how does Y work?"*), inspect the code and answer directly with file:line proof in under 30 seconds. Do NOT silently start unsolicited multi-file refactors, builds, or test suites unless explicitly requested.
-  - **Fast Lane for Scoped Changes (T0/T1)**: Verify scoped edits with targeted tests (`vitest run <file>`, `jest <file>`) and fast incremental typecheck (`tsc --noEmit`). If an exported function or shared interface is modified, run tests for direct callers too. NEVER trigger full production bundling (`npm run build` / `vite build`) during iterative development turns—reserve full workspace builds strictly for final `/ship` or deployment.
-  - **Zero Bureaucracy / Anti-Slop**: Skip heavy 8-stage ceremony, multi-agent debates, or multi-page documentation logs for routine UI/logic fixes. Be concise, surgical, and fast.
-- STEP 6 (External Libraries): Call `context7` (`resolve-library-id` -> `query-docs`) whenever checking external SDK or framework APIs.
-- STEP 7 (Fallback Only): Use `grep` or raw file reads ONLY for plain-text config files (`.env`, `.yaml`, `.json`), SQL/migrations, or exact literal error strings.
-- STEP 8 (Craftsmanship & Anti-Slop Standard):
-  - **Rule of Three**: Keep logic local. No speculative helper files (`utils.ts`, `helpers.ts`) for single-use code.
-  - **Nearest-Neighbor Style**: Match adjacent patterns in the same file for error handling, naming, and typing.
-  - **Why, Not What**: Zero narrative comments. Only document external constraints or quirks.
-  - **Zero Type Escapes**: No `as any`, `@ts-ignore`, or non-null assertions (`!`) to silence typechecks.
-  - **Single-Command Proving**: Run targeted test and incremental typecheck in a single combined command (`vitest run <file> && tsc --noEmit`) to eliminate shell process latency.
-
----
-
 ## 8. DEFINITION OF DONE
 
 All lines true and evidenced before reporting completion:
@@ -313,7 +266,7 @@ All lines true and evidenced before reporting completion:
 - [ ] For bugfixes or new features, a raw pre-fix RED failure artifact is recorded in the evidence ledger.
 - [ ] Typecheck and targeted tests for modified symbols are green (fast-lane proof). Full workspace suite and production build are required only at final /ship or release.
 - [ ] Zero pre-existing tests were weakened, skipped, or deleted; any assertion change is an explicit contract change.
-- [ ] All direct callers of modified symbols were searched (`rg -w`) and verified unbroken.
+- [ ] All direct callers of modified symbols were checked (`find_referencing_symbols` / `trace_path`) and verified unbroken.
 - [ ] The git diff was reviewed line-by-line: no secrets, debug artifacts (`console.log`, prints), dead code, or sprawl.
 - [ ] An independent reviewer or adversarial pass covered T2/T3 work.
 - [ ] `ship-gate` ran: claim-to-diff audit, blast radius stated.
@@ -326,9 +279,9 @@ All lines true and evidenced before reporting completion:
 ## 9. COST DISCIPLINE
 
 - **Quality first, then price.** Subagents are for parallelizable depth, not for routine reading.
-- **Model tiering.** Cheap models for bounded read-heavy work: mapping, search, summarization.
-  Strong models only for ambiguity, architecture, security review, adjudication. Never hardcode a
-  model ID you cannot verify; inherit otherwise.
+- **Model tiering.** Dispatch `Model: "flash"` / `"flash_lite"` for bounded read-only scouts and
+  reviewers (`diagnostic-scout`, `codebase-cartographer`, `comment-sicko`, `dependency-guardian`);
+  use `inherit` (or `pro` for T3) on architecture, security, and debate adjudication.
 - **Fan-out cap.** 5 concurrent subagents per wave, 10 subtasks per orchestration. Past that,
   verification stops being reviewable and cost grows faster than quality.
 - **Context is budget.** Long files and wide reads stay in subagents; the main thread keeps the
@@ -349,6 +302,7 @@ All lines true and evidenced before reporting completion:
 python tools/gen_routing.py                 # regenerate docs/ROUTING.md (coverage index)
 python tools/lint_config.py --write-index   # validate + regenerate skills/INDEX.md
 python tools/skill_lint.py --regen          # second validator + docs/skills/skills.json
+python tools/test_routing.py                # execute tools/routing_cases.json regression suite
 python tools/sync_catalog.py --apply --prune # deploy; prune files absent from the source
 python tools/gen_catalog_report.py          # regenerate docs/catalog-report.md (real numbers)
 python tools/sync_catalog.py                # confirm: must print "in sync"
@@ -368,62 +322,4 @@ guarantees it goes stale the moment the sync copies anything.
 - Changes to this file or the roster are `meta-architect` work and get a version bump.
 - A skill unexercised for 6 months, or overlapping a newer one, points at its replacement in its
   description; delete only after all references are gone.
-- Version: 4.2.0 · last reviewed 2026-11-08
-
-# DeepSeek Harness (`@deepseek-ai/dsh-ptc-runtime-node` / `dsh-ptc-plus`) PTC Rules — CRITICAL
-
-All code inside `run_code` executes in a TypeScript / ES Module sandbox on Windows bridged to `tools.*`. Follow these rules strictly on EVERY `run_code` call without exception:
-
-## 1. Valid TypeScript/JavaScript Syntax Only (NO Python `r"..."` Strings & Safe Windows Paths)
-- You are writing TypeScript/JavaScript, NEVER Python.
-- NEVER use Python raw string syntax like `r"C:\..."` or `f"..."`. It throws `error[PTC-C001]: cell could not be parsed: Unexpected token`.
-- NEVER use single unescaped backslashes in normal quotes like `"C:\Users\Oz\..."` (in JS/TS, `\U` or `\t` is interpreted as an escape sequence).
-- For Windows file paths (such as reading `dsh-spill` temp files), ALWAYS use `String.raw` with backticks OR forward slashes:
-  - CORRECT (String.raw): ``const spilled = await fs.readFile(String.raw`C:\Users\Oz\AppData\Local\Temp\file.txt`, "utf8");``
-  - CORRECT (Forward slashes): `const spilled = await fs.readFile("C:/Users/Oz/AppData/Local/Temp/file.txt", "utf8");`
-  - WRONG (Python syntax): `const spilled = await fs.readFile(r"C:\Users\Oz\AppData\Local\Temp\file.txt", "utf8");`
-
-## 2. Module System: ESM Only (`require` Does NOT Exist)
-- NEVER use CommonJS `require()` (e.g., `const fs = require("fs")`). It throws `ReferenceError: require is not defined`.
-- Whenever you need Node.js built-in modules, ALWAYS use dynamic ESM `await import(...)`:
-  - CORRECT: `const fs = await import("node:fs/promises"); const path = await import("node:path");`
-  - WRONG: `const fs = require("fs");`
-- Because the sandbox runs with `danger-full-access`, you can directly read, write, or inspect large files (such as `.ipynb` notebooks, JSON files, or `dsh-spill` output files) using `await import("node:fs/promises")`.
-
-## 3. Tool Arguments: Strict Lossless JSON Only
-- Every `tools.<name>(args)` call requires a valid lossless JSON object as its first argument.
-- NEVER call any `tools.*` method with zero arguments (`undefined`). It throws `ToolCallError: binding arguments must be lossless JSON`.
-- ALWAYS pass at least an empty object `{}` when calling parameterless tools:
-  - CORRECT: `const agents = await tools.list_agents({});`
-  - WRONG: `const agents = await tools.list_agents();`
-- NEVER include non-JSON types inside argument objects (`undefined`, `NaN`, `Infinity`, `BigInt`, `Date` instances, `RegExp` literals, `Map`, `Set`, or functions). Omit optional keys entirely rather than setting `{ key: undefined }`.
-
-## 4. Exact Built-in Tool Names & `ops_load_sdk` Rules
-- NEVER guess or hallucinate tool names like `read_files`, `read_file`, `write_files`, or `start_agent`.
-- Passing a non-existent tool name to `tools.ops_load_sdk({ tools: [...] })` silently ignores it and leaves `tools.<name>` as `undefined`, causing `TypeError: tools.<name> is not a function`.
-- ALWAYS inspect the return value of `ops_load_sdk` before calling a deferred tool if you are not 100% certain of its exact name and schema:
-  - CORRECT: `const sdk = await tools.ops_load_sdk({ tools: ["read", "glob", "grep"] }); console.log(sdk);`
-- Exact built-in file and search tool names in DeepSeek Harness (`@deepseek-ai/dsh-tool-fs`):
-  - Read a file: `read` (NEVER `read_files` or `read_file`). Load via `await tools.ops_load_sdk({ tools: ["read"] })`, or use `const fs = await import("node:fs/promises")`.
-  - Write a file: `write` (NEVER `write_files` or `write_file`).
-  - Edit a file: `edit` (NEVER `edit_files` or `edit_file`).
-  - Find files by pattern: `glob` — `pattern` MUST be a single string, NEVER an array:
-    - CORRECT: `await tools.ops_load_sdk({ tools: ["glob"] }); const files = await tools.glob({ pattern: "**/*" });`
-    - WRONG: `const files = await tools.glob({ pattern: ["**/*"] });` (throws `ToolCallError: invalid arguments: "pattern" must be a string`)
-  - Search text in files: `grep` — `pattern` MUST be a plain string, NEVER a `/regex/` literal:
-    - CORRECT: `await tools.ops_load_sdk({ tools: ["grep"] }); const matches = await tools.grep({ pattern: "TODO" });`
-  - Run shell commands: `bash` or `pwsh`.
-
-## 5. Subagent & Agent Team Lifecycle (`inactive` vs `running`)
-- NEVER call `tools.start_agent(...)`, `tools.run_agent(...)`, `tools.activate_agent(...)`, or `tools.spawn_agent(...)`. `tools.start_agent` DOES NOT EXIST and throws `TypeError: tools.start_agent is not a function`.
-- In DeepSeek Harness Agent Teams, subagents with status `inactive` (e.g., `task1-subagent: inactive`) are idle sessions waiting for input—they are NOT started via a lifecycle start method.
-- To wake or trigger an `inactive` subagent, send it an explicit message or task instruction using the registered subagent messaging/control tool exposed on `tools`.
-- Before calling any unfamiliar subagent or team tool, ALWAYS inspect `Object.keys(tools)` first:
-  - CORRECT: `console.log("Bound tools:", Object.keys(tools)); const agents = await tools.list_agents({}); console.log("Agents:", agents);`
-
-## 6. Mandatory First-Turn Safe Discovery Pattern
-- On your first turn or whenever discovering workspace files and active agents, run this exact safe pattern:
-  - `console.log("Bound tools:", Object.keys(tools));`
-  - `if (typeof tools.list_agents === "function") console.log("Agents:", await tools.list_agents({}));`
-  - `const sdk = await tools.ops_load_sdk({ tools: ["read", "glob", "grep"] }); console.log("SDK Schemas:", sdk);`
-  - `console.log("Files:", await tools.glob({ pattern: "*" }));`
+- Version: 4.3.0 · last reviewed 2026-11-25

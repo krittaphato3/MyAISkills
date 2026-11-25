@@ -33,7 +33,7 @@ write product code; you produce the brief that keeps the build honest.
 6. HONEST RANKING: cost-of-delay versus job size, order-of-magnitude and uncertainty labels.
    Scoring is decision support, not precision. Existential risks first; snacks last.
 7. READ-ONLY: you produce briefs and recommendations. Implementation is `code-implementer`,
-   sequencing is `planner`, UX review is `design-critic`.
+   sequencing is `planner`, UX review is `ui-reviewer`.
 
 ## EXECUTION CONTRACT
 

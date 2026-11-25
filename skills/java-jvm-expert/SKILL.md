@@ -1,6 +1,7 @@
 ---
 name: java-jvm-expert
 description: "Implements modern Java and JVM services: concurrency, Spring/Jakarta patterns, GC, and memory tuning. Use for Java/Kotlin development or JVM performance bugs."
+disable-model-invocation: true
 metadata:
   version: 3.0.0
   domain: languages

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-18",
-  "count": 126,
+  "generated": "2026-11-25",
+  "count": 131,
   "skills": [
     {
       "name": "accessibility-audit",
@@ -10,7 +10,7 @@
       "domain": "delivery",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "accessibility-specialist"
+      "authored-by": "ui-reviewer"
     },
     {
       "name": "adr-engineering",
@@ -51,6 +51,16 @@
       "status": "active",
       "last-reviewed": "2026-10-27",
       "authored-by": "llm-engineer"
+    },
+    {
+      "name": "ai-streaming-ux",
+      "path": "skills\\ai-streaming-ux\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-11-25",
+      "authored-by": "ui-ux-architect"
     },
     {
       "name": "algorithms-and-data-structures",
@@ -300,7 +310,7 @@
       "domain": "delivery",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "desktop-developer"
+      "authored-by": "code-implementer"
     },
     {
       "name": "devops-pipeline-engineer",
@@ -390,7 +400,7 @@
       "domain": "delivery",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "game-developer"
+      "authored-by": "code-implementer"
     },
     {
       "name": "general-orchestrator",
@@ -553,6 +563,16 @@
       "authored-by": "mcp-agent"
     },
     {
+      "name": "meshy-3d-generation",
+      "path": "skills\\meshy-3d-generation\\SKILL.md",
+      "version": "1.1.0",
+      "grade": "G2",
+      "domain": "roblox",
+      "status": "active",
+      "last-reviewed": "2026-11-25",
+      "authored-by": "roblox-asset-artist"
+    },
+    {
       "name": "ml-python-scientist",
       "path": "skills\\ml-python-scientist\\SKILL.md",
       "version": "3.0.0",
@@ -615,11 +635,11 @@
     {
       "name": "ozone-mode",
       "path": "skills\\ozone-mode\\SKILL.md",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "grade": "G3",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-30",
+      "last-reviewed": "2026-11-25",
       "authored-by": "ozone-agent"
     },
     {
@@ -651,16 +671,6 @@
       "status": "active",
       "last-reviewed": "2026-11-08",
       "authored-by": "solution-architect"
-    },
-    {
-      "name": "poteto-mode",
-      "path": "skills\\poteto-mode\\SKILL.md",
-      "version": "2.1.0",
-      "grade": "G2",
-      "domain": "doctrine",
-      "status": "deprecated",
-      "last-reviewed": "2026-11-09",
-      "authored-by": "poteto-agent"
     },
     {
       "name": "principles",
@@ -803,6 +813,16 @@
       "authored-by": "code-implementer"
     },
     {
+      "name": "roblox-3d-pipeline",
+      "path": "skills\\roblox-3d-pipeline\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "roblox",
+      "status": "active",
+      "last-reviewed": "2026-11-25",
+      "authored-by": "roblox-asset-artist"
+    },
+    {
       "name": "roblox-animation",
       "path": "skills\\roblox-animation\\SKILL.md",
       "version": "1.0.0",
@@ -831,6 +851,16 @@
       "status": "active",
       "last-reviewed": "2026-10-22",
       "authored-by": "roblox-asset-artist"
+    },
+    {
+      "name": "roblox-economy-retention",
+      "path": "skills\\roblox-economy-retention\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "roblox",
+      "status": "active",
+      "last-reviewed": "2026-11-25",
+      "authored-by": "roblox-scripter"
     },
     {
       "name": "roblox-game-production",
@@ -921,6 +951,16 @@
       "status": "active",
       "last-reviewed": "2026-11-09",
       "authored-by": "roblox-ui-designer"
+    },
+    {
+      "name": "roblox-vague-director",
+      "path": "skills\\roblox-vague-director\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "roblox",
+      "status": "active",
+      "last-reviewed": "2026-11-25",
+      "authored-by": "roblox-game-director"
     },
     {
       "name": "roblox-vfx",
@@ -1163,6 +1203,16 @@
       "authored-by": "meta-architect"
     },
     {
+      "name": "ts-test-patterns",
+      "path": "skills\\ts-test-patterns\\SKILL.md",
+      "version": "1.0.0",
+      "grade": "G2",
+      "domain": "delivery",
+      "status": "active",
+      "last-reviewed": "2026-11-25",
+      "authored-by": "test-engineer"
+    },
+    {
       "name": "typescript-best-practices",
       "path": "skills\\typescript-best-practices\\SKILL.md",
       "version": "1.1.0",
@@ -1200,7 +1250,7 @@
       "domain": "delivery",
       "status": "active",
       "last-reviewed": "2026-11-09",
-      "authored-by": "design-critic"
+      "authored-by": "ui-reviewer"
     },
     {
       "name": "verification-before-completion",

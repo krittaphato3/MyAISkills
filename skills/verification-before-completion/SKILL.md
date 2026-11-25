@@ -1,10 +1,7 @@
 ---
 name: verification-before-completion
-description: >-
-  Blocks false 'done' claims by requiring a checkable criterion and an attached artifact: test
-  output, lint or typecheck log, benchmark table, reproduction, or diff evidence. Use before
-  reporting any task complete, and whenever words like fixed, passes, faster, or secure appear. A
-  screenshot alone never suffices.
+description: Blocks unproven 'done' claims by requiring explicit criteria plus attached test, typecheck,
+  or diff artifacts. Use before declaring any fix or feature complete.
 metadata:
   version: 3.1.0
   domain: doctrine

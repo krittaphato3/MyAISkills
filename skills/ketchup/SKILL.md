@@ -1,10 +1,7 @@
 ---
 name: ketchup
-description: >-
-  Reports the delta since the user's last message: what moved, what is verified, what is waiting on
-  them, and what is still open, each line decidable without a follow-up question. Use when the user
-  returns after a gap, asks what happened, or before a long run continues. Session handoff routes
-  to handoff; rebuilding old context routes to recall.
+description: 'Reports the delta since your last message: what moved, what is verified, what awaits decision,
+  and open items. Use when resuming after a gap or checking status.'
 metadata:
   version: 1.0.0
   domain: delivery
@@ -63,7 +60,7 @@ Ketchup is a delta report, not a summary of the codebase and not a session hando
 ```text
 Since your last message:
 
-CHANGED     router rewritten; poteto now forwards (skills/ozone-mode, skills/poteto-mode)
+CHANGED     router aligned with Fast Lane (skills/ozone-mode)
 VERIFIED    lint_config 0 errors; skill_lint 0 errors / 108 advisory
 UNVERIFIED  playbooks not executed against a real repo task
 WAITING     commit approval; default is to leave the tree uncommitted

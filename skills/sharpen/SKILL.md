@@ -1,10 +1,7 @@
 ---
 name: sharpen
-description: >-
-  Rewrites a vague request into an executable brief without doing the work: goal, constraints,
-  acceptance criterion, non-goals, and the unknowns that would change the approach. Use when a task
-  is underspecified, before starting /ozone-mode, or when an agent keeps solving the wrong problem.
-  Executing the task routes to ozone-mode.
+description: 'Rewrites vague requests into an executable brief: goal, constraints, acceptance criteria,
+  non-goals, and key unknowns. Use when a task is underspecified before /ozone-mode.'
 metadata:
   version: 1.0.0
   domain: meta

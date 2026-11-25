@@ -1,20 +1,17 @@
 ---
 name: ozone-mode
-description: >-
-  The engineering router. Matches a task to a playbook, sets the tier and cost ceiling, indexes
-  the principles, and holds the non-negotiables for evidence, scope, and independent verification.
-  Use for /ozone-mode or any non-trivial engineering task that must ship without a follow-up bug
-  report. Trivial edits and factual questions stay in-thread.
+description: The engineering router matching tasks to playbooks, setting tier/cost ceilings, and holding
+  gates for evidence, scope, and review. Use for /ozone-mode or non-trivial engineering work.
 mode: true
 icon: zap
 color: cyan
 reminder: Non-trivial task? /ozone-mode. Match a playbook, set the tier, prove it before done.
 metadata:
-  version: 2.0.0
+  version: 2.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-30'
+  last-reviewed: '2026-11-25'
   authored-by: ozone-agent
 ---
 
@@ -48,8 +45,9 @@ is. Every rule below exists because a specific failure mode has already happened
 11. **Revert over sprawl (Circuit breaker).** Max 2 repair attempts. If tests cascade into failure
     or edits sprawl across unrelated files, stop digging. Run `git restore` back to the clean baseline
     checkpoint, attack the flawed premise, and start clean.
-12. **Full-suite regression.** Never declare done on a single-file test run. The full package or
-    workspace regression suite must run green on the exact final head.
+12. **Proportional verification (Fast Lane vs /ship).** For scoped T0/T1 edits, prove with targeted
+    tests, direct caller tests (up to 3 representative callers), and `tsc --noEmit` in a single pass;
+    reserve full workspace regression suites and production builds for `/ship` or T2/T3 releases.
 
 ## Principles
 

@@ -1,6 +1,7 @@
 ---
 name: query-performance-engineer
-description: "Diagnoses and fixes slow database queries: EXPLAIN and ANALYZE reading, index strategy, N+1 elimination, join and pagination rewrites, pooling, and caching. Use when a specific query or endpoint is proven slow."
+description: Diagnoses and fixes slow SQL/DB queries via EXPLAIN/ANALYZE, indexing, N+1 elimination, join
+  rewrites, and pooling. Use when an endpoint or query is slow.
 metadata:
   version: 3.0.0
   domain: production

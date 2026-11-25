@@ -1,10 +1,7 @@
 ---
 name: systematic-debugging
-description: >-
-  Finds and fixes root causes: reproduce minimally, isolate by bisection, name the mechanism with
-  proof, apply the smallest fix, and lock it with a regression test. Use for any bug, flake, red
-  gate, or unexpected behavior. Greenfield design routes to deep-planner; an intentional behavior
-  change to test-driven-development.
+description: 'Finds and fixes root causes: minimal reproduction, bisection, mechanism proof, smallest
+  fix, and regression test. Use for any bug, flake, or red gate.'
 metadata:
   version: 3.0.0
   domain: doctrine

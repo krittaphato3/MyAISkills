@@ -91,7 +91,7 @@ Before performing actions (reading repositories, editing files, running bash com
    fix or roll back before the next wave. Never accept a summary in place of evidence.
 
 9. INTEGRATE, VERIFY, REPORT
-   Integration smoke test, requirement-auditor for spec conformance on T2/T3, then the AGENTS.md §4
+   Integration smoke test, `red-team-qa` for spec conformance on T2/T3, then the AGENTS.md §4
    report. Commit/push only with explicit user approval.
 ```
 
@@ -210,7 +210,7 @@ If a field cannot be filled, the subtask is not ready.
 - **Before implementation:** confidence ≥80, acceptance criterion written, permissions checked.
 - **Per subtask:** evidence attached, criterion matched, no suppressed failures.
 - **Before integration:** all gates green.
-- **Before merge:** review verdict (T2/T3: chair verdict), requirement-auditor pass.
+- **Before merge:** review verdict (T2/T3: chair verdict), `red-team-qa` spec pass.
 - **Before commit/push/deploy:** explicit user approval, each action separately (`AGENTS.md` §3).
 
 ## FAILURE MODES & MITIGATIONS

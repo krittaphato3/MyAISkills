@@ -67,7 +67,7 @@ Group the combined signals into sections. Common ones (use only what applies):
 - **Process**: git worktrees, commits, PRs, review/merge tooling.
 - **Skills**: skill-creator habits, fix-the-skill-first, proposing new skills.
 
-The **poteto-mode** skill shows the shape. Read it for granularity. Don't copy its content; the user's rules are not the same as poteto-mode's.
+The **ozone-mode** skill shows the shape. Read it for granularity. Don't copy its content; the user's rules are not the same as ozone-mode's.
 
 ### 4. Draft the skill
 
@@ -111,7 +111,7 @@ Run a description-optimization loop only if the skill's trigger accuracy turns o
 
 ## REFERENCES
 
-- The **poteto-mode** skill: example of the output shape.
+- The **ozone-mode** skill: example of the output shape.
 - The **unslop** skill: prose discipline for every line.
 - `skill-creator` skill: skill authoring process and writing guidelines.
 

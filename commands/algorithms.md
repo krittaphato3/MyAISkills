@@ -3,7 +3,7 @@ description: Analyze complexity and data-structure choice for a hot path before 
 argument-hint: <module, function, or design to analyze>
 ---
 
-Run `algorithms-and-data-structures` via `algorithm-specialist` (read-only):
+Run `algorithms-and-data-structures` via `performance-engineer` (read-only):
 
 1. Bound n and its growth; state the current time and space cost with `file:line` evidence.
 2. Identify the dominant access pattern and the structure that matches it.

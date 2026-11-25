@@ -1,8 +1,7 @@
 ---
 name: maintain-verification-skill
-description: 'Periodic pass that keeps a project''s verification skill and feature map honest: parallel
-  source readers per feature, one live session driving every feature, at most one PR of proven corrections.
-  Use for /maintain-verification-skill or "audit the verify skill".'
+description: Audits a repo's verification skill and feature map via parallel source readers and live UI/CLI
+  verification. Use for /maintain-verification-skill passes.
 metadata:
   version: 1.1.0
   domain: delivery

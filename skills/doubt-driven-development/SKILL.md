@@ -1,10 +1,7 @@
 ---
 name: doubt-driven-development
-description: >-
-  Applies adversarial fresh-context review to a claimed solution: state the claim, extract
-  its hidden assumptions, attack each with evidence, then reconcile or escalate. Use as
-  the method behind a red-team review, or when a 'done' claim feels too easy to believe.
-  Full multi-agent adversarial adjudication routes to debate-protocol.
+description: 'Applies adversarial fresh-context review to a claimed fix: extracts hidden assumptions,
+  probes with evidence, and reconciles. Use for red-team reviews or unverified ''done'' claims.'
 metadata:
   version: 3.0.0
   domain: doctrine

@@ -1,10 +1,7 @@
 ---
 name: test-driven-development
-description: >-
-  Drives behavior changes with a failing test first: RED for the right reason, GREEN with the
-  minimum code, REFACTOR while green, plus coverage and test-pyramid discipline. Use for features,
-  bug fixes, and pinned refactors. Exploration spikes and doc-only changes are exempt; reviewing
-  the result routes to requesting-code-review.
+description: Drives behavior changes with failing RED tests first, minimal GREEN code, and safe refactoring.
+  Use for features, bugfixes, and pinned refactors (docs/spikes exempt).
 metadata:
   version: 3.1.0
   domain: doctrine

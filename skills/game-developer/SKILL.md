@@ -1,13 +1,14 @@
 ---
 name: game-developer
 description: "Writes gameplay and engine systems for Unity, Unreal, and Godot: game loops, physics, and input. Use when building game logic or engine features."
+disable-model-invocation: true
 metadata:
   version: 3.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  authored-by: game-developer
+  authored-by: code-implementer
 ---
 
 # GAME DEVELOPER

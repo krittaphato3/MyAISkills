@@ -27,7 +27,7 @@ SECTIONS = {
 STALE_DAYS = 90
 AGENTS = {"code-implementer", "db-architect", "deep-researcher", "red-team-qa", "ui-ux-architect",
           "performance-engineer", "devops-engineer", "security-auditor", "api-architect",
-          "refactoring-specialist", "accessibility-specialist", "dependency-guardian",
+          "refactoring-specialist", "ui-reviewer", "dependency-guardian",
           "cybersecurity-specialist", "mcp-agent", "browser-automation", "test-engineer",
           "documentation-engineer", "data-engineer", "game-developer", "mobile-developer",
           "planner", "solution-architect", "ml-engineer", "system"}

@@ -1,10 +1,7 @@
 ---
 name: correct
-description: >-
-  Turns repeated corrections into enforcement. Mines the session for mistake classes, fixes each
-  at the highest level that works (architecture, types, lint, CI, tests, docs), and keeps a table
-  pairing every rule with what enforces it. Use when the user corrects the same thing twice or
-  asks why a mistake keeps recurring.
+description: Turns repeated corrections into permanent enforcement via types, lint rules, tests, or architecture
+  fixes. Use when correcting the same mistake class twice.
 metadata:
   version: 1.0.0
   domain: meta

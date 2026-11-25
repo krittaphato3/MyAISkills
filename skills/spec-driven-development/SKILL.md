@@ -1,10 +1,7 @@
 ---
 name: spec-driven-development
-description: >-
-  Writes a PRD as a contract before code: objectives, non-goals, commands, structure,
-  testing strategy, boundaries, and acceptance criteria, then builds only against the
-  signed-off spec. Use for features or projects large enough that drift is expensive.
-  Small tasks skip it; turning a spec into tasks routes to deep-planner.
+description: 'Writes a signed-off PRD contract before coding: objectives, non-goals, structure, testing,
+  and acceptance gates. Use for major features where architectural drift is costly.'
 metadata:
   version: 3.0.0
   domain: doctrine

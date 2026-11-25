@@ -96,7 +96,7 @@ PATTERNS:
 ## WHEN NOT TO USE
 - **A web/dashboard UI** — browser-only UI belongs to UI/UX skills, not mobile.
 - **Backend or service code for the app** — the API, auth, and infra are devops/api design, not this.
-- **Pure accessibility audit** of a mobile screen — accessibility-specialist handles the review; this skill implements the native solution.
+- **Pure accessibility audit** of a mobile screen — ui-reviewer handles the review; this skill implements the native solution.
 - **Game-engine mobile work** — use the game-developer skill (Unity/Unreal/Godot); Roblox mobile work uses the `roblox-*` suite (`roblox-ui-designer` for touch-safe UI, `roblox-world-building` for device budgets).
 - **One-line wrapper or a mocked prototype** — a throwaway scaffold doesn't need navigation and state-management decisions.
 

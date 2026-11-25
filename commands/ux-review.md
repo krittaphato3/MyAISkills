@@ -3,7 +3,7 @@ description: Review the running interface for usability, state coverage, keyboar
 argument-hint: <screen, flow, or URL>
 ---
 
-Run `ux-review` via `design-critic` (read-only):
+Run `ux-review` via `ui-reviewer` (read-only):
 
 1. Drive the real surface at 375 / 768 / 1280 CSS pixels; screenshot every BLOCKER/MAJOR finding.
 2. Heuristic pass (visibility of state, user language, escape routes, consistency, error

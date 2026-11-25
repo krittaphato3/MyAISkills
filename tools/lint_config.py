@@ -36,7 +36,7 @@ PLACEHOLDER_PATTERNS = [
     "description here", "description goes here", "lorem ipsum", "write description",
     "your description", "placeholder description", "to be written",
 ]
-AGENT_ALLOWED_KEYS = {"description", "mode", "color", "temperature", "steps", "permission", "name"}
+AGENT_ALLOWED_KEYS = {"description", "mode", "tier", "color", "temperature", "steps", "permission", "name"}
 STALE_PATTERNS = ["opencode", ".config/opencode"]
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 AGENT_REF_RE = re.compile(r"`?(agents/([a-z0-9-]+)\.md)`?")

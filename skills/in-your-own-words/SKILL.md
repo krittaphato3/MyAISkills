@@ -1,10 +1,7 @@
 ---
 name: in-your-own-words
-description: >-
-  Restates the task in the agent's own words before acting: goal, acceptance criterion, smallest
-  expected change, non-goals, and the assumptions that could be wrong. Use at the start of a
-  non-trivial task or when a request could be read two ways. Ambiguity that genuinely needs the
-  user routes to requirements-elicitation.
+description: 'Restates non-trivial tasks in plain words before coding: goal, acceptance criteria, smallest
+  expected diff, and assumptions. Use when a prompt has two readings.'
 metadata:
   version: 1.0.0
   domain: doctrine

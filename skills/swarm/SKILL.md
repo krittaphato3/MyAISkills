@@ -1,7 +1,7 @@
 ---
 name: swarm
-description: Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this',
-  or parallel coverage, races, gauntlets, and exploration.
+description: Fans out N parallel workers, drains results, and synthesizes one report. Use for /swarm or
+  parallel multi-module coverage, races, and exploration.
 metadata:
   version: 1.1.0
   domain: doctrine

@@ -1,6 +1,7 @@
 ---
 description: "Impartial adjudicator for contested architecture changes, blinded evaluations, and tied reviews. Use when resolving conflicting designs or high-stakes trade-offs."
 mode: subagent
+tier: pro
 color: primary
 temperature: 0.1
 steps: 30

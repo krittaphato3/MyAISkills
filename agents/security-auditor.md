@@ -1,6 +1,7 @@
 ---
 description: "Reviews code for defensive security vulnerabilities: OWASP top 10, auth boundaries, input validation, and secrets. Use for security audits before code release."
 mode: subagent
+tier: pro
 color: warning
 temperature: 0.1
 steps: 30

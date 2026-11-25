@@ -1,6 +1,7 @@
 ---
 description: "Maps unfamiliar codebases: architecture diagrams, entry points, data flows, and build commands. Use before editing unfamiliar repositories or complex subsystems."
 mode: subagent
+tier: flash
 color: warning
 temperature: 0.1
 steps: 50

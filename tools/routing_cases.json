@@ -385,6 +385,56 @@
       "query": "the retry fix keeps failing the same way and i think the premise is wrong",
       "skill": "principles",
       "agent": "red-team-qa"
+    },
+    {
+      "query": "make me a cozy roblox fishing game with pets in 1 sentence",
+      "skill": "roblox-vague-director",
+      "agent": "roblox-game-director",
+      "work": [
+        "roblox"
+      ]
+    },
+    {
+      "query": "generate a 3d sword with meshy and import it into roblox studio under 6000 tris",
+      "skill": "roblox-3d-pipeline",
+      "agent": "roblox-asset-artist",
+      "work": [
+        "roblox"
+      ]
+    },
+    {
+      "query": "implement ProcessReceipt for our new Robux developer product and check PolicyService lootbox restrictions",
+      "skill": "roblox-economy-retention",
+      "agent": "roblox-scripter",
+      "work": [
+        "roblox"
+      ]
+    },
+    {
+      "query": "the clarify card in the AI chat drawer becomes clickable again when revisiting the finished session",
+      "skill": "ai-streaming-ux",
+      "agent": "ui-ux-architect"
+    },
+    {
+      "query": "this vitest test mocks setTimeout cleanly alone but deadlocks or leaks when run with other files",
+      "skill": "ts-test-patterns",
+      "agent": "test-engineer"
+    },
+    {
+      "query": "is the accept button currently clickable on finished sessions and why",
+      "skill": "systematic-debugging",
+      "agent": "diagnostic-scout",
+      "note": "read-only 30s question; diagnostic-scout has edit: deny"
+    },
+    {
+      "query": "audit WCAG AA contrast, keyboard navigation, and empty states on the checkout drawer",
+      "skill": "ux-review",
+      "agent": "ui-reviewer"
+    },
+    {
+      "query": "evaluate our ReAct agent tool schema reliability and skill routing regression suite",
+      "skill": "agent-harness-design",
+      "agent": "ai-eval-engineer"
     }
   ]
 }

@@ -5,6 +5,7 @@ description: >-
   for AI fluff, unnecessary comments, dead code, poor variable naming, boundary leaks, and loose types.
   Use for code reviews, pre-commit checks, or when auditing diffs for slop.
 mode: subagent
+tier: flash
 color: warning
 temperature: 0.1
 steps: 30

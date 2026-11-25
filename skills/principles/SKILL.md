@@ -1,6 +1,7 @@
 ---
 name: principles
-description: "Core catalog of 24 software engineering principles across architecture, verification, and design. Use when making architectural judgment calls, pruning scope, or preventing over-engineering."
+description: Core catalog of 24 software engineering principles across architecture, verification, and
+  scope pruning. Use when weighing architectural tradeoffs or cutting complexity.
 metadata:
   version: 1.0.0
   domain: doctrine
@@ -8,18 +9,9 @@ metadata:
   status: active
   last-reviewed: '2026-11-08'
   authored-by: meta-architect
-  supersedes: >-
-    principles, principles, principles,
-    principles, principles,
-    principles, principles, principles,
-    principles, principles,
-    principles, principles,
-    principles, principles,
-    principles, principles,
-    principles, principles,
-    principles,
-    principles, principles,
-    principles, principles
+  supersedes: principles, principles, principles, principles, principles, principles, principles, principles,
+    principles, principles, principles, principles, principles, principles, principles, principles, principles,
+    principles, principles, principles, principles, principles, principles
 ---
 
 # Principles

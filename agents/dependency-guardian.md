@@ -1,6 +1,7 @@
 ---
 description: "Dependency and supply-chain guardian (read-only). Use when adding or upgrading a package, responding to a security advisory, or preparing a release review."
 mode: subagent
+tier: flash
 color: warning
 temperature: 0.1
 steps: 30

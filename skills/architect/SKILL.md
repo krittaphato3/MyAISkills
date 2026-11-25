@@ -1,8 +1,7 @@
 ---
 name: architect
-description: Sketch types, signatures, and module structure before code, then stay in the loop while implementation
-  fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to
-  code would lock in the wrong shape.
+description: Sketches types, signatures, and module boundaries before coding and stays in the loop during
+  fill-in. Use for /architect or structural design before implementation.
 metadata:
   version: 1.1.0
   domain: architecture

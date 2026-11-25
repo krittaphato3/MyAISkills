@@ -1,6 +1,7 @@
 ---
 name: webnovel-author
 description: "Authors, drafts, and polishes webnovels and serial fiction with immersive pacing and sensory prose. Use for /webnovel-author, fiction drafting, or chapter rewrites."
+disable-model-invocation: true
 metadata:
   version: 1.0.0
   domain: delivery

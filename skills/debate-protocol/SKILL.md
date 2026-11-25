@@ -186,7 +186,7 @@ made the cheaper path insufficient.
    an author. *FIX:* independent `test-oracle`; treat implementer tests as smoke, not proof.
 7. **Infinite refinement** — rounds keep going with no new evidence. *DETECT:* round 3 request.
    *FIX:* hard cap 2; escalate with a written decision request.
-8. **Spec drift** — the debate optimizes something the user did not ask for. *DETECT:* requirement-auditor
+8. **Spec drift** — the debate optimizes something the user did not ask for. *DETECT:* red-team-qa (spec pass)
    finds an unaddressed spec line or an out-of-scope addition. *FIX:* re-freeze the spec, re-run.
 9. **Parallel writes collide** — two solvers edit the same checkout. *DETECT:* conflicting or lost
    edits. *FIX:* separate worktrees/copies per candidate, or run candidates sequentially; merge only
@@ -217,7 +217,7 @@ The debate is complete only when all of these are true:
 - [ ] Objective filter ran before any argument; failing candidates were eliminated, not debated.
 - [ ] Every blocking finding carries a location and level-1–5 evidence (or is marked HYPOTHESIS).
 - [ ] The chair's verdict is blind, rubric-scored, and states which evidence decided it.
-- [ ] A requirement-auditor pass confirms every spec line is addressed and nothing out of scope
+- [ ] A `red-team-qa` spec-conformance pass confirms every spec line is addressed and nothing out of scope
       shipped.
 - [ ] If CONDITIONAL: follow-ups are listed with owner + check, and the user can see them.
 - [ ] Cost/tier justification is recorded in one line ("T2 because auth change + 3 files").
@@ -240,7 +240,7 @@ Next action: {merge | fix {id} then re-check | escalate: {question}}
 - `doubt-driven-development` — the single-reviewer method underlying the critic role
 - `test-oracle` (agent) — independent acceptance tests; `test-driven-development` for the loop
 - `verification-before-completion` — what counts as evidence and how to attach it
-- `requirement-auditor` (agent) — spec-conformance check before a verdict is accepted
+- `red-team-qa` (agent) — two-axis spec-conformance and standards check before verdict
 - Research basis: multi-agent debate vs self-consistency (Smit et al., ICML 2024; Wang et al.,
   EMNLP 2024; *Debate or Vote*, 2025), LLM-judge bias (Zheng et al., 2023; Saito et al., 2023;
   Shi et al., 2025), MAST failure taxonomy (Cemri et al., 2025), test-oracle weakness (UTBoost,

@@ -1,6 +1,7 @@
 ---
 description: "Adversarial code reviewer: probes PRs for missed requirements, edge cases, auth flaws, and regression risks. Use before merging non-trivial changes or releases."
 mode: subagent
+tier: pro
 color: error
 temperature: 0.1
 steps: 30

@@ -1,10 +1,7 @@
 ---
 name: requesting-code-review
-description: >-
-  Packages a change for independent review and gates it on the verdict: scope, diff, tests,
-  threat surface, and explicit acceptance criteria. Use before merging any non-trivial change.
-  Deciding between conflicting reviews or candidate implementations routes to debate-protocol; the
-  author's self-check never replaces review.
+description: Packages diffs, scope, threat surface, and test evidence for independent verification before
+  merge. Use on non-trivial changes; self-check never replaces review.
 metadata:
   version: 3.1.0
   domain: doctrine

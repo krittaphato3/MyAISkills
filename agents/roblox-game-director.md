@@ -1,6 +1,7 @@
 ---
 description: "Directs Roblox vertical slices, system architecture sequencing, and milestone gatekeeping. Use when starting or planning multi-discipline Roblox projects."
 mode: subagent
+tier: pro
 color: primary
 temperature: 0.2
 steps: 60

@@ -1,13 +1,14 @@
 ---
 name: desktop-app-developer
 description: "Builds desktop apps with Electron or Tauri: main/renderer IPC, packaging, and code signing. Use when creating or debugging installable desktop applications."
+disable-model-invocation: true
 metadata:
   version: 3.0.0
   domain: delivery
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  authored-by: desktop-developer
+  authored-by: code-implementer
 ---
 
 # Desktop App Developer
@@ -124,6 +125,6 @@ Remaining to ship: {credentials, listings, notarization}
 - `ui-ux-architect` — design systems and visual language.
 - `devops-pipeline-engineer` — CI jobs that build/sign/release.
 - `mobile-developer` — the mobile counterpart.
-- `desktop-developer` agent — the implementing role.
+- `code-implementer` agent — the implementing role.
 
-Ownership: maintained by desktop-developer; desktop-app-developer is the delivery-domain skill for native desktop shells.
+Ownership: maintained by code-implementer; desktop-app-developer is the delivery-domain skill for native desktop shells.

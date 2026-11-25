@@ -1,9 +1,7 @@
 ---
 name: mutation-testing
-description: >-
-  Tests whether the tests can fail. Introduces small semantic mutations, runs the suite, and
-  reports survivors as untested behavior. Use when a suite is green but defects escape, when
-  judging test quality without reading every test, or after adding coverage for a risky module.
+description: Tests whether suites actually catch bugs by injecting semantic mutations and surfacing surviving
+  mutants. Use when a green suite still lets defects escape.
 metadata:
   version: 1.0.0
   domain: delivery

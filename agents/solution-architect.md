@@ -1,6 +1,7 @@
 ---
 description: "Architects system boundaries, data flows, capacity calculations, and architectural decision records. Use when making structural system design choices or trade-offs."
 mode: subagent
+tier: pro
 color: primary
 temperature: 0.2
 steps: 40
