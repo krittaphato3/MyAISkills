@@ -14,7 +14,7 @@ metadata:
 
 # Browser Automation — Playwright MCP (token-isolated)
 
-Token-isolated browser automation through a configured Playwright MCP server (`npx -y @playwright/mcp@latest --headless --isolated --caps vision`, registered as `playwright` in the harness MCP config). Always operates in **browserless/headless background mode** with zero UI window overhead and no visible desktop windows. If no Playwright MCP is configured, use the harness's built-in preview/browser tools (`browser-use:control-browser` for ZCode In-App Browser `iab`) or native `WebFetch`/`WebSearch` (`web-search` skill). Always delegated to the `browser-automation` or `mcp-agent` subagent so the primary thread never absorbs the transcript.
+Token-isolated browser automation through a configured Playwright MCP server (`npx -y @playwright/mcp@latest --headless --isolated --caps vision`, registered as `playwright` in the harness MCP config). Always operates in **browserless/headless background mode** with zero UI window overhead and no visible desktop windows. If no Playwright MCP is configured, use the harness's built-in preview/browser tools (`browser-use:control-browser` for ZCode In-App Browser `iab`) or native `WebFetch`/`WebSearch` (`web-search` skill). Always delegated to the `browser-automation` or `general-purpose` subagent so the primary thread never absorbs the transcript.
 
 ## WHEN TO USE
 
@@ -175,7 +175,7 @@ flow should be split or replaced by an API-level test.
 ## REFERENCES
 
 - Harness MCP config — server entry named `playwright` (command + `--headless --isolated`)
-- `agents/browser-automation.md` and `agents/mcp-agent.md` — token-isolated executors
+- `agents/browser-automation.md` and `agents/general-purpose.md` — token-isolated executors
 - Playwright MCP: `npx -y @playwright/mcp@latest --help` (caps: vision, pdf, devtools)
 - `skills/web-search/SKILL.md` — the 4-tier search and fetch hierarchy
 - `browser-use:control-browser` — ZCode Desktop In-App Browser (`iab`)

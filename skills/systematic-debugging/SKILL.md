@@ -3,11 +3,11 @@ name: systematic-debugging
 description: 'Finds and fixes root causes: minimal reproduction, bisection, mechanism proof, smallest
   fix, and regression test. Use for any bug, flake, or red gate.'
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-11-27'
   authored-by: code-implementer
 ---
 
@@ -43,8 +43,8 @@ codebase with four unexplained mutations and no idea which one mattered.
    cause. A 5-line repro is worth more than 5 log statements.
 
 3. OBSERVE (cheap signals first)
-   Error text verbatim → stack trace → logs around the failure → the values at the boundary.
-   Read the actual message; most "mystery" bugs are a misread error.
+   Read the FULL error output from the TOP: the first error, file:line, and the first stack frame
+   inside YOUR code — never skim only the tail. Read the actual message; most "mystery" bugs are a misread error.
 
 4. BISECT
    Time: git bisect over commits.
@@ -137,6 +137,7 @@ class is mechanically detectable.
 - A fix without a regression test is not complete.
 - Flaky retries: ≤2 to classify, then quarantine; never >2 as a strategy.
 - If 3 hypotheses fail, stop guessing and gather new data (logs, trace, `git log`, docs).
+- Verify loop cap: ≤5 edit-test iterations per bug; if the same error repeats twice after two distinct fixes, stop before round 3, revert debris cleanly, and test the shared premise.
 
 ## VERIFICATION GATE
 

@@ -1,9 +1,7 @@
 ---
 name: comment-sicko
-description: >-
-  Adversarial code-review and anti-slop reviewer from pstack. Audits pull requests, patches, and diffs
-  for AI fluff, unnecessary comments, dead code, poor variable naming, boundary leaks, and loose types.
-  Use for code reviews, pre-commit checks, or when auditing diffs for slop.
+description: 'Adversarial anti-slop reviewer: audits diffs for AI fluff, dead code, narrative comments,
+  weak names, and loose types. Use for pre-commit reviews.'
 mode: subagent
 tier: flash
 color: warning

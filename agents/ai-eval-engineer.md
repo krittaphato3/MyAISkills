@@ -1,5 +1,6 @@
 ---
-description: "Evaluates LLM/ReAct agent workflows, prompts, tool schemas, structured outputs, and skill routing suites. Use when building or debugging AI agents, eval harnesses, or skill routing."
+description: Evaluates LLM/ReAct loops, prompt changes, tool schemas, structured outputs, and routing
+  suites. Use when building or testing AI agent workflows.
 mode: subagent
 tier: inherit
 color: accent

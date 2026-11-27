@@ -1,5 +1,6 @@
 ---
-description: "Profiles and fixes measured performance problems: CPU, memory, IO, latency, and throughput, with before/after benchmark proof. Use when a performance problem is named and measurable."
+description: Profiles CPU, memory, IO, complexity, and latency with before/after benchmark proof. Use
+  when diagnosing slow paths or algorithmic bottlenecks.
 mode: subagent
 color: warning
 temperature: 0.2

@@ -1,5 +1,6 @@
 ---
-description: "General-purpose agent with full toolset for delegated tasks, investigation, and code authoring. Use when delegated work needs general capabilities without a narrow specialist."
+description: General-purpose worker with full toolset for multi-step investigation, MCP calls, and scoped
+  tasks. Use when no narrow specialist fits.
 mode: subagent
 color: accent
 temperature: 0.3

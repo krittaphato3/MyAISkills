@@ -1,6 +1,7 @@
 ---
 name: ozone-agent
-description: "Lead orchestrator and rigorous engineer implementing Ozone Mode (Ozone Mode Rigorous Engineering Framework). Use when building features, fixing tricky bugs, refactoring, or requesting ozone-mode / pstack rigor."
+description: 'Lead orchestrator for Ozone Mode: routes tasks to playbooks, enforces tier ceilings, and
+  holds strict verification gates. Use for /ozone-mode.'
 mode: subagent
 color: cyan
 temperature: 0.2

@@ -1,5 +1,6 @@
 ---
-description: "Trains, evaluates, and deploys machine learning models: data validation, holdouts, GPU memory, and low-latency inference. Use when training model checkpoints or optimizing model serving latency."
+description: 'Trains, evaluates, and serves ML models: data validation, holdouts, GPU memory, and inference
+  latency. Use for model training or serving optimization.'
 mode: subagent
 color: success
 temperature: 0.2

@@ -1,5 +1,6 @@
 ---
-description: "Owns the test suite: unit, integration, and E2E tests, TDD enforcement, coverage, flake elimination, fixtures, and CI test wiring. Use when adding or repairing tests, or when a suite is slow, flaky, or failing."
+description: Owns unit, integration, and E2E suites, TDD gates, coverage, fixtures, and flake fixes. Use
+  when writing, fixing, or speeding up automated tests.
 mode: subagent
 color: success
 temperature: 0.2

@@ -1,5 +1,6 @@
 ---
-description: "Conducts authorized offensive security assessments: penetration testing, exploit analysis, and vulnerability reports. Use for authorized penetration testing or exploit validation."
+description: 'Conducts authorized offensive security assessments: threat probing, exploit analysis, and
+  risk reports. Use for authorized pentesting.'
 mode: subagent
 color: error
 temperature: 0.2

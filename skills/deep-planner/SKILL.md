@@ -2,11 +2,11 @@
 name: deep-planner
 description: "Converts goals into executable plans: testable tasks, dependency graphs, and risk registers. Use before code on multi-task work requiring approved plans."
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-11-27'
   authored-by: planner
 ---
 
@@ -41,7 +41,7 @@ Branch top-down; the first match decides, and step 0 gates everything after it.
 2. **Build the dependency graph** — map which tasks must finish before which others start (PATTERNS section 2). If any cycle appears, the decomposition is wrong: re-decompose, never ship a cyclic graph to execution.
 3. **Estimate** — assign a T-shirt size and a time range to every task; state the assumption behind it and flag every unknown as a research task (PATTERNS section 3, QUANTITATIVE RULES). Sum the critical path, not the raw task count.
 4. **Register risks** — for each risk, record likelihood, impact, mitigation, and the trigger that escalates it (PATTERNS section 4). No un-mitigated risk travels silently into execution.
-5. **Review the plan** — run the full audit in VERIFICATION GATE. A task without a testable outcome, a hidden dependency, or an orphan task fails review and returns to the step that caused it.
+5. **Review the plan** — run one fresh-context critique pass (max 2 rounds) asking: (a) which setup, migration, config, or cleanup step is missing? (b) which risky assumption has not been checked against code/docs? (c) can the same goal finish in fewer steps? Verify all items in VERIFICATION GATE; return failures to the originating step.
 6. **Hand off** — emit the plan in the OUTPUT FORMAT (task table, critical path, risk register) for general-orchestrator to execute.
 
 ## PATTERNS

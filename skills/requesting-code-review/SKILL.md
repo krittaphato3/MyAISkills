@@ -3,11 +3,11 @@ name: requesting-code-review
 description: Packages diffs, scope, threat surface, and test evidence for independent verification before
   merge. Use on non-trivial changes; self-check never replaces review.
 metadata:
-  version: 3.1.0
+  version: 3.2.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-30'
+  last-reviewed: '2026-11-27'
   authored-by: red-team-qa
 ---
 
@@ -47,7 +47,7 @@ that the review did not happen.
 2. CHOOSE THE REVIEWER
    Standard change        → red-team-qa (adversarial, edit:deny)
    Security-sensitive     → red-team-qa + security-auditor (defense in depth)
-   Domain-specific risk   → relevant specialist (db-architect, compliance-engineer, ...)
+   Domain-specific risk   → relevant specialist (db-architect, security-auditor, ...)
    Two reviewers disagree → debate-protocol with debate-chair
    Never the author. Never the agent that proposed the design.
    Split the review into two independent axes (standards, then spec) per
@@ -65,9 +65,10 @@ that the review did not happen.
    NOTE    → no action; recorded for context
    A finding without evidence is a NOTE, never a BLOCKER.
 
-5. FIX, RE-VERIFY, RE-REVIEW ONLY IF SCOPE CHANGED
-   The author fixes; the reviewer verifies the fix against the finding. A fix that changes the
-   design restarts the review. Do not re-review the whole diff for a one-line follow-up.
+5. FIX, RE-VERIFY, RE-REVIEW DELTA
+   Keep a tight delta ledger (`R1 [BLOCKER|MAJOR|MINOR] file:line -> outcome`). After each fix,
+   re-run checks and check `git diff --shortstat` so fixes shrink or hold diff size rather than sprawling.
+   Re-review only open IDs and changed code unless design changed. Cap review-fix rounds at ≤4; stop on nits-only.
 
 6. GATE
    Merge only on PASS, or CONDITIONAL with every follow-up owned. Record the verdict with the

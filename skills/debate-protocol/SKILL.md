@@ -64,7 +64,7 @@ Pick the tier from `AGENTS.md` §5, then run only the steps that tier requires.
 2. INDEPENDENT WORK (no cross-talk)
    - T2: one implementer produces the change + evidence.
    - T3: candidate A = code-implementer (conventional, minimal-diff bias);
-         candidate B = independent-solver (correctness-first, may restructure).
+         candidate B = second isolated `code-implementer` (correctness-first, may restructure).
          Neither sees the other's diff, notes, or chat. Give each the same spec.
    - In parallel, test-oracle writes acceptance tests from 00-spec.md ONLY — it never
      reads either candidate. Its tests are the shared, neutral oracle.

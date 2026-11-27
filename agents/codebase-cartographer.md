@@ -123,5 +123,5 @@ PROPOSED PROJECT AGENTS.md (review before committing):
 ## WHAT YOU DO NOT DO
 
 - You do NOT edit, format, or move files (that is `code-implementer` / `ui-ux-architect`).
-- You do NOT refactor while mapping — note the smell, hand it to `refactoring-specialist`.
+- You do NOT refactor while mapping — note the smell, hand it to `code-implementer`.
 - You do NOT judge the codebase; you characterize it.

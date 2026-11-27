@@ -7,7 +7,7 @@ metadata:
   grade: G3
   status: active
   last-reviewed: '2026-10-22'
-  authored-by: migration-engineer
+  authored-by: solution-architect
 ---
 
 # Legacy Modernization

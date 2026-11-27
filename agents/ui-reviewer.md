@@ -1,5 +1,6 @@
 ---
-description: "Read-only UI/UX & WCAG 2.2 AA accessibility auditor: tests live surfaces, keyboard navigation, contrast, state coverage, and heuristic flaws. Use for UX reviews or a11y audits."
+description: 'Read-only UI/UX & WCAG 2.2 AA auditor: tests live viewports, keyboard nav, contrast, and
+  missing states. Use for UX reviews or a11y audits.'
 mode: subagent
 tier: flash
 color: warning

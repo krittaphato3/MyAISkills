@@ -10,7 +10,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-31'
-  authored-by: refactoring-specialist
+  authored-by: code-implementer
 ---
 
 # Blast Radius

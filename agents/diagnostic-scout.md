@@ -1,5 +1,6 @@
 ---
-description: "Read-only 30-second diagnostic investigator using codebase-memory-mcp and Serena AST. Use for questions ('is X clickable?', 'why does Y fail?') and minimal bug root-cause isolation."
+description: Read-only 30s investigator using codebase-memory-mcp and Serena AST. Use for factual code
+  questions or minimal bug root-cause isolation.
 mode: subagent
 tier: flash
 color: info

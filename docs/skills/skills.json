@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25",
+  "generated": "2026-11-27",
   "count": 131,
   "skills": [
     {
@@ -150,7 +150,7 @@
       "domain": "architecture",
       "status": "active",
       "last-reviewed": "2026-10-31",
-      "authored-by": "refactoring-specialist"
+      "authored-by": "code-implementer"
     },
     {
       "name": "bro",
@@ -285,11 +285,11 @@
     {
       "name": "deep-planner",
       "path": "skills\\deep-planner\\SKILL.md",
-      "version": "3.0.0",
+      "version": "3.1.0",
       "grade": "G3",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-22",
+      "last-reviewed": "2026-11-27",
       "authored-by": "planner"
     },
     {
@@ -520,7 +520,7 @@
       "domain": "architecture",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "migration-engineer"
+      "authored-by": "solution-architect"
     },
     {
       "name": "llm-app-engineer",
@@ -560,7 +560,7 @@
       "domain": "meta",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "mcp-agent"
+      "authored-by": "integration-engineer"
     },
     {
       "name": "meshy-3d-generation",
@@ -690,7 +690,7 @@
       "domain": "security",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "compliance-engineer"
+      "authored-by": "security-auditor"
     },
     {
       "name": "product-engineering",
@@ -760,7 +760,7 @@
       "domain": "architecture",
       "status": "active",
       "last-reviewed": "2026-10-22",
-      "authored-by": "refactoring-specialist"
+      "authored-by": "code-implementer"
     },
     {
       "name": "refactoring-ui",
@@ -785,11 +785,11 @@
     {
       "name": "requesting-code-review",
       "path": "skills\\requesting-code-review\\SKILL.md",
-      "version": "3.1.0",
+      "version": "3.2.0",
       "grade": "G3",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-30",
+      "last-reviewed": "2026-11-27",
       "authored-by": "red-team-qa"
     },
     {
@@ -1005,11 +1005,11 @@
     {
       "name": "session-continuity",
       "path": "skills\\session-continuity\\SKILL.md",
-      "version": "3.0.0",
+      "version": "3.1.0",
       "grade": "G3",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-22",
+      "last-reviewed": "2026-11-27",
       "authored-by": "meta-architect"
     },
     {
@@ -1105,11 +1105,11 @@
     {
       "name": "systematic-debugging",
       "path": "skills\\systematic-debugging\\SKILL.md",
-      "version": "3.0.0",
+      "version": "3.1.0",
       "grade": "G3",
       "domain": "doctrine",
       "status": "active",
-      "last-reviewed": "2026-10-22",
+      "last-reviewed": "2026-11-27",
       "authored-by": "code-implementer"
     },
     {

@@ -2,11 +2,11 @@
 name: session-continuity
 description: "Summarizes session context: decisions, file diffs, evidence, and next steps for handoffs. Use when handing off sessions, resuming work, or compacting context."
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   domain: doctrine
   grade: G3
   status: active
-  last-reviewed: '2026-10-22'
+  last-reviewed: '2026-11-27'
   authored-by: meta-architect
 ---
 
@@ -31,7 +31,7 @@ Long agentic sessions fail the same way every time: context fills, earlier decis
 
 ## DECISION TREE
 
-1. **Decide the trigger.** Write continuity state at: plan approval, each completed milestone, any blocked step, and any explicit pause. Also write it the moment you notice context pressure.
+1. **Decide the trigger.** Write continuity state at: plan approval, each completed milestone, any blocked step, explicit pause, or immediately upon drift signals (repeating an earlier answer, forgetting a settled fact, re-reading the same file repeatedly, or context >50% full).
 2. **Choose the sink.** Prefer the repo's existing convention if one exists (`CONTEXT.md`, `NOTES.md`, a notes dir); otherwise write `./.agent/CONTEXT.md` at the repo root. Never bury state in a temp dir that a fresh session cannot find.
 3. **Write the handoff.** Use the fixed schema below. Facts with file paths, not prose recollections.
 4. **Separate durable from volatile.** Decisions, constraints, and the goal are durable; open questions, current errors, and next action are live. Update the live half every checkpoint; leave the durable half alone unless it genuinely changed.

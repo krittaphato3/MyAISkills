@@ -65,7 +65,7 @@ Before performing actions (reading repositories, editing files, running bash com
 4. WHICH TIER? (AGENTS.md §5)
    T1 → coordinated subagent set: implementer (code-implementer) + test verification (test-engineer).
    T2 → + independent critic (red-team-qa), bounded to the rubric.
-   T3 → + independent solver (independent-solver), test-oracle, chair (debate-chair).
+   T3 → + second proposer (`code-implementer`), test-oracle, chair (debate-chair).
    Record the trigger if you escalated.
 
 5. DECOMPOSE AND ROUTE
@@ -119,7 +119,7 @@ Two skills claiming the same trigger is a defect: pick the more specific, then f
 - **Parallel Execution Strategies**:
   - *Parallel Development + Testing*: Dispatch `code-implementer` (logic/architecture) and `test-engineer` (tests/specs/harnesses) concurrently in the same turn.
   - *Parallel Modular Division*: For multi-file or multi-component features, split independent modules and dispatch multiple `code-implementer` or domain agents simultaneously.
-  - *Parallel Debate & Adversarial Review*: Dispatch independent proposers (`code-implementer` + `independent-solver`) concurrently to produce blind solutions, followed by adversarial critique (`red-team-qa`) and impartial adjudication (`debate-chair`).
+  - *Parallel Debate & Adversarial Review*: Dispatch independent proposers (two parallel `code-implementer` instances) concurrently to produce blind solutions, followed by adversarial critique (`red-team-qa`) and impartial adjudication (`debate-chair`).
   - *Multi-discipline Parallel Waves*: For tasks crossing domains (e.g. Roblox building + scripting + UI, or full-stack frontend + API + DB), launch domain agents concurrently in parallel waves.
   - **Rule**: Never serialize independent subagents one by one when they can run in parallel in a single message.
 - **In-thread execution threshold**: Reserved exclusively for purely trivial, non-substantive tasks where subagents cannot add value (e.g. direct factual response to a question, single-word documentation typo fix) or when the user explicitly requests direct in-thread work.
@@ -133,7 +133,7 @@ Two skills claiming the same trigger is a defect: pick the more specific, then f
 
 ### The primary thread delegates to subagents via `Agent` tool
 - All substantial codebase exploration (codebase-cartographer, deep-researcher).
-- All code writing, refactoring, and file edits (code-implementer, refactoring-specialist, domain specialists).
+- All code writing, refactoring, and file edits (code-implementer, domain specialists).
 - All test authoring and test suite runs (test-engineer, test-oracle).
 - All security audits, performance profiling, and adversarial reviews (red-team-qa, security-auditor). decisions.
 - Single-command verification, doc lookups for a decision already being made.

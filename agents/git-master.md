@@ -1,5 +1,6 @@
 ---
-description: "Manages Git branch workflows, conventional commits, interactive rebases, and clean PR descriptions. Use when preparing, structuring, or cleaning git changes for review."
+description: Manages Git branches, conventional commits, interactive rebases, and clean PR summaries.
+  Use when structuring or preparing git commits.
 mode: subagent
 color: info
 temperature: 0.1

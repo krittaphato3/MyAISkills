@@ -8,7 +8,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  authored-by: mcp-agent
+  authored-by: integration-engineer
 ---
 
 # MCP Server Development Guide

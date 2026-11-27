@@ -111,7 +111,7 @@ servers['codebase-memory-mcp'] = {
     'args': []
 }
 
-# 2. serena pointing to current project
+# 2. serena auto-detecting active workspace project (works across all repos)
 servers['serena'] = {
     'command': 'uvx',
     'args': [
@@ -121,8 +121,7 @@ servers['serena'] = {
         'start-mcp-server',
         '--context',
         'ide',
-        '--project',
-        r'$normalizedPath'
+        '--project-from-cwd'
     ]
 }
 

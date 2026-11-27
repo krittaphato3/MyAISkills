@@ -1,5 +1,6 @@
 ---
-description: "Builds and operates delivery infrastructure: Docker, Kubernetes, CI/CD, IaC, environment promotion, rollout and rollback. Use when setting up or repairing pipelines and deployment config."
+description: Builds and runs Docker, Kubernetes, CI/CD pipelines, IaC, rollouts, and rollbacks. Use when
+  repairing or configuring build and deploy infrastructure.
 mode: subagent
 color: secondary
 temperature: 0.2

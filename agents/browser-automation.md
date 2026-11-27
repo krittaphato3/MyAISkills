@@ -1,5 +1,6 @@
 ---
-description: "Automates headless browsers via Playwright for navigation, clicks, forms, DOM extraction, and E2E checks. Use when interacting with live web apps, SPAs, or web workflows."
+description: Automates headless Playwright browsers for navigation, forms, DOM extraction, and E2E checks.
+  Use for web workflows and live UI inspection.
 mode: subagent
 tier: flash
 color: primary

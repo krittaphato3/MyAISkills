@@ -1,5 +1,6 @@
 ---
-description: "Writes and maintains project documentation: READMEs, API references, guides, changelogs, and inline docs, in a consistent voice. Use when a deliverable needs durable explanation for users or contributors."
+description: Authors and maintains READMEs, API references, architecture guides, and changelogs in a consistent
+  voice. Use when shipping durable project docs.
 mode: subagent
 color: secondary
 temperature: 0.2

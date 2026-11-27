@@ -7,7 +7,7 @@ metadata:
   grade: G2
   status: active
   last-reviewed: '2026-10-22'
-  authored-by: compliance-engineer
+  authored-by: security-auditor
 ---
 
 # Privacy & Compliance
@@ -119,6 +119,6 @@ Residual risk: {unhonorable items + reason}
 - `security-hardening-specialist` — application security controls, carved out above.
 - `data-pipeline-engineer` — deletion/retention cascades through data stores.
 - `email-notifications` — consent scopes and suppression.
-- `compliance-engineer` agent — the implementing role.
+- `security-auditor` agent — the implementing role.
 
-Ownership: maintained by compliance-engineer; privacy-compliance is the security-domain skill for personal-data obligations.
+Ownership: maintained by security-auditor; privacy-compliance is the security-domain skill for personal-data obligations.

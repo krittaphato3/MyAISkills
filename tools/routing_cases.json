@@ -1,5 +1,5 @@
 {
-  "description": "Routing regression cases. Each query names the primary skill (null = no skill), any mandatory co-skills (AGENTS.md §7.1 relevance gate), the work type(s), and expected size. Near-misses are intentional; they catch description collisions.",
+  "description": "Routing regression cases. Each query names the primary skill (null = no skill), any mandatory co-skills (AGENTS.md \u00a77.1 relevance gate), the work type(s), and expected size. Near-misses are intentional; they catch description collisions.",
   "cases": [
     {
       "query": "the stripe webhook fires twice and we credit the customer twice",
@@ -56,7 +56,7 @@
     {
       "query": "rewrite our Django 2 app onto something supported without breaking it",
       "skill": "legacy-modernization",
-      "agent": "migration-engineer"
+      "agent": "solution-architect"
     },
     {
       "query": "the landing page LCP is 6s on mobile",
@@ -168,7 +168,7 @@
       "skill": "readme-architect",
       "agent": null,
       "size": "small",
-      "note": "sizing gate: one file, one line, reversible — no subagent"
+      "note": "sizing gate: one file, one line, reversible \u2014 no subagent"
     },
     {
       "query": "rename this variable so it is clearer",
@@ -189,14 +189,14 @@
       "skill": "roblox-game-production",
       "agent": "roblox-game-director",
       "size": "big",
-      "note": "sizing gate: new system + crosses disciplines — subagents mandatory"
+      "note": "sizing gate: new system + crosses disciplines \u2014 subagents mandatory"
     },
     {
       "query": "replace our data layer with profile locking, migrations, and retry with backoff",
       "skill": "roblox-scripting",
       "agent": "roblox-scripter",
       "size": "big",
-      "note": "sizing gate: touches a boundary (DataStore) — subagents mandatory"
+      "note": "sizing gate: touches a boundary (DataStore) \u2014 subagents mandatory"
     },
     {
       "query": "players can duplicate items and I don't know how",
@@ -210,7 +210,7 @@
       "skills": [
         "verification-before-completion"
       ],
-      "note": "sizing gate: root cause unknown + boundary — T2 critic required"
+      "note": "sizing gate: root cause unknown + boundary \u2014 T2 critic required"
     },
     {
       "query": "add pagination to the /orders endpoint",
